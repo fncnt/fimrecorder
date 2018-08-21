@@ -4,6 +4,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from fimui import ui_fimwindow
 import pyloncom
+import cv2
+import numpy
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
@@ -16,12 +18,7 @@ def main():
     camera.device_status[str].connect(ui.statusbar.showMessage)
     camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
-
-    ui.actionRefresh.triggered.connect(camera.refresh)
-    #WIP:
     ui.actionRefresh.triggered.connect(camera.grabInBackground)
-
-
 
     window.show()
     sys.exit(app.exec_())

@@ -1,7 +1,8 @@
 from pypylon import pylon
 from pypylon import genicam
+#import pylonproc
 import cv2
-from threading import Thread
+import numpy
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
 class QCamWorker(QObject):
@@ -12,39 +13,36 @@ class QCamWorker(QObject):
     #using pyqtSignal and pyqtSlot passing numpy images
 
     _cam = pylon.InstantCamera()
-    device_closed = pyqtSignal()
-    frame_grabbed = pyqtSignal()
+    device_stopped = pyqtSignal()
+    frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
     device_status = pyqtSignal(str)
     #TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
 
-
     def __init__(self):
         super().__init__()
         self.connectToCam()
         self._stop = False
-        self.device_closed.connect(self.close)
+        #self.device_closed.connect(self.close)
 
     def stop(self):
-        self.device_status.emit("Stopping frame-grabbing...")
-        self._stop = True
-
-    def close(self):
-        self._stop = False
-        self._cam.Close()
+        #self.device_status.emit("Stopping frame-grabbing...")
+        self._stop  = True
+        #self._cam.StopGrabbing()
 
     @pyqtSlot()
     def connectToCam(self):
         try:
             # Create an instant camera object with the camera device found first.
-            self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
             if not self._cam.IsOpen():
-                self._cam.Open()
+                self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
+                #self._cam.Open()
             # Print the model name of the camera.
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
+            self._stop = False
 
         except genicam.GenericException as e:
             # Error handling.
@@ -66,11 +64,7 @@ class QCamWorker(QObject):
 
         # Camera.StopGrabbing() is called automatically by the RetrieveResult() method
         # when c_countOfImagesToGrab images have been retrieved.
-        while self._cam.IsGrabbing():
-            if self._stop:
-                self.device_status.emit("Stopped frame-grabbing.")
-                self.device_closed.emit()
-                break
+        while self._cam.IsGrabbing() and not self._stop:
             self.is_grabbing.emit()
             # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
             grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
@@ -78,25 +72,32 @@ class QCamWorker(QObject):
             # Image grabbed successfully?
             if grabresult.GrabSucceeded():
                 # Access the image data.
-                self.frame_grabbed.emit()
                 #print("SizeX: ", grabresult.Width)
                 #print("SizeY: ", grabresult.Height)
                 #img = grabresult.Array
+
                 #print("Gray value of first pixel: ", img[0, 0])
 
                 # Access the image data
-                # image = converter.Convert(grabResult)
-                # img = image.GetArray()
-                # cv2.namedWindow('title', cv2.WINDOW_NORMAL)
-                # cv2.imshow('title', img)
-                # k = cv2.waitKey(1)
-                # if k == 27:
-                #    break
+                image = converter.Convert(grabresult)
+                img = image.GetArray()
+                self.frame_grabbed.emit(img)
+                self.device_status.emit(str(type(img)))
+                cv2.namedWindow('title', cv2.WINDOW_NORMAL)
+                cv2.imshow('title', img)
+                k = cv2.waitKey(1)
+                if k == 27:
+                   break
+
             else:
                 print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
                 self.device_status.emit("Can't grab frames from camera.")
             grabresult.Release()
 
+        #self._cam.StopGrabbing()
+        self.device_status.emit("Stopped frame-grabbing.")
+        self.device_stopped.emit()
+        #self._stop = False
 
 
 class QCamera(QObject):
@@ -104,7 +105,7 @@ class QCamera(QObject):
     camThread = QThread()
     baslerace = QCamWorker()
 
-    frame_grabbed = pyqtSignal()
+    frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
     device_stop = pyqtSignal()
     device_status = pyqtSignal(str)
@@ -114,12 +115,9 @@ class QCamera(QObject):
 
 
     @pyqtSlot()
-    def refresh(self):
-        self.baslerace.close()
+    def reset(self):
+        self.baslerace.stop()
         self.baslerace.connectToCam()
-
-    #worker method for qthread
-
 
     #start thread with _grab
     @pyqtSlot()
@@ -130,10 +128,14 @@ class QCamera(QObject):
         self.baslerace.frame_grabbed.connect(self.frame_grabbed)
         self.baslerace.is_grabbing.connect(self.is_grabbing)
 
-        self.device_stop.connect(self.baslerace.stop)
+        self.baslerace.device_stopped.connect(self.camThread.quit)
 
         self.camThread.started.connect(self.baslerace.grabFrames)
         self.camThread.start()
 
     def stopGrabbing(self):
-        self.device_stop.emit()
+        #self.device_stop.emit()
+        self.baslerace.stop()
+        self.camThread.deleteLater()
+        #self.camThread.wait()
+        #self.camThread.exit()

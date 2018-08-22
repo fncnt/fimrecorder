@@ -1,6 +1,5 @@
 from pypylon import pylon
 from pypylon import genicam
-#import pylonproc
 import cv2
 import numpy
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
@@ -53,7 +52,7 @@ class QCamWorker(QObject):
     @pyqtSlot()
     def grabFrames(self):
         converter = pylon.ImageFormatConverter()
-        # converting to opencv bgr format
+        # converting to opencv mono8/mono12 format
         converter.OutputPixelFormat = pylon.PixelType_Mono8
         converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
 
@@ -69,25 +68,18 @@ class QCamWorker(QObject):
             # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
             grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
 
-            # Image grabbed successfully?
             if grabresult.GrabSucceeded():
-                # Access the image data.
-                #print("SizeX: ", grabresult.Width)
-                #print("SizeY: ", grabresult.Height)
-                #img = grabresult.Array
-
-                #print("Gray value of first pixel: ", img[0, 0])
 
                 # Access the image data
                 image = converter.Convert(grabresult)
                 img = image.GetArray()
                 self.frame_grabbed.emit(img)
                 self.device_status.emit(str(type(img)))
-                cv2.namedWindow('title', cv2.WINDOW_NORMAL)
-                cv2.imshow('title', img)
-                k = cv2.waitKey(1)
-                if k == 27:
-                   break
+                #cv2.namedWindow('title', cv2.WINDOW_NORMAL)
+                #cv2.imshow('title', img)
+                #k = cv2.waitKey(1)
+                #if k == 27:
+                #   break
 
             else:
                 print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)

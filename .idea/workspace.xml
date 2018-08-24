@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66febe0c-7092-4fbc-9f7d-3e84976a7ad1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FIMsnapshot.png" beforeDir="false" afterPath="$PROJECT_DIR$/FIMsnapshot.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fimrecorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fimrecorder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyloncom.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyloncom.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pylonproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pylonproc.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +18,7 @@
     <session id="-372056215">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="2" />
           <entry key="project.open.time.13" value="3" />
@@ -29,54 +33,54 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="28" />
+          <entry key="py" value="29" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="28" />
+          <entry key="Python" value="29" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="19" />
-          <entry key="py" value="9493" />
+          <entry key="py" value="10475" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="9512" />
+          <entry key="Python" value="10494" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pyloncom.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1462">
-              <caret line="86" selection-start-line="86" selection-end-line="86" />
+            <state relative-caret-position="68">
+              <caret line="61" column="66" selection-start-line="61" selection-start-column="66" selection-end-line="61" selection-end-column="66" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <marker date="1534922091816" expanded="true" signature="169:174" ph="..." />
-                <marker date="1534922091816" expanded="true" signature="169:3421" ph="..." />
-                <marker date="1534922091816" expanded="true" signature="3974:3979" ph="..." />
+                <marker date="1535103602719" expanded="true" signature="169:174" ph="..." />
+                <marker date="1535103602719" expanded="true" signature="169:3455" ph="..." />
+                <marker date="1535103602719" expanded="true" signature="4008:4013" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pylonproc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="48" column="14" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
+            <state relative-caret-position="225">
+              <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1535098811126" expanded="true" signature="1306:1374" ph="..." />
+                <marker date="1535102049639" expanded="true" signature="1337:1540" ph="..." />
               </folding>
             </state>
           </provider>
@@ -85,8 +89,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fimui/ui_fimwindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="102" selection-start-line="102" selection-end-line="102" />
+            <state relative-caret-position="1130">
+              <caret line="101" selection-start-line="101" selection-end-line="101" />
             </state>
           </provider>
         </entry>
@@ -94,11 +98,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/fimrecorder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-12">
-              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+            <state relative-caret-position="136">
+              <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../pypylon/samples/grabstrategies.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="83" column="21" lean-forward="true" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -135,9 +148,9 @@
         <option value="$PROJECT_DIR$/fimui/__init_.py" />
         <option value="$PROJECT_DIR$/fimui/__init__.py" />
         <option value="$PROJECT_DIR$/fimui/ui_fimwindow.py" />
-        <option value="$PROJECT_DIR$/pyloncom.py" />
-        <option value="$PROJECT_DIR$/fimrecorder.py" />
         <option value="$PROJECT_DIR$/pylonproc.py" />
+        <option value="$PROJECT_DIR$/fimrecorder.py" />
+        <option value="$PROJECT_DIR$/pyloncom.py" />
       </list>
     </option>
   </component>
@@ -200,7 +213,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pypylon/samples/opencv.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pypylon/samples/grabstrategies.py" />
     <property name="settings.editor.selected.configurable" value="BashSupport" />
   </component>
   <component name="RecentsManager">
@@ -298,7 +311,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.3291815" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.386121" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.386121" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -316,6 +329,38 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fimrecorder.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fimrecorder.py</url>
+          <line>47</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fimrecorder.py</url>
+          <line>50</line>
+          <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/fimrecorder.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pylonproc.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pylonproc.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -378,19 +423,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pyloncom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1462">
-          <caret line="86" selection-start-line="86" selection-end-line="86" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1534922091816" expanded="true" signature="169:174" ph="..." />
-            <marker date="1534922091816" expanded="true" signature="169:3421" ph="..." />
-            <marker date="1534922091816" expanded="true" signature="3974:3979" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey_qt.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="106">
@@ -408,30 +440,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fimui/ui_fimwindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1130">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pylonproc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1535102049639" expanded="true" signature="1337:1540" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fimrecorder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-12">
-          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        <state relative-caret-position="136">
+          <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/fimui/ui_fimwindow.py">
+    <entry file="file://$PROJECT_DIR$/../pypylon/samples/grabstrategies.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="102" selection-start-line="102" selection-end-line="102" />
+        <state relative-caret-position="136">
+          <caret line="83" column="21" lean-forward="true" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pylonproc.py">
+    <entry file="file://$PROJECT_DIR$/pyloncom.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="48" column="14" selection-start-line="48" selection-start-column="14" selection-end-line="48" selection-end-column="14" />
+        <state relative-caret-position="68">
+          <caret line="61" column="66" selection-start-line="61" selection-start-column="66" selection-end-line="61" selection-end-column="66" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
-            <marker date="1535098811126" expanded="true" signature="1306:1374" ph="..." />
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1535103602719" expanded="true" signature="169:174" ph="..." />
+            <marker date="1535103602719" expanded="true" signature="169:3455" ph="..." />
+            <marker date="1535103602719" expanded="true" signature="4008:4013" ph="..." />
           </folding>
         </state>
       </provider>

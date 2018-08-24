@@ -1,7 +1,8 @@
 import cv2
 import numpy
 import time
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtGui import QPixmap, QImage
 
 class QCamProcessor(QObject):
 
@@ -46,7 +47,9 @@ class QCamProcessor(QObject):
 class QCamQPixmap(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
-        aölsdk
+        qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Mono)
+        qpxmp = QPixmap(qimg)
+        self.img_processed.emit(qpxmp)
 
 
 class QCamSnapshot(QCamProcessor):

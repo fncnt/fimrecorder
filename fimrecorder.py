@@ -3,6 +3,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtGui import QPixmap
 
 from fimui import ui_fimwindow
 import pyloncom
@@ -28,12 +29,30 @@ def main():
     dcthread = QThread()
     def saveSnapshot():
         disposablecam.moveToThread(dcthread)
+
+        # Is that really necessary? Shouldn't and shouldn't work!
         camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
+
         dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
         dcthread.start()
         disposablecam.img_processed.connect(dcthread.quit)
 
     ui.actionSnapshot.triggered.connect(saveSnapshot)
+
+    previewthread = QThread()
+    ui.camView.moveToThread(previewthread)
+    previewthread.start()
+
+    previewcam = pylonproc.QCamQPixmap()
+    pcthread = QThread()
+    previewcam.moveToThread(pcthread)
+    previewcam.img_processed.connect(ui.camView.setPixmap)
+    #camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    pcthread.start()
+    ui.camView.setScaledContents(True)
+
+    #app.aboutToQuit.connect(pcthread.quit)
 
 
     window.show()

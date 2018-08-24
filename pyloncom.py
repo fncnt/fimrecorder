@@ -59,7 +59,7 @@ class QCamWorker(QObject):
         # default = 10
         self._cam.MaxNumBuffer = 10
         # self._cam.StartGrabbingMax(100)
-        self._cam.StartGrabbing()
+        self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
         # Camera.StopGrabbing() is called automatically by the RetrieveResult() method
         # when c_countOfImagesToGrab images have been retrieved.

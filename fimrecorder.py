@@ -29,7 +29,7 @@ def main():
     def saveSnapshot():
         disposablecam.moveToThread(dcthread)
         camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
-        dcthread.started.connect(lambda: disposablecam.startProcessing)
+        dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
         dcthread.start()
         disposablecam.img_processed.connect(dcthread.quit)
 

@@ -44,8 +44,8 @@ class Ui_fimWindow(object):
         self.tabCam = QtWidgets.QWidget()
         self.tabCam.setObjectName("tabCam")
         self.tabWidget.addTab(self.tabCam, "")
-        self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 2, 1)
-        self.camView = QtWidgets.QGraphicsView(self.centralwidget)
+        self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 3, 1)
+        self.camView = QtWidgets.QLabel(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(2)
         sizePolicy.setVerticalStretch(2)
@@ -53,7 +53,7 @@ class Ui_fimWindow(object):
         self.camView.setSizePolicy(sizePolicy)
         self.camView.setMinimumSize(QtCore.QSize(400, 400))
         self.camView.setSizeIncrement(QtCore.QSize(1, 1))
-        self.camView.setAutoFillBackground(False)
+        self.camView.setText("")
         self.camView.setObjectName("camView")
         self.gridLayout_2.addWidget(self.camView, 1, 1, 1, 1)
         fimWindow.setCentralWidget(self.centralwidget)
@@ -99,7 +99,6 @@ class Ui_fimWindow(object):
         self.tabWidget.setCurrentIndex(1)
         self.actionSnapshot.triggered.connect(self.statusbar.update)
         QtCore.QMetaObject.connectSlotsByName(fimWindow)
-
 
     def retranslateUi(self, fimWindow):
         _translate = QtCore.QCoreApplication.translate

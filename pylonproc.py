@@ -13,6 +13,7 @@ class QCamProcessor(QObject):
         super().__init__()
         self._cancel = False
 
+    #Only this method should be overridden
     @pyqtSlot(numpy.ndarray)
     def processImg(self, img=numpy.ndarray):
         return 0
@@ -42,7 +43,11 @@ class QCamProcessor(QObject):
 
 #class QCamRecorder(QCamProcessor):
 
-#class QCamQPixmap(QCamProcessor):
+class QCamQPixmap(QCamProcessor):
+
+    def processImg(self, img=numpy.ndarray):
+        aölsdk
+
 
 class QCamSnapshot(QCamProcessor):
 

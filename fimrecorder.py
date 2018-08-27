@@ -39,18 +39,18 @@ def main():
 
     ui.actionSnapshot.triggered.connect(saveSnapshot)
 
-    previewthread = QThread()
-    ui.camView.moveToThread(previewthread)
-    previewthread.start()
+    #previewthread = QThread()
+    #ui.camView.moveToThread(previewthread)
+    #previewthread.start()
 
-    previewcam = pylonproc.QCamQPixmap()
-    pcthread = QThread()
-    previewcam.moveToThread(pcthread)
-    previewcam.img_processed.connect(ui.camView.setPixmap)
+    #previewcam = pylonproc.QCamQPixmap()
+    #pcthread = QThread()
+    #previewcam.moveToThread(pcthread)
+    #previewcam.img_processed.connect(ui.camView.setPixmap)
     #camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
-    pcthread.start()
-    ui.camView.setScaledContents(True)
+    #pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    #pcthread.start()
+    #ui.camView.setScaledContents(True)
 
     #app.aboutToQuit.connect(pcthread.quit)
 

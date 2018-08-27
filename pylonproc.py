@@ -58,9 +58,9 @@ class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()
 
     def processImg(self, img=numpy.ndarray):
-        #path = ''
+        path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
-        fimfile = 'FIMsnapshot_' + currenttime + '.png'
+        fimfile = path + 'FIMsnapshot_' + currenttime + '.png'
         self.snapshot_status.emit(fimfile)
         cv2.imwrite(fimfile, img)
         #cv2.imwrite('FIMsnapshot.png', img)

@@ -40,6 +40,23 @@ def main():
 
     ui.actionSnapshot.triggered.connect(saveSnapshot)
 
+    recordingcam = pylonproc.QCamRecorder()
+    recthread = QThread()
+
+    def recordVideo(toggled = bool):
+        if toggled:
+            recordingcam.moveToThread(recthread)
+            recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
+            recthread.start()
+        else:
+            stoprecording = pyqtSignal()
+            stoprecording.connect(recordingcam.cancelProcessing)
+            stoprecording.emit()
+            #recordingcam.cancelProcessing()
+            recthread.wait()
+
+    ui.actionRecord.toggled[bool].connect(recordVideo)
+
     #previewthread = QThread()
     #ui.camView.moveToThread(previewthread)
     #previewthread.start()

@@ -37,12 +37,12 @@ class QCamWorker(QObject):
             # Create an instant camera object with the camera device found first.
             if not self._cam.IsOpen():
                 self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
-                #self._cam.Open()
+                self._cam.Open()
             # Print the model name of the camera.
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self._stop = False
-            self.device_statis.emit("Loading device configuration")
+            self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load("FIM_NodeMap.pfs", self._cam.GetNodeMap(), True)
 
         except genicam.GenericException as e:
@@ -58,6 +58,7 @@ class QCamWorker(QObject):
 
         converter.OutputPixelFormat = pylon.PixelType_Mono8
         converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
+
 
         # default = 10
         self._cam.MaxNumBuffer = 10
@@ -76,6 +77,7 @@ class QCamWorker(QObject):
                 # Access the image data
                 image = converter.Convert(grabresult)
                 img = image.GetArray()
+                #img = numpy.rot90(img, 1)
                 self.frame_grabbed.emit(img)
                 #self.device_status.emit(str(type(img)))
                 cv2.namedWindow('Preview', cv2.WINDOW_NORMAL) #cv2.WINDOW_KEEPRATIO)

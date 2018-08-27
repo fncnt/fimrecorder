@@ -20,19 +20,20 @@ def main():
     #ui.actionRecord.toggled.connect(lambda: camera.exampleSlot("test"))
     #ui.actionRecord.toggled[bool].connect(camera.exampleSlot)
     camera.device_status[str].connect(ui.statusbar.showMessage)
+    camera.device_status[str].connect(print)
     camera.grabInBackground()
-    camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
+    #camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
     #ui.actionRefresh.triggered.connect(camera.grabInBackground)
-    #nullsignal = pyqtSignal() #don' want to  cancel single snapshots
+    #nullsignal = pyqtSignal() #don't want to  cancel single snapshots
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()
     def saveSnapshot():
         disposablecam.moveToThread(dcthread)
 
         # Is that really necessary? Shouldn't and shouldn't work!
-        camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
-
+        #camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
+        disposablecam.snapshot_status[str].connect(print)
         dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
         dcthread.start()
         disposablecam.img_processed.connect(dcthread.quit)

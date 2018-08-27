@@ -74,7 +74,7 @@ class QCamWorker(QObject):
                 image = converter.Convert(grabresult)
                 img = image.GetArray()
                 self.frame_grabbed.emit(img)
-                self.device_status.emit(str(type(img)))
+                #self.device_status.emit(str(type(img)))
                 #cv2.namedWindow('title', cv2.WINDOW_NORMAL)
                 #cv2.imshow('title', img)
                 #k = cv2.waitKey(1)

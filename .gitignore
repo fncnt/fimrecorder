@@ -1,0 +1,5 @@
+*.png
+*.avi
+/.idea
+*/__pycache__
+/venv

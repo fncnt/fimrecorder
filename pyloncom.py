@@ -42,6 +42,8 @@ class QCamWorker(QObject):
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self._stop = False
+            self.device_statis.emit("Loading device configuration")
+            pylon.FeaturePersistence.Load("FIM_NodeMap.pfs", self._cam.GetNodeMap(), True)
 
         except genicam.GenericException as e:
             # Error handling.
@@ -53,6 +55,7 @@ class QCamWorker(QObject):
     def grabFrames(self):
         converter = pylon.ImageFormatConverter()
         # converting to opencv mono8/mono12 format
+
         converter.OutputPixelFormat = pylon.PixelType_Mono8
         converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
 

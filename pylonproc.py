@@ -43,7 +43,35 @@ class QCamProcessor(QObject):
         return 0
 
 
-#class QCamRecorder(QCamProcessor):
+class QCamRecorder(QCamProcessor):
+
+    def __init__(self):
+        super().__init__()
+        self.cvcodec = None #cv2.VideoWriter_fourcc()
+        self.out = None #cv2.VideoWriter()
+
+    def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
+        path = ''
+        currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
+        fimfile = path + 'FIM_' + currenttime + '.avi'
+
+        self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
+        self.out = cv2.VideoWriter(fimfile, self.cvcodec, 40.0, (1200, 1200))
+        super().startProcessing(img_received)
+
+
+    def processImg(self, img=numpy.ndarray):
+        self.out.write(img)
+
+    def cancelProcessing(self):
+        super().cancelProcessing()
+        self.finishProcessing()
+
+
+    def finishProcessing(self):
+        self.out.release()
+        self.finishProcessing()
+
 
 class QCamQPixmap(QCamProcessor):
 

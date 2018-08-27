@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="66febe0c-7092-4fbc-9f7d-3e84976a7ad1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/pyloncom.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyloncom.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pylonproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pylonproc.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,7 +15,7 @@
     <session id="-372056215">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="12" />
+          <entry key="project.closed" value="13" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.12" value="2" />
           <entry key="project.open.time.13" value="3" />
@@ -29,25 +30,25 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="30" />
+          <entry key="py" value="32" />
           <entry key="pyi" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="30" />
+          <entry key="Python" value="32" />
           <entry key="PythonStub" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="19" />
-          <entry key="py" value="10979" />
+          <entry key="py" value="11566" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="10998" />
+          <entry key="Python" value="11585" />
         </counts>
       </usages-collector>
     </session>
@@ -57,25 +58,13 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pyloncom.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="73" column="53" lean-forward="true" selection-start-line="73" selection-start-column="53" selection-end-line="73" selection-end-column="53" />
+            <state relative-caret-position="261">
+              <caret line="45" column="83" selection-start-line="45" selection-start-column="83" selection-end-line="45" selection-end-column="83" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <marker date="1535353047079" expanded="true" signature="169:174" ph="..." />
-                <marker date="1535353047079" expanded="true" signature="169:3545" ph="..." />
-                <marker date="1535353047079" expanded="true" signature="4098:4103" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../pypylon/samples/opencv.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-34">
-              <caret line="12" column="55" selection-start-line="12" selection-start-column="55" selection-end-line="12" selection-end-column="55" />
-              <folding>
-                <element signature="e#160#185#0" expanded="true" />
+                <marker date="1535355007768" expanded="true" signature="169:174" ph="..." />
+                <marker date="1535355007768" expanded="true" signature="169:3705" ph="..." />
+                <marker date="1535355007768" expanded="true" signature="4258:4263" ph="..." />
               </folding>
             </state>
           </provider>
@@ -84,11 +73,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pylonproc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
-              <caret line="60" column="16" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
+            <state relative-caret-position="278">
+              <caret line="72" column="31" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1535352347757" expanded="true" signature="1340:1543" ph="..." />
+                <marker date="1535354297509" expanded="true" signature="1357:1361" ph="..." />
+                <marker date="1535354297509" expanded="true" signature="1854:2124" ph="..." />
+                <marker date="1535354297509" expanded="true" signature="1900:1934" ph="..." />
+                <marker date="1535354297509" expanded="true" signature="1961:2035" ph="..." />
+                <marker date="1535354297509" expanded="true" signature="2157:2360" ph="..." />
               </folding>
             </state>
           </provider>
@@ -111,15 +104,6 @@
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../pypylon/samples/grabstrategies.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1309">
-              <caret line="83" column="21" selection-start-line="83" selection-start-column="21" selection-end-line="83" selection-end-column="55" />
             </state>
           </provider>
         </entry>
@@ -221,7 +205,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pypylon/samples/opencv.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pypylon/samples/pixelformatandaoiconfiguration.py" />
     <property name="settings.editor.selected.configurable" value="BashSupport" />
   </component>
   <component name="RecentsManager">
@@ -242,7 +226,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.fimrecorder">
+  <component name="RunManager" selected="Python.parametrizecameraloadandsaveconfig">
     <configuration name="fimrecorder" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="fimrecorder" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -285,12 +269,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="parametrizecameraloadandsaveconfig" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="fimrecorder" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../pypylon/samples" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../pypylon/samples/parametrizecameraloadandsaveconfig.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.fimrecorder" />
       <item itemvalue="Python.grab" />
+      <item itemvalue="Python.parametrizecameraloadandsaveconfig" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.parametrizecameraloadandsaveconfig" />
         <item itemvalue="Python.fimrecorder" />
         <item itemvalue="Python.grab" />
       </list>
@@ -318,7 +325,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3291815" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3291815" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.386121" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -429,11 +436,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pylonproc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="60" column="16" selection-start-line="60" selection-start-column="16" selection-end-line="60" selection-end-column="16" />
+        <state relative-caret-position="278">
+          <caret line="72" column="31" selection-start-line="72" selection-start-column="31" selection-end-line="72" selection-end-column="31" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1535352347757" expanded="true" signature="1340:1543" ph="..." />
+            <marker date="1535354297509" expanded="true" signature="1357:1361" ph="..." />
+            <marker date="1535354297509" expanded="true" signature="1854:2124" ph="..." />
+            <marker date="1535354297509" expanded="true" signature="1900:1934" ph="..." />
+            <marker date="1535354297509" expanded="true" signature="1961:2035" ph="..." />
+            <marker date="1535354297509" expanded="true" signature="2157:2360" ph="..." />
           </folding>
         </state>
       </provider>
@@ -448,15 +459,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../pypylon/samples/pixelformatandaoiconfiguration.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="37" lean-forward="true" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
+          <folding>
+            <element signature="e#71#96#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../pypylon/samples/parametrizecameraloadandsaveconfig.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="22" selection-start-line="22" selection-end-line="22" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pyloncom.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="73" column="53" lean-forward="true" selection-start-line="73" selection-start-column="53" selection-end-line="73" selection-end-column="53" />
+        <state relative-caret-position="261">
+          <caret line="45" column="83" selection-start-line="45" selection-start-column="83" selection-end-line="45" selection-end-column="83" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-            <marker date="1535353047079" expanded="true" signature="169:174" ph="..." />
-            <marker date="1535353047079" expanded="true" signature="169:3545" ph="..." />
-            <marker date="1535353047079" expanded="true" signature="4098:4103" ph="..." />
+            <marker date="1535355007768" expanded="true" signature="169:174" ph="..." />
+            <marker date="1535355007768" expanded="true" signature="169:3705" ph="..." />
+            <marker date="1535355007768" expanded="true" signature="4258:4263" ph="..." />
           </folding>
         </state>
       </provider>

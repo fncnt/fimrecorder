@@ -75,11 +75,11 @@ class QCamWorker(QObject):
                 img = image.GetArray()
                 self.frame_grabbed.emit(img)
                 #self.device_status.emit(str(type(img)))
-                #cv2.namedWindow('title', cv2.WINDOW_NORMAL)
-                #cv2.imshow('title', img)
-                #k = cv2.waitKey(1)
-                #if k == 27:
-                #   break
+                cv2.namedWindow('Preview', cv2.WINDOW_NORMAL) #cv2.WINDOW_KEEPRATIO)
+                cv2.imshow('Preview', img) #cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
+                k = cv2.waitKey(1)
+                if k == 27:
+                   break
 
             else:
                 print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)

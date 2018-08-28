@@ -33,7 +33,7 @@ def main():
 
         # Is that really necessary? Shouldn't and shouldn't work!
         #camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
-        disposablecam.snapshot_status[str].connect(print)
+        disposablecam.status[str].connect(print)
         dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
         dcthread.start()
         disposablecam.img_processed.connect(dcthread.quit)
@@ -41,19 +41,19 @@ def main():
     ui.actionSnapshot.triggered.connect(saveSnapshot)
 
     recordingcam = pylonproc.QCamRecorder()
+    recordingcam.status.connect(print)
     recthread = QThread()
+    recordingcam.img_processed.connect(recthread.wait)
 
-    def recordVideo(toggled = bool):
+
+    def recordVideo(toggled=bool):
         if toggled:
             recordingcam.moveToThread(recthread)
             recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
             recthread.start()
         else:
-            stoprecording = pyqtSignal()
-            stoprecording.connect(recordingcam.cancelProcessing)
-            stoprecording.emit()
-            #recordingcam.cancelProcessing()
-            recthread.wait()
+            recordingcam.cancelProcessing()
+            #recthread.wait()
 
     ui.actionRecord.toggled[bool].connect(recordVideo)
 

@@ -7,6 +7,7 @@ from PyQt5.QtGui import QPixmap, QImage
 class QCamProcessor(QObject):
 
     img_processed = pyqtSignal(object)
+    status = pyqtSignal(str)
     is_running = pyqtSignal()
     is_processing = pyqtSignal(numpy.ndarray)
 
@@ -34,7 +35,7 @@ class QCamProcessor(QObject):
 
     #when cancel signal is received
     def cancelProcessing(self):
-        self.is_processing[numpy.ndarray].disconnect()
+        self.is_processing[numpy.ndarray].disconnect(self.processImg)
         #self._cancel = True
 
     #clean up processing, i.e. save file etc.
@@ -44,6 +45,7 @@ class QCamProcessor(QObject):
 
 
 class QCamRecorder(QCamProcessor):
+    img_processed = pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -56,12 +58,20 @@ class QCamRecorder(QCamProcessor):
         fimfile = path + 'FIM_' + currenttime + '.avi'
 
         self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
-        self.out = cv2.VideoWriter(fimfile, self.cvcodec, 40.0, (1200, 1200))
+        self.out = cv2.VideoWriter(fimfile, self.cvcodec, 40.0, (1200, 1200), False) #isColor=False
         super().startProcessing(img_received)
 
 
     def processImg(self, img=numpy.ndarray):
-        self.out.write(img)
+        try:
+            #wird ausgeführt aber schreibt keine frames in Datei
+            self.out.write(img)
+        except Exception as e:
+            #print("An exception occurred.")
+            #print(str(e))
+            self.status.emit(str(e))
+
+
 
     def cancelProcessing(self):
         super().cancelProcessing()
@@ -70,7 +80,8 @@ class QCamRecorder(QCamProcessor):
 
     def finishProcessing(self):
         self.out.release()
-        self.finishProcessing()
+        #warum hängt das?
+        #self.img_processed.emit()
 
 
 class QCamQPixmap(QCamProcessor):
@@ -82,14 +93,13 @@ class QCamQPixmap(QCamProcessor):
 
 
 class QCamSnapshot(QCamProcessor):
-    snapshot_status = pyqtSignal(str)
     img_processed = pyqtSignal()
 
     def processImg(self, img=numpy.ndarray):
         path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
         fimfile = path + 'FIMsnapshot_' + currenttime + '.png'
-        self.snapshot_status.emit(fimfile)
+        self.status.emit(fimfile)
         cv2.imwrite(fimfile, img)
         #cv2.imwrite('FIMsnapshot.png', img)
         self.cancelProcessing() #we just want to save one frame, so when we receive one, we immediately stop.

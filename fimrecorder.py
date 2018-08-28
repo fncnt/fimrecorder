@@ -43,7 +43,7 @@ def main():
     recordingcam = pylonproc.QCamRecorder()
     recordingcam.status.connect(print)
     recthread = QThread()
-    recordingcam.img_processed.connect(recthread.wait)
+    #recordingcam.img_processed.connect(recthread.wait)
 
 
     def recordVideo(toggled=bool):

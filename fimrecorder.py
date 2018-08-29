@@ -27,6 +27,7 @@ def main():
     #camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
     ui.actionRefresh.triggered.connect(camera.reset)
+    ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
     #nullsignal = pyqtSignal() #don't want to  cancel single snapshots
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()

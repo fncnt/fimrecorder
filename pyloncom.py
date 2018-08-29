@@ -28,6 +28,12 @@ class QCamWorker(QObject):
         self._stop = False
         #self.device_closed.connect(self.close)
 
+    #I'd like to avoid defining setters
+    #but it seems to work better with signals
+    @pyqtSlot()
+    def setExposureTime(self, val=int):
+        self.baslerace._cam.ExposureTime = 1000 * val
+
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
         self._stop  = True
@@ -118,9 +124,14 @@ class QCamera(QObject):
     is_grabbing = pyqtSignal()
     device_stop = pyqtSignal()
     device_status = pyqtSignal(str)
+    setExposureTime = pyqtSignal(int)
     #TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
+
+    def __init__(self):
+        super().__init__()
+        self.setExposureTime[int].connect(self.baslerace.setExposureTime)
 
 
     @pyqtSlot()
@@ -149,3 +160,5 @@ class QCamera(QObject):
         #self.camThread.deleteLater()
         #self.camThread.wait()
         #self.camThread.exit()
+
+

@@ -46,7 +46,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0" rowspan="3">
+    <item row="0" column="0" rowspan="3" alignment="Qt::AlignTop">
      <widget class="QTabWidget" name="tabWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -66,6 +66,38 @@
        <attribute name="title">
         <string>Camera</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="1">
+         <widget class="QSlider" name="ExpTimeSlider">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>30</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="ExpTimeSpinBox">
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>30</number>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="ExposureTimeLabel">
+          <property name="text">
+           <string>Exposure Time [ms]</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -199,6 +231,38 @@
     <hint type="destinationlabel">
      <x>317</x>
      <y>446</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExpTimeSlider</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>ExpTimeSpinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>134</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ExpTimeSpinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ExpTimeSlider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>76</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>134</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>

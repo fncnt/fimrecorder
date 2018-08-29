@@ -1,5 +1,7 @@
 *.png
 *.avi
+*.pyc
+*.xml
 /.idea
 */__pycache__
 /venv

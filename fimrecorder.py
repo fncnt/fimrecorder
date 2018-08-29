@@ -21,10 +21,12 @@ def main():
     #ui.actionRecord.toggled[bool].connect(camera.exampleSlot)
     camera.device_status[str].connect(ui.statusbar.showMessage)
     camera.device_status[str].connect(print)
-    camera.grabInBackground()
+
+    if camera.baslerace._cam.IsOpen():
+        camera.grabInBackground()
     #camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
-    #ui.actionRefresh.triggered.connect(camera.grabInBackground)
+    ui.actionRefresh.triggered.connect(camera.reset)
     #nullsignal = pyqtSignal() #don't want to  cancel single snapshots
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()

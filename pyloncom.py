@@ -20,6 +20,8 @@ class QCamWorker(QObject):
     # 0: device found, using device
     # 1: no device found
 
+
+
     def __init__(self):
         super().__init__()
         self.connectToCam()
@@ -44,6 +46,16 @@ class QCamWorker(QObject):
             self._stop = False
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load("FIM_NodeMap.pfs", self._cam.GetNodeMap(), True)
+            # _cam.Width = 12
+            # _cam.__setattr__('Width', 12)
+            #self._cam.AcquisitionFrameRateEnable = 1
+            #self._cam.AcquisitionFrameRate = 35.0
+
+            #seems to work reasonably well with blue LEDs at 15% and IR LEDs at 100%
+            #FPS = max = 41.58177
+            #and curtains closed
+            #self._cam.ExposureTime = 20000.0
+            #self._cam.__setattr__('ExposureTime', 20000.0)
 
         except genicam.GenericException as e:
             # Error handling.
@@ -115,6 +127,7 @@ class QCamera(QObject):
     def reset(self):
         self.baslerace.stop()
         self.baslerace.connectToCam()
+        self.grabInBackground()
 
     #start thread with _grab
     @pyqtSlot()
@@ -125,7 +138,7 @@ class QCamera(QObject):
         self.baslerace.frame_grabbed.connect(self.frame_grabbed)
         self.baslerace.is_grabbing.connect(self.is_grabbing)
 
-        self.baslerace.device_stopped.connect(self.camThread.quit)
+        #self.baslerace.device_stopped.connect(self.camThread.quit)
 
         self.camThread.started.connect(self.baslerace.grabFrames)
         self.camThread.start()
@@ -133,6 +146,6 @@ class QCamera(QObject):
     def stopGrabbing(self):
         #self.device_stop.emit()
         self.baslerace.stop()
-        self.camThread.deleteLater()
+        #self.camThread.deleteLater()
         #self.camThread.wait()
         #self.camThread.exit()

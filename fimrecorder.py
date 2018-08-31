@@ -28,7 +28,8 @@ def main():
 
     ui.actionRefresh.triggered.connect(camera.reset)
     ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
-    #nullsignal = pyqtSignal() #don't want to  cancel single snapshots
+
+
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()
     def saveSnapshot():

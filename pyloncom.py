@@ -32,11 +32,14 @@ class QCamWorker(QObject):
     #but it seems to work better with signals
     @pyqtSlot()
     def setExposureTime(self, val=int):
-        self.baslerace._cam.ExposureTime = 1000 * val
+        #self.stop()
+        self._cam.ExposureTime = float(1000 * val)
+        #self.connectToCam()
+        #self.grabFrames()
 
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
-        self._stop  = True
+        self._stop = True
         #self._cam.StopGrabbing()
 
     @pyqtSlot()
@@ -49,7 +52,9 @@ class QCamWorker(QObject):
             # Print the model name of the camera.
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
+
             self._stop = False
+
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load('params/FIM_NodeMap.pfs', self._cam.GetNodeMap(), True)
             # _cam.Width = 12
@@ -112,7 +117,6 @@ class QCamWorker(QObject):
         #self._cam.StopGrabbing()
         self.device_status.emit("Stopped frame-grabbing.")
         self.device_stopped.emit()
-        #self._stop = False
 
 
 class QCamera(QObject):
@@ -136,9 +140,11 @@ class QCamera(QObject):
 
     @pyqtSlot()
     def reset(self):
-        self.baslerace.stop()
+        #self.baslerace.stop()
+        #self.stopGrabbing()
         self.baslerace.connectToCam()
-        self.grabInBackground()
+        if self.baslerace._cam.IsOpen():
+            self.grabInBackground()
 
     #start thread with _grab
     @pyqtSlot()

@@ -1,6 +1,7 @@
 import cv2
 import numpy
 import time
+import os
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -58,7 +59,7 @@ class QCamRecorder(QCamProcessor):
         fimfile = path + 'FIM_' + currenttime + '.avi'
 
         self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
-        self.out = cv2.VideoWriter(fimfile, self.cvcodec, 40.0, (1200, 1200), False) #isColor=False
+        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, 40.0, (1200, 1200), False) #isColor=False
         super().startProcessing(img_received)
 
 
@@ -98,9 +99,9 @@ class QCamSnapshot(QCamProcessor):
     def processImg(self, img=numpy.ndarray):
         path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
-        fimfile = path + 'FIMsnapshot_' + currenttime + '.png'
+        fimfile ='FIMsnapshot_' + currenttime + '.png'
         self.status.emit(fimfile)
-        cv2.imwrite(fimfile, img)
+        cv2.imwrite(os.path.join(path, fimfile), img)
         #cv2.imwrite('FIMsnapshot.png', img)
         self.cancelProcessing() #we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()

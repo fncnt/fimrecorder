@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66febe0c-7092-4fbc-9f7d-3e84976a7ad1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pylonproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pylonproc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyloncom.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyloncom.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,30 +49,30 @@
         <counts>
           <entry key="Python Console" value="19" />
           <entry key="gitignore" value="14" />
-          <entry key="py" value="13782" />
+          <entry key="py" value="13792" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="13801" />
+          <entry key="Python" value="13811" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pyloncom.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="63" column="59" lean-forward="true" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
+            <state relative-caret-position="72">
+              <caret line="53" column="66" selection-start-line="53" selection-start-column="66" selection-end-line="53" selection-end-column="66" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <marker date="1535532778197" expanded="true" signature="169:174" ph="..." />
-                <marker date="1535532778197" expanded="true" signature="169:4385" ph="..." />
-                <marker date="1535532778197" expanded="true" signature="4816:4924" ph="..." />
-                <marker date="1535532778197" expanded="true" signature="5134:5139" ph="..." />
+                <marker date="1535697490575" expanded="true" signature="169:174" ph="..." />
+                <marker date="1535697490575" expanded="true" signature="169:4392" ph="..." />
+                <marker date="1535697490575" expanded="true" signature="4823:4931" ph="..." />
+                <marker date="1535697490575" expanded="true" signature="5141:5146" ph="..." />
               </folding>
             </state>
           </provider>
@@ -84,7 +83,7 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pylonproc.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="193">
@@ -157,8 +156,8 @@
         <option value="$PROJECT_DIR$/fimui/ui_fimwindow.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/fimrecorder.py" />
-        <option value="$PROJECT_DIR$/pyloncom.py" />
         <option value="$PROJECT_DIR$/pylonproc.py" />
+        <option value="$PROJECT_DIR$/pyloncom.py" />
       </list>
     </option>
   </component>
@@ -534,20 +533,6 @@
         <state relative-caret-position="-51" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pyloncom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="63" column="59" lean-forward="true" selection-start-line="63" selection-start-column="59" selection-end-line="63" selection-end-column="59" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-            <marker date="1535532778197" expanded="true" signature="169:174" ph="..." />
-            <marker date="1535532778197" expanded="true" signature="169:4385" ph="..." />
-            <marker date="1535532778197" expanded="true" signature="4816:4924" ph="..." />
-            <marker date="1535532778197" expanded="true" signature="5134:5139" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../pypylon/samples/NodeMap.pfs">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -582,6 +567,20 @@
           <folding>
             <element signature="e#0#10#0" expanded="true" />
             <marker date="1535697187341" expanded="true" signature="1444:1448" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pyloncom.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="53" column="66" selection-start-line="53" selection-start-column="66" selection-end-line="53" selection-end-column="66" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <marker date="1535697490575" expanded="true" signature="169:174" ph="..." />
+            <marker date="1535697490575" expanded="true" signature="169:4392" ph="..." />
+            <marker date="1535697490575" expanded="true" signature="4823:4931" ph="..." />
+            <marker date="1535697490575" expanded="true" signature="5141:5146" ph="..." />
           </folding>
         </state>
       </provider>

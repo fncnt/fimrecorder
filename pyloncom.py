@@ -51,7 +51,7 @@ class QCamWorker(QObject):
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self._stop = False
             self.device_status.emit("Loading device configuration")
-            pylon.FeaturePersistence.Load("FIM_NodeMap.pfs", self._cam.GetNodeMap(), True)
+            pylon.FeaturePersistence.Load('params/FIM_NodeMap.pfs', self._cam.GetNodeMap(), True)
             # _cam.Width = 12
             # _cam.__setattr__('Width', 12)
             #self._cam.AcquisitionFrameRateEnable = 1

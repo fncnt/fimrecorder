@@ -36,13 +36,16 @@ class QCamProcessor(QObject):
 
     #when cancel signal is received
     def cancelProcessing(self):
-        self.is_processing[numpy.ndarray].disconnect(self.processImg)
+        try:
+            self.is_processing[numpy.ndarray].disconnect(self.processImg)
+        except Exception as e:
+            print(str(e))
         #self._cancel = True
 
     #clean up processing, i.e. save file etc.
     def finishProcessing(self):
         self.img_processed.emit()
-        return 0
+        #return 0
 
 
 class QCamRecorder(QCamProcessor):
@@ -65,12 +68,12 @@ class QCamRecorder(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
         try:
-            #wird ausgeführt aber schreibt keine frames in Datei
             self.out.write(img)
         except Exception as e:
             #print("An exception occurred.")
             #print(str(e))
             self.status.emit(str(e))
+
 
 
 
@@ -81,8 +84,9 @@ class QCamRecorder(QCamProcessor):
 
     def finishProcessing(self):
         self.out.release()
-        #warum hängt das?
         #self.img_processed.emit()
+        super().finishProcessing()
+        # warum hängt dasß
 
 
 class QCamQPixmap(QCamProcessor):

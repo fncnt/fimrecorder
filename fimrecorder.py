@@ -47,16 +47,22 @@ def main():
     recordingcam.status.connect(print)
     recthread = QThread()
     #recordingcam.img_processed.connect(recthread.wait)
-
+    recordingcam.moveToThread(recthread)
 
     def recordVideo(toggled=bool):
         if toggled:
-            recordingcam.moveToThread(recthread)
-            recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
+            #recordingcam.moveToThread(recthread)
+            #recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
             recthread.start()
+            recordingcam.startProcessing(camera.frame_grabbed)
         else:
             recordingcam.cancelProcessing()
-            #recthread.wait()
+            # Does terminate without blocking main thread. However, restarting doesn't really work
+            # Also it's actually not recommended
+            recthread.terminate()
+            #recthread.quit()
+            #recthread.wait(100)
+    #recthread.finished.connect(recordingcam.deleteLater)
 
     ui.actionRecord.toggled[bool].connect(recordVideo)
 

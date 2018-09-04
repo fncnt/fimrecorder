@@ -30,11 +30,13 @@ class QCamWorker(QObject):
 
     #I'd like to avoid defining setters
     #but it seems to work better with signals
-    @pyqtSlot()
-    def setExposureTime(self, val=int):
+    @pyqtSlot(int)
+    def setExposureTime(self, val):
         #self.stop()
-        self._cam.ExposureTime = float(1000 * val)
         #self.connectToCam()
+        self._cam.ExposureTime = 1000 * val
+        self.device_status.emit(str(self._cam.ExposureTime.GetValue()))
+
         #self.grabFrames()
 
     def stop(self):

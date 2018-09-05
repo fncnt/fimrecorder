@@ -36,7 +36,6 @@ class QCamWorker(QObject):
         #self.connectToCam()
         self._cam.ExposureTime = 1000 * val
         self.device_status.emit(str(self._cam.ExposureTime.GetValue()))
-
         #self.grabFrames()
 
     def stop(self):

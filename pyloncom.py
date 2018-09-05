@@ -25,8 +25,13 @@ class QCamWorker(QObject):
     def __init__(self):
         super().__init__()
         self.connectToCam()
-        self._stop = False
+        #self._stop = False
         #self.device_closed.connect(self.close)
+        #cv2.startWindowThread()
+
+    def __del__(self):
+        cv2.destroyWindow('Preview')
+        super(QCamWorker, self).__del__()
 
     #I'd like to avoid defining setters
     #but it seems to work better with signals
@@ -35,13 +40,14 @@ class QCamWorker(QObject):
         #self.stop()
         #self.connectToCam()
         self._cam.ExposureTime = 1000 * val
+        #self._cam.ExposureTime.SetValue(1000 * val)
         self.device_status.emit(str(self._cam.ExposureTime.GetValue()))
         #self.grabFrames()
 
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
-        self._stop = True
-        #self._cam.StopGrabbing()
+        #self._stop = True
+        self._cam.StopGrabbing()
 
     @pyqtSlot()
     def connectToCam(self):
@@ -54,7 +60,7 @@ class QCamWorker(QObject):
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
 
-            self._stop = False
+            #self._stop = False
 
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load('params/FIM_NodeMap.pfs', self._cam.GetNodeMap(), True)
@@ -87,11 +93,9 @@ class QCamWorker(QObject):
         # default = 10
         self._cam.MaxNumBuffer = 10
         # self._cam.StartGrabbingMax(100)
-        self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+        self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
 
-        # Camera.StopGrabbing() is called automatically by the RetrieveResult() method
-        # when c_countOfImagesToGrab images have been retrieved.
-        while self._cam.IsGrabbing() and not self._stop:
+        while self._cam.IsGrabbing(): # and not self._stop:
             self.is_grabbing.emit()
             # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
             grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
@@ -142,10 +146,11 @@ class QCamera(QObject):
     @pyqtSlot()
     def reset(self):
         #self.baslerace.stop()
-        #self.stopGrabbing()
+        self.stopGrabbing()
         self.baslerace.connectToCam()
-        if self.baslerace._cam.IsOpen():
-            self.grabInBackground()
+        #if self.baslerace._cam.IsOpen():
+        #    self.grabInBackground()
+        self.baslerace.grabFrames()
 
     #start thread with _grab
     @pyqtSlot()

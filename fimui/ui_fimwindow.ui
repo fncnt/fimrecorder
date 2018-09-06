@@ -67,33 +67,62 @@
         <string>Camera</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="1">
-         <widget class="QSlider" name="ExpTimeSlider">
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>30</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="2">
          <widget class="QSpinBox" name="ExpTimeSpinBox">
           <property name="minimum">
-           <number>1</number>
+           <number>34</number>
           </property>
           <property name="maximum">
-           <number>30</number>
+           <number>10000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>3000</number>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="ExposureTimeLabel">
           <property name="text">
-           <string>Exposure Time [ms]</string>
+           <string>Exposure Time [µs]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QDoubleSpinBox" name="FpsDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="minimum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>41.581769999999999</double>
+          </property>
+          <property name="singleStep">
+           <double>0.500000000000000</double>
+          </property>
+          <property name="value">
+           <double>41.581769999999999</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="FpsEnablChkBx">
+          <property name="text">
+           <string>Frame rate [fps]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="ExpAutoChkBx">
+          <property name="text">
+           <string>Automatic Exposure</string>
           </property>
          </widget>
         </item>
@@ -235,34 +264,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>ExpTimeSlider</sender>
-   <signal>sliderMoved(int)</signal>
+   <sender>ExpAutoChkBx</sender>
+   <signal>toggled(bool)</signal>
    <receiver>ExpTimeSpinBox</receiver>
-   <slot>setValue(int)</slot>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>134</x>
-     <y>76</y>
+     <x>166</x>
+     <y>96</y>
     </hint>
     <hint type="destinationlabel">
-     <x>199</x>
+     <x>166</x>
      <y>76</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>ExpTimeSpinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>ExpTimeSlider</receiver>
-   <slot>setValue(int)</slot>
+   <sender>FpsEnablChkBx</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>FpsDSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>199</x>
-     <y>76</y>
+     <x>63</x>
+     <y>116</y>
     </hint>
     <hint type="destinationlabel">
-     <x>134</x>
-     <y>76</y>
+     <x>166</x>
+     <y>117</y>
     </hint>
    </hints>
   </connection>

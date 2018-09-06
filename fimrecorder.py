@@ -30,7 +30,28 @@ def main():
     #ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
     #Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
-        lambda val: camera.baslerace.setCamAttr("ExposureTime", 1000 * val))
+        lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
+    )
+    #Doesn't work yet
+    def toggleExposureAuto(on: bool):
+        if on:
+            #Apparantly setattr() doesn't do any type conversion as = does?
+            #camera.baslerace.setCamAttr('ExposureAuto', 'ExposureAuto_Continuous')
+            camera.baslerace._cam.ExposureAuto = 'ExposureAuto_Continuous'
+            #camera.baslerace._cam.ExposureAuto.SetValue('ExposureAuto_Continuous')
+        else:
+            #camera.baslerace.setCamAttr('ExposureAuto', 'ExposureAuto_Off')
+            camera.baslerace._cam.ExposureAuto = 'ExposureAuto_Off'
+    ui.ExpAutoChkBx.toggled[bool].connect(toggleExposureAuto)
+
+    ui.FpsEnableChkBx.toggled[bool].connect(
+        #lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable	', int(val))
+        lambda val: camera.baslerace._cam.AcquisitionFrameRateEnable.SetValue(int(val))
+    )
+
+    ui.FpsDSpinBox.valueChanged[float].connect(
+        lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
+    )
 
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()

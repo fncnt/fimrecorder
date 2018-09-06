@@ -50,7 +50,8 @@ class QCamWorker(QObject):
     @pyqtSlot(str, object)
     def setCamAttr(self, attribute: str, value):
         try:
-            self._cam.__setattr__(attribute, value)
+            #self._cam.__setattr__(attribute, value)
+            setattr(self._cam, attribute, value)
             self.device_status.emit(attribute + ": " + str(value))
         except Exception as e:
             self.device_status.emit(str(e))

@@ -27,7 +27,10 @@ def main():
     #camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
     ui.actionRefresh.triggered.connect(camera.reset)
-    ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
+    #ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
+    #Replace lambda by functools.partial?
+    ui.ExpTimeSpinBox.valueChanged[int].connect(
+        lambda val: camera.baslerace.setCamAttr("ExposureTime", 1000 * val))
 
     disposablecam = pylonproc.QCamSnapshot()
     dcthread = QThread()

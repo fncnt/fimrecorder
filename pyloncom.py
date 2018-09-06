@@ -35,14 +35,25 @@ class QCamWorker(QObject):
 
     #I'd like to avoid defining setters
     #but it seems to work better with signals
-    @pyqtSlot(int)
-    def setExposureTime(self, val):
+    #@pyqtSlot(int)
+    #def setExposureTime(self, val):
         #self.stop()
         #self.connectToCam()
-        self._cam.ExposureTime = 1000 * val
+    #    self._cam.ExposureTime = 1000 * val
         #self._cam.ExposureTime.SetValue(1000 * val)
-        self.device_status.emit(str(self._cam.ExposureTime.GetValue()))
+    #    self.device_status.emit(str(self._cam.ExposureTime.GetValue()))
         #self.grabFrames()
+
+    #check for compatible type in function
+    #I'd like to avoid setters
+    #but this way I don't have to  define a function for every Attribute
+    @pyqtSlot(str, object)
+    def setCamAttr(self, attribute: str, value):
+        try:
+            self._cam.__setattr__(attribute, value)
+            self.device_status.emit(attribute + ": " + str(value))
+        except Exception as e:
+            self.device_status.emit(str(e))
 
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
@@ -133,14 +144,17 @@ class QCamera(QObject):
     is_grabbing = pyqtSignal()
     device_stop = pyqtSignal()
     device_status = pyqtSignal(str)
-    setExposureTime = pyqtSignal(int)
+    #setExposureTime = pyqtSignal(int)
+    #lambda doesn't work with pyqtSignal (not callable)
+    #setAttribute = pyqtSignal(str, object)
     #TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
 
     def __init__(self):
         super().__init__()
-        self.setExposureTime[int].connect(self.baslerace.setExposureTime)
+        #self.setExposureTime[int].connect(self.baslerace.setExposureTime)
+        #self.setAttribute.connect(self.baslerace.setCamAttr)
 
 
     @pyqtSlot()

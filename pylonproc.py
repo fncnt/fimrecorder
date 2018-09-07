@@ -45,16 +45,22 @@ class QCamProcessor(QObject):
     #clean up processing, i.e. save file etc.
     def finishProcessing(self):
         self.img_processed.emit()
-        #return 0
+        # return 0
 
 
 class QCamRecorder(QCamProcessor):
     img_processed = pyqtSignal()
+    fps = 41.58177  # max. FPS
 
     def __init__(self):
         super().__init__()
-        self.cvcodec = None #cv2.VideoWriter_fourcc()
-        self.out = None #cv2.VideoWriter()
+        self.cvcodec = None  # cv2.VideoWriter_fourcc()
+        self.out = None  # cv2.VideoWriter()
+
+    # @pyqtSlot(float)
+    def changeFps(self, newfps):
+        self.fps = newfps
+        self.status.emit("Will record at " + str(self.fps) + " fps.")
 
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         path = ''
@@ -62,7 +68,7 @@ class QCamRecorder(QCamProcessor):
         fimfile = path + 'FIM_' + currenttime + '.avi'
 
         self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
-        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, 40.0, (1200, 1200), False) #isColor=False
+        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, self.fps, (1200, 1200), False) #isColor=False
         super().startProcessing(img_received)
 
 

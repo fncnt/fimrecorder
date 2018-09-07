@@ -69,9 +69,12 @@ def main():
 
     recordingcam = pylonproc.QCamRecorder()
     recordingcam.status.connect(print)
+    ui.FpsDSpinBox.valueChanged[float].connect(recordingcam.changeFps)
+
     recthread = QThread()
     #recordingcam.img_processed.connect(recthread.wait)
     recordingcam.moveToThread(recthread)
+
 
     def recordVideo(toggled=bool):
         if toggled:

@@ -15,7 +15,6 @@ class QCamProcessor(QObject):
 
     def __init__(self):
         super().__init__()
-        #self._cancel = False
 
     #Only this method should be overridden
     @pyqtSlot(numpy.ndarray)
@@ -30,10 +29,6 @@ class QCamProcessor(QObject):
         self.is_processing = img_received
         self.is_processing[numpy.ndarray].connect(self.processImg)
 
-        #while not self._cancel:
-        #    self.is_running.emit()
-            #self.processImg(img)
-        #self.finishProcessing()
 
     #when cancel signal is received
     def cancelProcessing(self):
@@ -41,26 +36,23 @@ class QCamProcessor(QObject):
             self.is_processing[numpy.ndarray].disconnect(self.processImg)
         except Exception as e:
             print(str(e))
-        #self._cancel = True
 
     #clean up processing, i.e. save file etc.
     def finishProcessing(self):
         self.img_processed.emit()
-        # return 0
 
 
 class QCamRecorder(QCamProcessor):
+
     img_processed = pyqtSignal()
     timelimit_reached = pyqtSignal()
-
-
 
     def __init__(self):
         super().__init__()
         self.cvcodec = None  # cv2.VideoWriter_fourcc()
         self.out = None  # cv2.VideoWriter()
         self.fps = 41.58177  # max. FPS
-        self.maxframes = 100 #arbitrary so that we record at leat something for testing purposes
+        self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
         self.framecount = 0
 
     # @pyqtSlot(float)
@@ -72,16 +64,14 @@ class QCamRecorder(QCamProcessor):
         self.maxframes = math.floor(self.fps * mseconds / 1000)  # Rounding down for consistency
         self.status.emit("Will record " + str(self.maxframes) + " frames.")
 
-
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
         fimfile = path + 'FIM_' + currenttime + '.avi'
 
         self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
-        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, self.fps, (1200, 1200), False) #isColor=False
+        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
         super().startProcessing(img_received)
-
 
     def processImg(self, img=numpy.ndarray):
         try:
@@ -91,23 +81,15 @@ class QCamRecorder(QCamProcessor):
             else:
                 self.timelimit_reached.emit()
         except Exception as e:
-            #print("An exception occurred.")
-            #print(str(e))
             self.status.emit(str(e))
-
-
-
 
     def cancelProcessing(self):
         super().cancelProcessing()
         self.finishProcessing()
 
-
     def finishProcessing(self):
         self.out.release()
-        #self.img_processed.emit()
         super().finishProcessing()
-        # warum hängt dasß
 
 
 class QCamQPixmap(QCamProcessor):
@@ -127,8 +109,8 @@ class QCamSnapshot(QCamProcessor):
         fimfile ='FIMsnapshot_' + currenttime + '.png'
         self.status.emit(fimfile)
         cv2.imwrite(os.path.join(path, fimfile), img)
-        #cv2.imwrite('FIMsnapshot.png', img)
-        self.cancelProcessing() #we just want to save one frame, so when we receive one, we immediately stop.
+
+        self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
 
 

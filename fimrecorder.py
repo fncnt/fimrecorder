@@ -21,8 +21,6 @@ def main():
     ui.RecDurTEdit.setCurrentSectionIndex(1)
 
     camera = pyloncom.QCamera()
-    #ui.actionRecord.toggled.connect(lambda: camera.exampleSlot("test"))
-    #ui.actionRecord.toggled[bool].connect(camera.exampleSlot)
     camera.device_status[str].connect(ui.statusbar.showMessage)
     camera.device_status[str].connect(print)
 
@@ -31,7 +29,6 @@ def main():
     #camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
 
     ui.actionRefresh.triggered.connect(camera.reset)
-    #ui.ExpTimeSpinBox.valueChanged[int].connect(camera.setExposureTime)
     #Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
         lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
@@ -62,8 +59,6 @@ def main():
     def saveSnapshot():
         disposablecam.moveToThread(dcthread)
 
-        # Is that really necessary? Shouldn't and shouldn't work!
-        #camera.frame_grabbed[numpy.ndarray].connect(disposablecam.processImg)
         disposablecam.status[str].connect(print)
         dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
         dcthread.start()
@@ -85,7 +80,6 @@ def main():
     ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     recthread = QThread()
-    #recordingcam.img_processed.connect(recthread.wait)
     recordingcam.moveToThread(recthread)
 
 
@@ -94,8 +88,6 @@ def main():
             #make sure framecount is zero so we record everything we want:
             recordingcam.framecount = 0
 
-            #recordingcam.moveToThread(recthread)
-            #recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
             recthread.start()
             recordingcam.startProcessing(camera.frame_grabbed)
         else:
@@ -105,7 +97,6 @@ def main():
             recthread.terminate()
             #recthread.quit()
             #recthread.wait(100)
-    #recthread.finished.connect(recordingcam.deleteLater)
 
     ui.actionRecord.toggled[bool].connect(recordVideo)
 
@@ -121,9 +112,6 @@ def main():
     #pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     #pcthread.start()
     #ui.camView.setScaledContents(True)
-
-    #app.aboutToQuit.connect(pcthread.quit)
-
 
     window.show()
     sys.exit(app.exec_())

@@ -61,6 +61,41 @@
        <attribute name="title">
         <string>Measurement</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <widget class="QTimeEdit" name="RecDurTEdit">
+          <property name="toolTip">
+           <string>HH:mm:ss.ms</string>
+          </property>
+          <property name="currentSection">
+           <enum>QDateTimeEdit::MinuteSection</enum>
+          </property>
+          <property name="displayFormat">
+           <string>HH:mm:ss.z</string>
+          </property>
+          <property name="currentSectionIndex">
+           <number>1</number>
+          </property>
+          <property name="time">
+           <time>
+            <hour>0</hour>
+            <minute>5</minute>
+            <second>0</second>
+           </time>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="RecDurLabel">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Recording Duration:</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tabCam">
        <attribute name="title">
@@ -115,7 +150,7 @@
         <item row="2" column="0">
          <widget class="QCheckBox" name="FpsEnableChkBx">
           <property name="text">
-           <string>Frame rate [fps]</string>
+           <string>Frame Rate [fps]</string>
           </property>
          </widget>
         </item>

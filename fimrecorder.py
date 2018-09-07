@@ -2,7 +2,7 @@
 
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, QThread, QTime
 from PyQt5.QtGui import QPixmap
 
 from fimui import ui_fimwindow
@@ -15,6 +15,10 @@ def main():
     window = QMainWindow()
     ui = ui_fimwindow.Ui_fimWindow()
     ui.setupUi(window)
+
+    # for some reason QT Designer doesn't apply this on its own
+    # 1 = MinuteSection
+    ui.RecDurTEdit.setCurrentSectionIndex(1)
 
     camera = pyloncom.QCamera()
     #ui.actionRecord.toggled.connect(lambda: camera.exampleSlot("test"))
@@ -67,10 +71,19 @@ def main():
 
     ui.actionSnapshot.triggered.connect(saveSnapshot)
 
+    def QTimeToMsecs(time: QTime):
+        msecs = 0
+        msecs += time.msec()
+        msecs += time.second() * 1000
+        msecs += time.minute() * 1000 * 60
+        msecs += time.hour() * 1000 * 60 * 60
+        return msecs
+
     recordingcam = pylonproc.QCamRecorder()
     recordingcam.status.connect(print)
     ui.FpsDSpinBox.valueChanged[float].connect(recordingcam.changeFps)
-
+    ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
+    recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     recthread = QThread()
     #recordingcam.img_processed.connect(recthread.wait)
     recordingcam.moveToThread(recthread)
@@ -78,14 +91,17 @@ def main():
 
     def recordVideo(toggled=bool):
         if toggled:
+            #make sure framecount is zero so we record everything we want:
+            recordingcam.framecount = 0
+
             #recordingcam.moveToThread(recthread)
             #recthread.started.connect(lambda: recordingcam.startProcessing(camera.frame_grabbed))
             recthread.start()
             recordingcam.startProcessing(camera.frame_grabbed)
         else:
             recordingcam.cancelProcessing()
-            # Does terminate without blocking main thread. However, restarting doesn't really work
-            # Also it's actually not recommended
+            # Does terminate without blocking main thread.
+            # Also it's actually not recommended.
             recthread.terminate()
             #recthread.quit()
             #recthread.wait(100)

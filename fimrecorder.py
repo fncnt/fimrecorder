@@ -2,19 +2,26 @@
 
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtCore import pyqtSignal, QThread, QTime
+from PyQt5.QtCore import QThread, QTime
 from PyQt5.QtGui import QPixmap
 
 from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
-import cv2
-import numpy
+import settingshandler
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
     ui = ui_fimwindow.Ui_fimWindow()
     ui.setupUi(window)
+
+    # try loading parameters on startup on __init__()
+    fimsettings = settingshandler.SettingsHandler()
+    # Save settings automatically on exit
+    app.aboutToQuit.connect(fimsettings.saveSettings)
+    # manually load settings via button (for reproducible measurements
+    #ui.actionLoad_Parameters.connect(fimsettings.)
+    # QFileDialog needed
 
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection

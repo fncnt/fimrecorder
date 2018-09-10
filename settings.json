@@ -1,0 +1,16 @@
+{
+    "Parameters": {
+        "Date": "2018-09-10 11:32:54.482842+02:00",
+        "Exposure Time": 20000,
+        "Frame Rate": 41.58177,
+        "Recording Duration": "00:05:00.0",
+        "User Data": {}
+    },
+    "Settings": {
+        "Configuration Directory": "config",
+        "Default Camera Parameters": "FIM_NodeMap.pfs",
+        "Recording Directory": "FIMrecordings",
+        "Snapshot Directory": "snapshots",
+        "Video Codec": "XVID"
+    }
+}

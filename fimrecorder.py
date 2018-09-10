@@ -17,6 +17,14 @@ def main():
 
     # try loading parameters on startup on __init__()
     fimsettings = settingshandler.SettingsHandler()
+    # pull Settings into program
+    def pullSettings():
+        ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
+        if ui.FpsEnableChkBx.isChecked():
+            ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
+        #ui.RecDurTEdit.dateTimeFromText(fimsettings.parameters['Recording Duration'])
+
+    pullSettings()
     # Save settings automatically on exit
     app.aboutToQuit.connect(fimsettings.saveSettings)
     # manually load settings via button (for reproducible measurements
@@ -40,6 +48,10 @@ def main():
     ui.ExpTimeSpinBox.valueChanged[int].connect(
         lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
     )
+    ui.ExpTimeSpinBox.valueChanged[int].connect(
+        lambda val: fimsettings.parameters.__setitem__('Exposure Time', val)
+    )
+
     #Doesn't work yet
     def toggleExposureAuto(on: bool):
         if on:

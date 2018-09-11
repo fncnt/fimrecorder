@@ -9,6 +9,7 @@ from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
 import settingshandler
+
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()
@@ -22,11 +23,23 @@ def main():
         ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
         if ui.FpsEnableChkBx.isChecked():
             ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
-        #ui.RecDurTEdit.dateTimeFromText(fimsettings.parameters['Recording Duration'])
+        ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
 
     pullSettings()
+
+    # push Settings to SettingsHandler
+    def pushSettings():
+        fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
+        if ui.FpsEnableChkBx.isChecked():
+            fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
+        fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
+
+        #temporaily
+        fimsettings.saveSettings()
+
     # Save settings automatically on exit
-    app.aboutToQuit.connect(fimsettings.saveSettings)
+    #app.aboutToQuit.connect(fimsettings.saveSettings)
+    app.aboutToQuit.connect(pushSettings)
     # manually load settings via button (for reproducible measurements
     #ui.actionLoad_Parameters.connect(fimsettings.)
     # QFileDialog needed

@@ -2,6 +2,7 @@ from pypylon import pylon
 from pypylon import genicam
 import cv2
 import numpy
+import os
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
 
@@ -11,6 +12,9 @@ class QCamWorker(QObject):
     # and pushes them to other threads responsible
     # for snapshots and recording
     # using pyqtSignal and pyqtSlot passing numpy images
+
+    fpath = 'config'
+    fname = 'FIM_NodeMap.pfs'
 
     _cam = pylon.InstantCamera()
     device_stopped = pyqtSignal()
@@ -56,17 +60,8 @@ class QCamWorker(QObject):
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
 
             self.device_status.emit("Loading device configuration")
-            pylon.FeaturePersistence.Load('params/FIM_NodeMap.pfs', self._cam.GetNodeMap(), True)
-            # _cam.Width = 12
-            # _cam.__setattr__('Width', 12)
-            #self._cam.AcquisitionFrameRateEnable = 1
-            #self._cam.AcquisitionFrameRate = 35.0
+            pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
 
-            #seems to work reasonably well with blue LEDs at 15% and IR LEDs at 100%
-            #FPS = max = 41.58177
-            #and curtains closed
-            #self._cam.ExposureTime = 20000.0
-            #self._cam.__setattr__('ExposureTime', 20000.0)
 
         except genicam.GenericException as e:
             # Error handling.

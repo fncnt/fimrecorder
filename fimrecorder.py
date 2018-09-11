@@ -16,34 +16,6 @@ def main():
     ui = ui_fimwindow.Ui_fimWindow()
     ui.setupUi(window)
 
-    # try loading parameters on startup on __init__()
-    fimsettings = settingshandler.SettingsHandler()
-    # pull Settings into program
-    def pullSettings():
-        ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
-        if ui.FpsEnableChkBx.isChecked():
-            ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
-        ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
-
-    pullSettings()
-
-    # push Settings to SettingsHandler
-    def pushSettings():
-        fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
-        if ui.FpsEnableChkBx.isChecked():
-            fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
-        fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
-
-        #temporaily
-        fimsettings.saveSettings()
-
-    # Save settings automatically on exit
-    #app.aboutToQuit.connect(fimsettings.saveSettings)
-    app.aboutToQuit.connect(pushSettings)
-    # manually load settings via button (for reproducible measurements
-    #ui.actionLoad_Parameters.connect(fimsettings.)
-    # QFileDialog needed
-
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
@@ -145,11 +117,43 @@ def main():
     #pcthread.start()
     #ui.camView.setScaledContents(True)
 
+    # try loading parameters on startup on __init__()
+    fimsettings = settingshandler.SettingsHandler()
+
+    # pull Settings into program
+    def pullSettings():
+        ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
+        if ui.FpsEnableChkBx.isChecked():
+            ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
+        ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
+
+        recordingcam.fcc = fimsettings.settings['Video Codec']
+        recordingcam.fpath = fimsettings.settings['Recording Directory']
+        disposablecam.fpath = fimsettings.settings['Snapshot Directory']
+        camera.baslerace.fpath = fimsettings.settings['Configuration Directory']
+        camera.baslerace.fname = fimsettings.settings['Default Camera Parameters']
+
+    pullSettings()
+
+    # push Settings to SettingsHandler
+    def pushSettings():
+        fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
+        if ui.FpsEnableChkBx.isChecked():
+            fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
+        fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
+
+        # temporaily
+        fimsettings.saveSettings()
+
+    # Save settings automatically on exit
+    # app.aboutToQuit.connect(fimsettings.saveSettings)
+    app.aboutToQuit.connect(pushSettings)
+    # manually load settings via button (for reproducible measurements
+    # ui.actionLoad_Parameters.connect(fimsettings.)
+    # QFileDialog needed
+
     window.show()
     sys.exit(app.exec_())
-
-
-
 
 
 if __name__ == "__main__":

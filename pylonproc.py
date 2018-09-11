@@ -47,6 +47,10 @@ class QCamRecorder(QCamProcessor):
     img_processed = pyqtSignal()
     timelimit_reached = pyqtSignal()
 
+    fpath = ''
+    fcc = 'XVID'
+
+
     def __init__(self):
         super().__init__()
         self.cvcodec = None  # cv2.VideoWriter_fourcc()
@@ -65,12 +69,11 @@ class QCamRecorder(QCamProcessor):
         self.status.emit("Will record " + str(self.maxframes) + " frames.")
 
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
-        path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
-        fimfile = path + 'FIM_' + currenttime + '.avi'
+        fimfile = 'FIM_' + currenttime + '.avi'
 
-        self.cvcodec = cv2.VideoWriter_fourcc(*'XVID')
-        self.out = cv2.VideoWriter(os.path.join(path, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
+        self.cvcodec = cv2.VideoWriter_fourcc(*self.fcc)
+        self.out = cv2.VideoWriter(os.path.join(self.fpath, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
         super().startProcessing(img_received)
 
     def processImg(self, img=numpy.ndarray):
@@ -102,13 +105,12 @@ class QCamQPixmap(QCamProcessor):
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()
-
+    fpath = ''
     def processImg(self, img=numpy.ndarray):
-        path = ''
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
         fimfile ='FIMsnapshot_' + currenttime + '.png'
         self.status.emit(fimfile)
-        cv2.imwrite(os.path.join(path, fimfile), img)
+        cv2.imwrite(os.path.join(self.fpath, fimfile), img)
 
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()

@@ -10,6 +10,9 @@ import pyloncom
 import pylonproc
 import settingshandler
 
+# TODO: make this a class Fim()
+# TODO: and create an object in main for readability
+
 def main():
     app = QApplication(sys.argv)
     window = QMainWindow()

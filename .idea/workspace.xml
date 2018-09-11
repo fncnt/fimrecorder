@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66febe0c-7092-4fbc-9f7d-3e84976a7ad1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/fimrecorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fimrecorder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fimui/ui_fimwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/fimui/ui_fimwindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fimui/ui_fimwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/fimui/ui_fimwindow.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/Default_NodeMap.pfs" beforeDir="false" afterPath="$PROJECT_DIR$/config/Default_NodeMap.pfs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/FIM_NodeMap.pfs" beforeDir="false" afterPath="$PROJECT_DIR$/config/FIM_NodeMap.pfs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/FIMdefault_NodeMap.pfs" beforeDir="false" afterPath="$PROJECT_DIR$/config/FIMdefault_NodeMap.pfs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyloncom.py" beforeDir="false" afterPath="$PROJECT_DIR$/pyloncom.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pylonproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pylonproc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,14 +55,14 @@
           <entry key="Python Console" value="69" />
           <entry key="gitignore" value="14" />
           <entry key="json" value="6" />
-          <entry key="py" value="24647" />
+          <entry key="py" value="24747" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="6" />
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="24716" />
+          <entry key="Python" value="24816" />
         </counts>
       </usages-collector>
     </session>
@@ -123,11 +114,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/fimrecorder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="133" column="80" selection-start-line="133" selection-start-column="80" selection-end-line="133" selection-end-column="80" />
+            <state relative-caret-position="221">
+              <caret line="13" column="52" selection-start-line="13" selection-start-column="52" selection-end-line="13" selection-end-column="52" />
               <folding>
                 <element signature="e#24#34#0" expanded="true" />
-                <marker date="1536657132660" expanded="true" signature="382:387" ph="..." />
+                <marker date="1536657267453" expanded="true" signature="468:473" ph="..." />
               </folding>
             </state>
           </provider>
@@ -643,13 +634,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/settings.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pylonproc.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -671,13 +655,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/settings.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/fimrecorder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="133" column="80" selection-start-line="133" selection-start-column="80" selection-end-line="133" selection-end-column="80" />
+        <state relative-caret-position="221">
+          <caret line="13" column="52" selection-start-line="13" selection-start-column="52" selection-end-line="13" selection-end-column="52" />
           <folding>
             <element signature="e#24#34#0" expanded="true" />
-            <marker date="1536657132660" expanded="true" signature="382:387" ph="..." />
+            <marker date="1536657267453" expanded="true" signature="468:473" ph="..." />
           </folding>
         </state>
       </provider>

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow
+import os
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtCore import QThread, QTime
 from PyQt5.QtGui import QPixmap
 
@@ -25,7 +26,7 @@ recordingcam = pylonproc.QCamRecorder()
 recthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
-
+ui.selectparamfile = QFileDialog()
 
 def QTimeToMsecs(time: QTime):
     msecs = 0
@@ -84,6 +85,7 @@ def pullSettings():
     camera.baslerace.fpath = fimsettings.settings['Configuration Directory']
     camera.baslerace.fname = fimsettings.settings['Default Camera Parameters']
 
+
 def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
     if ui.FpsEnableChkBx.isChecked():
@@ -91,6 +93,15 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     # temporaily
     fimsettings.saveSettings(fpath, fname, onlyparameters)
+
+def openParamFile():
+    completepath = ui.selectparamfile.getOpenFileName(ui.selectparamfile, 'Open Parameter File',
+                                                      fimsettings.settings['Recording Directory'],
+                                                      '*.json')[0]
+    fpath = os.path.dirname(completepath)
+    fname = os.path.basename(completepath)
+    fimsettings.loadSettings(fpath, fname, True)
+    pullSettings()
 
 
 def connectSignals():
@@ -104,6 +115,7 @@ def connectSignals():
     ui.actionSnapshot.triggered.connect(saveSnapshot)
     ui.actionRefresh.triggered.connect(camera.reset)
     ui.actionRecord.toggled[bool].connect(recordVideo)
+    ui.actionLoad_Parameters.triggered.connect(openParamFile)
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     # Connect widgets to cam classes and SettingsHandler
@@ -165,6 +177,7 @@ def main():
     # manually load settings via button (for reproducible measurements
     # ui.actionLoad_Parameters.connect(fimsettings.)
     # QFileDialog needed
+
     window.show()
     sys.exit(app.exec_())
 

@@ -94,7 +94,9 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     # temporaily
     fimsettings.saveSettings(fpath, fname, onlyparameters)
 
+
 def openParamFile():
+    ui.selectparamfile.setAcceptMode(QFileDialog.AcceptOpen)
     completepath = ui.selectparamfile.getOpenFileName(ui.selectparamfile, 'Open Parameter File',
                                                       fimsettings.settings['Recording Directory'],
                                                       '*.json')[0]
@@ -102,6 +104,16 @@ def openParamFile():
     fname = os.path.basename(completepath)
     fimsettings.loadSettings(fpath, fname, True)
     pullSettings()
+
+
+def writeParamFile():
+    ui.selectparamfile.setAcceptMode(QFileDialog.AcceptSave)
+    completepath = ui.selectparamfile.getSaveFileName(ui.selectparamfile, 'Save Parameter File',
+                                                      fimsettings.settings['Recording Directory'],
+                                                      '*.json')[0]
+    fpath = os.path.dirname(completepath)
+    fname = os.path.basename(completepath)
+    fimsettings.saveSettings(fpath, fname, True)
 
 
 def connectSignals():
@@ -116,6 +128,7 @@ def connectSignals():
     ui.actionRefresh.triggered.connect(camera.reset)
     ui.actionRecord.toggled[bool].connect(recordVideo)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
+    ui.actionSave_Parameters.triggered.connect(writeParamFile)
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     # Connect widgets to cam classes and SettingsHandler

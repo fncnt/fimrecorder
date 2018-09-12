@@ -94,12 +94,19 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
 
 
 def connectSignals():
+    # Print messages to statusbar and console
     camera.device_status[str].connect(ui.statusbar.showMessage)
     camera.device_status[str].connect(print)
     disposablecam.status[str].connect(print)
+    recordingcam.status[str].connect(print)
 
+    # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)
     ui.actionRefresh.triggered.connect(camera.reset)
+    ui.actionRecord.toggled[bool].connect(recordVideo)
+    # Handle pyloncom & pylonproc signals
+    recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
+    # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
         lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
@@ -116,24 +123,26 @@ def connectSignals():
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
     )
-    recordingcam.status.connect(print)
     ui.FpsDSpinBox.valueChanged[float].connect(recordingcam.changeFps)
     ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
-    recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
-    recordingcam.moveToThread(recthread)
-    ui.actionRecord.toggled[bool].connect(recordVideo)
     app.aboutToQuit.connect(pushSettings)
 
 
-
+def disableUiElements():
+    ui.ExpAutoChkBx.setDisabled(True)
+    ui.actionRefresh.setDisabled(True)
+    ui.actionSnapshot.setDisabled(True)
+    ui.previewLabel.close()
+    ui.camView.close()
 
 def main():
-
     ui.setupUi(window)
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
-
+    # Disable UI elements that don't work yet
+    disableUiElements()
+    recordingcam.moveToThread(recthread)
     # more refined logic needed here to improve UX
     if camera.baslerace._cam.IsOpen():
         camera.grabInBackground()
@@ -141,11 +150,9 @@ def main():
     connectSignals()
     # pull settings into cam classes and UI
     pullSettings()
-
     # previewthread = QThread()
     # ui.camView.moveToThread(previewthread)
     # previewthread.start()
-
     # previewcam = pylonproc.QCamQPixmap()
     # pcthread = QThread()
     # previewcam.moveToThread(pcthread)
@@ -154,8 +161,6 @@ def main():
     # pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     # pcthread.start()
     # ui.camView.setScaledContents(True)
-
-
 
     # manually load settings via button (for reproducible measurements
     # ui.actionLoad_Parameters.connect(fimsettings.)

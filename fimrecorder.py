@@ -129,10 +129,10 @@ def connectSignals():
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
-    recordingcam.fimjson_path[str].connect(lambda val: fimsettings.saveSettings(os.path.dirname(val),
-                                                                                os.path.basename(val),
-                                                                                True
-                                                                                )
+    recordingcam.fimjson_path[str].connect(lambda val: pushSettings(os.path.dirname(val),
+                                                                    os.path.basename(val),
+                                                                    True
+                                                                    )
                                            )
     # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?

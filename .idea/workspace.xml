@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="66febe0c-7092-4fbc-9f7d-3e84976a7ad1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/fimrecorder.py" beforeDir="false" afterPath="$PROJECT_DIR$/fimrecorder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pylonproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/pylonproc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fimui/ui_fimwindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/fimui/ui_fimwindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fimui/ui_fimwindow.ui" beforeDir="false" afterPath="$PROJECT_DIR$/fimui/ui_fimwindow.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/settings.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -38,7 +38,7 @@
           <entry key="cfg" value="1" />
           <entry key="gitignore" value="1" />
           <entry key="i" value="1" />
-          <entry key="json" value="6" />
+          <entry key="json" value="7" />
           <entry key="md" value="1" />
           <entry key="pfs" value="1" />
           <entry key="py" value="56" />
@@ -47,7 +47,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JSON" value="6" />
+          <entry key="JSON" value="7" />
           <entry key="Markdown" value="1" />
           <entry key="PLAIN_TEXT" value="4" />
           <entry key="Python" value="56" />
@@ -665,6 +665,9 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/FIMrecordings/13-09-2018_08-47-54/FIM_13-09-2018_08-47-54.json">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/fimrecorder.py">
       <provider selected="true" editor-type-id="text-editor">

@@ -10,11 +10,15 @@ class SettingsHandler:
 
     # define parameters here
     def __init__(self):
-        #hard-coded so we still can restore default parameters if somebody deleted the file
+        # hard-coded so we still can restore default parameters if somebody deleted the file
         self.parameters = {'Recording Duration': "00:05:00.0",
                            'Frame Rate': 41.58177,
                            'Exposure Time': 20000,
-                           'User Data': dict()
+                           'User Data': {'Species': "",
+                                         'Strain': "",
+                                         'Genotype': "",
+                                         'More Info': ""
+                                         }
                            }
 
         self.settings = {'Snapshot Directory': "snapshots",

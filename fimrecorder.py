@@ -2,7 +2,7 @@
 
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
 from PyQt5.QtCore import QThread, QTime
 from PyQt5.QtGui import QPixmap
 
@@ -25,6 +25,11 @@ recthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
 ui.selectparamfile = QFileDialog()
+
+speciescell = QTableWidgetItem("")
+straincell = QTableWidgetItem("")
+genotypecell = QTableWidgetItem("")
+moreinfocell = QTableWidgetItem("")
 
 def QTimeToMsecs(time: QTime):
     msecs = 0
@@ -73,9 +78,15 @@ def recordVideo(toggled=bool):
 
 def pullSettings():
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
-    #if ui.FpsEnableChkBx.isChecked():
+    # if ui.FpsEnableChkBx.isChecked():
     ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
+    # WIP not really nice that way
+    speciescell.setText(fimsettings.parameters['User Data']['Species'])
+    straincell.setText(fimsettings.parameters['User Data']['Strain'])
+    genotypecell.setText(fimsettings.parameters['User Data']['Genotype'])
+    moreinfocell.setText(fimsettings.parameters['User Data']['More Info'])
+
     recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time()))
     recordingcam.fcc = fimsettings.settings['Video Codec']
     recordingcam.fpath = fimsettings.settings['Recording Directory']
@@ -89,29 +100,40 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     # if ui.FpsEnableChkBx.isChecked():
     fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
-    # temporaily
+    fimsettings.parameters['User Data']['Species'] = speciescell.text()
+    fimsettings.parameters['User Data']['Strain'] = straincell.text()
+    fimsettings.parameters['User Data']['Genotype'] = genotypecell.text()
+    fimsettings.parameters['User Data']['More Info'] = moreinfocell.text()
+
+    # temporarily
     fimsettings.saveSettings(fpath, fname, onlyparameters)
 
-
+# TODO: Better error handling
 def openParamFile():
     ui.selectparamfile.setAcceptMode(QFileDialog.AcceptOpen)
-    completepath = ui.selectparamfile.getOpenFileName(ui.selectparamfile, 'Open Parameter File',
+    try:
+        completepath = ui.selectparamfile.getOpenFileName(ui.selectparamfile, 'Open Parameter File',
                                                       fimsettings.settings['Recording Directory'],
                                                       '*.json')[0]
-    fpath = os.path.dirname(completepath)
-    fname = os.path.basename(completepath)
-    fimsettings.loadSettings(fpath, fname, True)
-    pullSettings()
+        fpath = os.path.dirname(completepath)
+        fname = os.path.basename(completepath)
+        fimsettings.loadSettings(fpath, fname, True)
+        pullSettings()
+    except Exception as e:
+        print(str(e))
 
-
+# TODO: Better error handling
 def writeParamFile():
     ui.selectparamfile.setAcceptMode(QFileDialog.AcceptSave)
-    completepath = ui.selectparamfile.getSaveFileName(ui.selectparamfile, 'Save Parameter File',
+    try:
+        completepath = ui.selectparamfile.getSaveFileName(ui.selectparamfile, 'Save Parameter File',
                                                       fimsettings.settings['Recording Directory'],
                                                       '*.json')[0]
-    fpath = os.path.dirname(completepath)
-    fname = os.path.basename(completepath)
-    fimsettings.saveSettings(fpath, fname, True)
+        fpath = os.path.dirname(completepath)
+        fname = os.path.basename(completepath)
+        fimsettings.saveSettings(fpath, fname, True)
+    except Exception as e:
+        print(str(e))
 
 
 def connectSignals():
@@ -169,6 +191,11 @@ def main():
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
+    ui.UserDataTable.setItem(-1, 1, speciescell)
+    ui.UserDataTable.setItem(0, 1, straincell)
+    ui.UserDataTable.setItem(1, 1, genotypecell)
+    ui.UserDataTable.setItem(2, 1, moreinfocell)
+
     # Disable UI elements that don't work yet
     disableUiElements()
     recordingcam.moveToThread(recthread)

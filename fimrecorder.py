@@ -76,7 +76,7 @@ def pullSettings():
     #if ui.FpsEnableChkBx.isChecked():
     ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
-
+    recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time()))
     recordingcam.fcc = fimsettings.settings['Video Codec']
     recordingcam.fpath = fimsettings.settings['Recording Directory']
     disposablecam.fpath = fimsettings.settings['Snapshot Directory']
@@ -129,6 +129,11 @@ def connectSignals():
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
+    recordingcam.fimjson_path[str].connect(lambda val: fimsettings.saveSettings(os.path.dirname(val),
+                                                                                os.path.basename(val),
+                                                                                True
+                                                                                )
+                                           )
     # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(

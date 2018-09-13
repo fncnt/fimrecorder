@@ -2,6 +2,7 @@ import cv2
 import numpy
 import time
 import os
+import errno
 import math
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QPixmap, QImage
@@ -45,11 +46,12 @@ class QCamProcessor(QObject):
 class QCamRecorder(QCamProcessor):
 
     img_processed = pyqtSignal()
+    fimjson_path = pyqtSignal(str)
     timelimit_reached = pyqtSignal()
 
     fpath = ''
-    fcc = 'XVID'
 
+    fcc = 'XVID'
 
     def __init__(self):
         super().__init__()
@@ -58,6 +60,7 @@ class QCamRecorder(QCamProcessor):
         self.fps = 41.58177  # max. FPS
         self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
         self.framecount = 0
+        self.fimjson = ''
 
     # @pyqtSlot(float)
     def changeFps(self, newfps):
@@ -70,10 +73,18 @@ class QCamRecorder(QCamProcessor):
 
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
+        subpath = os.path.join(self.fpath, currenttime)
+        if not os.path.exists(subpath):
+            try:
+                os.makedirs(subpath)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         fimfile = 'FIM_' + currenttime + '.avi'
+        self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
 
         self.cvcodec = cv2.VideoWriter_fourcc(*self.fcc)
-        self.out = cv2.VideoWriter(os.path.join(self.fpath, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
+        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
         super().startProcessing(img_received)
 
     def processImg(self, img=numpy.ndarray):
@@ -92,6 +103,7 @@ class QCamRecorder(QCamProcessor):
 
     def finishProcessing(self):
         self.out.release()
+        self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
 
 

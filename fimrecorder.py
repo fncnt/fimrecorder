@@ -13,8 +13,6 @@ import settingshandler
 
 # TODO: make this a class Fim()
 # TODO: and create an object in main for readability
-# TODO: or define variables globally
-
 
 app = QApplication(sys.argv)
 window = QMainWindow()
@@ -75,8 +73,8 @@ def recordVideo(toggled=bool):
 
 def pullSettings():
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
-    if ui.FpsEnableChkBx.isChecked():
-        ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
+    #if ui.FpsEnableChkBx.isChecked():
+    ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
 
     recordingcam.fcc = fimsettings.settings['Video Codec']
@@ -88,8 +86,8 @@ def pullSettings():
 
 def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
-    if ui.FpsEnableChkBx.isChecked():
-        fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
+    # if ui.FpsEnableChkBx.isChecked():
+    fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     # temporaily
     fimsettings.saveSettings(fpath, fname, onlyparameters)
@@ -148,7 +146,8 @@ def connectSignals():
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
     )
-    ui.FpsDSpinBox.valueChanged[float].connect(recordingcam.changeFps)
+    # Doesn't work without lambda? o.ô
+    ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))
     ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
     app.aboutToQuit.connect(pushSettings)
 

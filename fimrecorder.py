@@ -204,6 +204,8 @@ def main():
     #    camera.grabInBackground()
     # Handles interaction between UI and cam stuff
     connectSignals()
+    # fakecom specific code:
+    camera.grabInBackground()
     # pull settings into cam classes and UI
     pullSettings()
     # previewthread = QThread()

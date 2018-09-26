@@ -11,9 +11,9 @@ class QCamWorker(QObject):
     # for snapshots and recording
     # using pyqtSignal and pyqtSlot passing numpy images
 
-    fakedevice = 'fakecam.avi'
+    fakedevice = 'fakecamsource.avi'
 
-    _cam = None
+    _cam = cv2.VideoCapture()
     device_stopped = pyqtSignal()
     frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
@@ -44,8 +44,8 @@ class QCamWorker(QObject):
     @pyqtSlot()
     def connectToCam(self):
         try:
-            cv2.VideoCapture(self.fakedevice)
-            self.device_status.emit("Using fake device " + self.fakedevice + ".")
+            self._cam.open(self.fakedevice)
+            self.device_status.emit("Using fake device " + self.fakedevice + ": " + str(self._cam.isOpened()))
 
         except BaseException as e:
             # Error handling.
@@ -60,16 +60,18 @@ class QCamWorker(QObject):
             self.is_grabbing.emit()
 
             # Access the image data
-            image = self._cam.read()
-            img = image.GetArray()
+            retval, image = self._cam.read()
+            img = image
             # img = numpy.rot90(img, 1)
             self.frame_grabbed.emit(img)
             # self.device_status.emit(str(type(img)))
+            # Process finished with exit code 139 (interrupted by signal 11: SIGSEGV)
             cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
             cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
-            k = cv2.waitKey(1)
-            if k == 27:
-                break
+            self.device_status.emit("Grabbing...")
+            #k = cv2.waitKey(25)
+            #if k == 27:
+            #    break
 
         self.device_status.emit("Stopped frame-grabbing.")
         self.device_stopped.emit()

@@ -2,6 +2,7 @@
 
 import sys
 import os
+import numpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
 from PyQt5.QtCore import QThread, QTime
 from PyQt5.QtGui import QPixmap
@@ -183,8 +184,8 @@ def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionSnapshot.setDisabled(True)
-    ui.previewLabel.close()
-    ui.camView.close()
+    #ui.previewLabel.close()
+    #ui.camView.close()
 
 def main():
     ui.setupUi(window)
@@ -208,21 +209,19 @@ def main():
     camera.grabInBackground()
     # pull settings into cam classes and UI
     pullSettings()
-    # previewthread = QThread()
-    # ui.camView.moveToThread(previewthread)
-    # previewthread.start()
-    # previewcam = pylonproc.QCamQPixmap()
-    # pcthread = QThread()
-    # previewcam.moveToThread(pcthread)
-    # previewcam.img_processed.connect(ui.camView.setPixmap)
-    # camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    # pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
-    # pcthread.start()
-    # ui.camView.setScaledContents(True)
 
-    # manually load settings via button (for reproducible measurements
-    # ui.actionLoad_Parameters.connect(fimsettings.)
-    # QFileDialog needed
+    #previewthread = QThread()
+    #ui.camView.moveToThread(previewthread)
+    #previewthread.start()
+    previewcam = pylonproc.QCamQPixmap()
+    pcthread = QThread()
+    previewcam.moveToThread(pcthread)
+    previewcam.img_processed.connect(ui.camView.setPixmap)
+    camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    pcthread.start()
+    ui.camView.setScaledContents(True)
+    app.aboutToQuit.connect(pcthread.quit)
 
     window.show()
     sys.exit(app.exec_())

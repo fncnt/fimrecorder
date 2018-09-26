@@ -74,7 +74,7 @@ class QCamWorker(QObject):
         self.device_status.emit("Stopped frame-grabbing.")
         self.device_stopped.emit()
 
-
+# TODO: rename since QT5 provides a identically named class
 class QCamera(QObject):
     #init camera on self.refresh()
     camThread = QThread()

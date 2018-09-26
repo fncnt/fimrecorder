@@ -7,7 +7,7 @@ from PyQt5.QtCore import QThread, QTime
 from PyQt5.QtGui import QPixmap
 
 from fimui import ui_fimwindow
-import pyloncom
+import fakecom
 import pylonproc
 import settingshandler
 
@@ -17,7 +17,7 @@ import settingshandler
 app = QApplication(sys.argv)
 window = QMainWindow()
 ui = ui_fimwindow.Ui_fimWindow()
-camera = pyloncom.QCamera()
+camera = fakecom.QCamera()
 disposablecam = pylonproc.QCamSnapshot()
 dcthread = QThread()
 recordingcam = pylonproc.QCamRecorder()

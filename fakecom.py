@@ -1,5 +1,3 @@
-from pypylon import pylon
-from pypylon import genicam
 import cv2
 import numpy
 import os
@@ -13,10 +11,9 @@ class QCamWorker(QObject):
     # for snapshots and recording
     # using pyqtSignal and pyqtSlot passing numpy images
 
-    fpath = 'config'
-    fname = 'FIM_NodeMap.pfs'
+    fakedevice = 'fakecam.avi'
 
-    _cam = pylon.InstantCamera()
+    _cam = None
     device_stopped = pyqtSignal()
     frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
@@ -38,32 +35,19 @@ class QCamWorker(QObject):
     #but this way I don't have to  define a function for every Attribute
     @pyqtSlot(str, object)
     def setCamAttr(self, attribute: str, value):
-        try:
-            setattr(self._cam, attribute, value)
-            self.device_status.emit(attribute + ": " + str(value))
-        except Exception as e:
-            self.device_status.emit(str(e))
+        return 0
 
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
-        self._cam.StopGrabbing()
+        self._cam.release()
 
     @pyqtSlot()
     def connectToCam(self):
         try:
-            # Create an instant camera object with the camera device found first.
-            if not self._cam.IsOpen():
-                self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
-                self._cam.Open()
-            # Print the model name of the camera.
-            print("Using device ", self._cam.GetDeviceInfo().GetModelName())
-            self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
+            cv2.VideoCapture(self.fakedevice)
+            self.device_status.emit("Using fake device " + self.fakedevice + ".")
 
-            self.device_status.emit("Loading device configuration")
-            pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
-
-
-        except genicam.GenericException as e:
+        except BaseException as e:
             # Error handling.
             print("An exception occurred.")
             print(str(e))
@@ -71,38 +55,21 @@ class QCamWorker(QObject):
 
     @pyqtSlot()
     def grabFrames(self):
-        converter = pylon.ImageFormatConverter()
-        # converting to opencv mono8/mono12 format
 
-        converter.OutputPixelFormat = pylon.PixelType_Mono8
-        converter.OutputBitAlignment = pylon.OutputBitAlignment_MsbAligned
-
-        # default = 10
-        self._cam.MaxNumBuffer = 10
-        self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
-
-        while self._cam.IsGrabbing():
+        while self._cam.isOpened():
             self.is_grabbing.emit()
-            # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
-            grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
 
-            if grabresult.GrabSucceeded():
-                # Access the image data
-                image = converter.Convert(grabresult)
-                img = image.GetArray()
-                # img = numpy.rot90(img, 1)
-                self.frame_grabbed.emit(img)
-                # self.device_status.emit(str(type(img)))
-                cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
-                cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
-                k = cv2.waitKey(1)
-                if k == 27:
-                    break
-
-            else:
-                print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
-                self.device_status.emit("Can't grab frames from camera.")
-            grabresult.Release()
+            # Access the image data
+            image = self._cam.read()
+            img = image.GetArray()
+            # img = numpy.rot90(img, 1)
+            self.frame_grabbed.emit(img)
+            # self.device_status.emit(str(type(img)))
+            cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
+            cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
+            k = cv2.waitKey(1)
+            if k == 27:
+                break
 
         self.device_status.emit("Stopped frame-grabbing.")
         self.device_stopped.emit()

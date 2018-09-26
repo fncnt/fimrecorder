@@ -210,9 +210,6 @@ def main():
     # pull settings into cam classes and UI
     pullSettings()
 
-    #previewthread = QThread()
-    #ui.camView.moveToThread(previewthread)
-    #previewthread.start()
     previewcam = pylonproc.QCamQPixmap()
     pcthread = QThread()
     previewcam.moveToThread(pcthread)

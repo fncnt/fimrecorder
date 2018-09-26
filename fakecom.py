@@ -58,17 +58,15 @@ class QCamWorker(QObject):
 
         while self._cam.isOpened():
             self.is_grabbing.emit()
-
             # Access the image data
             retval, image = self._cam.read()
             img = image
-            # img = numpy.rot90(img, 1)
             self.frame_grabbed.emit(img)
             # self.device_status.emit(str(type(img)))
             # Process finished with exit code 139 (interrupted by signal 11: SIGSEGV)
-            cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
-            cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
-            self.device_status.emit("Grabbing...")
+            #cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
+            #cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
+            #self.device_status.emit("Grabbing..." + str(retval) + ", " + str(type(img)))
             #k = cv2.waitKey(25)
             #if k == 27:
             #    break

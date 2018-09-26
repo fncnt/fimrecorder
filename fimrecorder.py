@@ -4,7 +4,7 @@ import sys
 import os
 import numpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
-from PyQt5.QtCore import QThread, QTime
+from PyQt5.QtCore import QThread, QTime, Qt
 from PyQt5.QtGui import QPixmap
 
 from fimui import ui_fimwindow
@@ -213,7 +213,8 @@ def main():
     previewcam = pylonproc.QCamQPixmap()
     pcthread = QThread()
     previewcam.moveToThread(pcthread)
-    previewcam.img_processed.connect(ui.camView.setPixmap)
+    ui.camView.setAlignment(Qt.AlignCenter)
+    previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(), Qt.KeepAspectRatio, Qt.FastTransformation)))
     camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
     pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     pcthread.start()

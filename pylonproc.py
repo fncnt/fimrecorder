@@ -110,10 +110,9 @@ class QCamRecorder(QCamProcessor):
 class QCamQPixmap(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
-        qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Mono)
+        qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Grayscale8)
         qpxmp = QPixmap(qimg)
         self.img_processed.emit(qpxmp)
-
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()

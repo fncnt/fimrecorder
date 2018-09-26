@@ -200,8 +200,8 @@ def main():
     disableUiElements()
     recordingcam.moveToThread(recthread)
     # more refined logic needed here to improve UX
-    if camera.baslerace._cam.IsOpen():
-        camera.grabInBackground()
+    # if camera.baslerace._cam.IsOpen():
+    #    camera.grabInBackground()
     # Handles interaction between UI and cam stuff
     connectSignals()
     # pull settings into cam classes and UI

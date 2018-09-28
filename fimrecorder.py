@@ -215,8 +215,11 @@ def main():
     previewcam.moveToThread(pcthread)
     ui.camView.setAlignment(Qt.AlignCenter)
     previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
-                                                                        Qt.KeepAspectRatio,
-                                                                        Qt.FastTransformation)))
+                                                                                     Qt.KeepAspectRatio,
+                                                                                     Qt.FastTransformation)))
+
+    print(ui.camView.size())
+    print(ui.centralwidget.size())
     camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
     pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     pcthread.start()

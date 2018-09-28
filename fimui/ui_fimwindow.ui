@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>636</width>
-    <height>456</height>
+    <width>700</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>636</width>
-    <height>456</height>
+    <width>700</width>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -28,8 +28,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>520</width>
-     <height>320</height>
+     <width>650</width>
+     <height>350</height>
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
@@ -82,7 +82,7 @@
        <property name="minimumSize">
         <size>
          <width>200</width>
-         <height>395</height>
+         <height>390</height>
         </size>
        </property>
        <attribute name="title">
@@ -124,6 +124,9 @@
         </item>
         <item row="1" column="0" colspan="2">
          <widget class="QTableWidget" name="UserDataTable">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>2</horstretch>
@@ -133,7 +136,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>340</height>
+            <height>300</height>
            </size>
           </property>
           <property name="frameShape">
@@ -334,8 +337,8 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>400</width>
-        <height>400</height>
+        <width>380</width>
+        <height>380</height>
        </size>
       </property>
       <property name="sizeIncrement">
@@ -356,8 +359,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>636</width>
-     <height>18</height>
+     <width>700</width>
+     <height>15</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

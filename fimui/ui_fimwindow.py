@@ -156,7 +156,7 @@ class Ui_fimWindow(object):
         self.tabWidget.addTab(self.tabCam, "")
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 3, 1)
         self.camView = QtWidgets.QLabel(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(2)
         sizePolicy.setVerticalStretch(2)
         sizePolicy.setHeightForWidth(self.camView.sizePolicy().hasHeightForWidth())

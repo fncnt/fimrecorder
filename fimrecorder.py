@@ -187,6 +187,7 @@ def disableUiElements():
     #ui.previewLabel.close()
     #ui.camView.close()
 
+
 def main():
     ui.setupUi(window)
     # for some reason QT Designer doesn't apply this on its own
@@ -214,16 +215,16 @@ def main():
     pcthread = QThread()
     previewcam.moveToThread(pcthread)
     ui.camView.setAlignment(Qt.AlignCenter)
+    ui.camView.setScaledContents(True)
+    #camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
                                                                                      Qt.KeepAspectRatio,
                                                                                      Qt.FastTransformation)))
+    # previewcam.img_processed.connect(ui.camView.setPixmap)
+    previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
 
-    print(ui.camView.size())
-    print(ui.centralwidget.size())
-    camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     pcthread.start()
-    ui.camView.setScaledContents(True)
     app.aboutToQuit.connect(pcthread.exit)
 
     window.show()

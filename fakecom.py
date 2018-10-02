@@ -1,5 +1,6 @@
 import cv2
 import numpy
+import time
 import os
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
@@ -63,6 +64,7 @@ class QCamWorker(QObject):
             img = image
             if retval:
                 self.frame_grabbed.emit(img)
+                time.sleep(0.024049)
             else:
                 self.stop()
             # self.device_status.emit(str(type(img)))

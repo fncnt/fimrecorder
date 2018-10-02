@@ -46,6 +46,7 @@ class QCamProcessor(QObject):
 class QCamRecorder(QCamProcessor):
 
     img_processed = pyqtSignal()
+    frame_written = pyqtSignal() # just to let the progressBar know when to update
     fimjson_path = pyqtSignal(str)
     timelimit_reached = pyqtSignal()
 
@@ -92,6 +93,7 @@ class QCamRecorder(QCamProcessor):
             if self.framecount < self.maxframes:
                 self.out.write(img)
                 self.status.emit("Writing frame.")
+                self.frame_written.emit()
                 self.framecount += 1
             else:
                 self.timelimit_reached.emit()

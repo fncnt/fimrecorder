@@ -91,6 +91,7 @@ class QCamRecorder(QCamProcessor):
         try:
             if self.framecount < self.maxframes:
                 self.out.write(img)
+                self.status.emit("Writing frame.")
                 self.framecount += 1
             else:
                 self.timelimit_reached.emit()
@@ -103,8 +104,10 @@ class QCamRecorder(QCamProcessor):
 
     def finishProcessing(self):
         self.out.release()
+        self.status.emit("Released file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
+
 
 
 class QCamQPixmap(QCamProcessor):

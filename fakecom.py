@@ -61,7 +61,10 @@ class QCamWorker(QObject):
             # Access the image data
             retval, image = self._cam.read()
             img = image
-            self.frame_grabbed.emit(img)
+            if retval:
+                self.frame_grabbed.emit(img)
+            else:
+                self.stop()
             # self.device_status.emit(str(type(img)))
             # Process finished with exit code 139 (interrupted by signal 11: SIGSEGV)
             #cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)

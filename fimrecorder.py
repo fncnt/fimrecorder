@@ -222,7 +222,7 @@ def main():
                                                                                      Qt.KeepAspectRatio,
                                                                                      Qt.FastTransformation)))
     # previewcam.img_processed.connect(ui.camView.setPixmap)
-    previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
+    # previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
 
     pcthread.start()
     app.aboutToQuit.connect(pcthread.exit)

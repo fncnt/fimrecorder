@@ -5,7 +5,7 @@ import os
 import numpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
 from PyQt5.QtCore import QThread, QTime, Qt
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage
 
 from fimui import ui_fimwindow
 import fakecom
@@ -180,6 +180,12 @@ def connectSignals():
     app.aboutToQuit.connect(pushSettings)
 
 
+def processPreviewData(img=numpy.ndarray):
+    qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Grayscale8)
+    qpxmp = QPixmap(qimg.smoothScaled(ui.camView.width(), ui.camView.width()))
+    ui.camView.setPixmap(qpxmp)
+
+
 def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
@@ -211,21 +217,22 @@ def main():
     # pull settings into cam classes and UI
     pullSettings()
 
-    previewcam = pylonproc.QCamQPixmap()
-    pcthread = QThread()
-    previewcam.moveToThread(pcthread)
+    # previewcam = pylonproc.QCamQPixmap()
+    # pcthread = QThread()
+    # previewcam.moveToThread(pcthread)
     ui.camView.setAlignment(Qt.AlignCenter)
     ui.camView.setScaledContents(True)
-    #camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
-    previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
-                                                                                     Qt.KeepAspectRatio,
-                                                                                     Qt.FastTransformation)))
+    # camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
+    # pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    # previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
+    #                                                                                 Qt.KeepAspectRatio,
+    #                                                                                 Qt.FastTransformation)))
     # previewcam.img_processed.connect(ui.camView.setPixmap)
-    previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
+    # previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
+    # pcthread.start()
+    # app.aboutToQuit.connect(pcthread.exit)
 
-    pcthread.start()
-    app.aboutToQuit.connect(pcthread.exit)
+    camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
 
     window.show()
     sys.exit(app.exec_())

@@ -4,8 +4,9 @@ import time
 import os
 import errno
 import math
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
 from PyQt5.QtGui import QPixmap, QImage
+
 
 class QCamProcessor(QObject):
 
@@ -113,6 +114,7 @@ class QCamQPixmap(QCamProcessor):
         qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Grayscale8)
         qpxmp = QPixmap(qimg)
         self.img_processed.emit(qpxmp)
+
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()

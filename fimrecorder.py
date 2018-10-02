@@ -2,6 +2,7 @@
 
 import sys
 import os
+import math
 import numpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
 from PyQt5.QtCore import QThread, QTime, Qt
@@ -62,19 +63,28 @@ def saveSnapshot():
 
 
 def recordVideo(toggled=bool):
+    ui.progressBar.setEnabled(toggled)
     if toggled:
         #make sure framecount is zero so we record everything we want:
         recordingcam.framecount = 0
 
         recthread.start()
         recordingcam.startProcessing(camera.frame_grabbed)
+        ui.actionRecord.setText('Cancel')
+        ui.progressBar.setMaximum(recordingcam.maxframes)
     else:
         recordingcam.cancelProcessing()
         # Does terminate without blocking main thread.
         # Also it's actually not recommended.
-        recthread.terminate()
-        # recthread.quit()
+        # recthread.terminate()
+        recthread.quit()
+        # recthread.exit(0)
         # recthread.wait(100)
+        # recthread.wait(100)
+        ui.actionRecord.setText('Record')
+        ui.progressBar.setValue(0)
+        ui.progressBar.setMaximum(100)
+        ui.progressBar.setMinimum(0)
 
 
 def pullSettings():
@@ -157,6 +167,10 @@ def connectSignals():
                                                                     True
                                                                     )
                                            )
+    recordingcam.frame_written.connect(lambda: ui.progressBar.setValue(recordingcam.framecount))
+    recordingcam.frame_written.connect(lambda: ui.progressBar.setFormat(QTime.fromMSecsSinceStartOfDay(math.floor(recordingcam.framecount /
+                                                                                         recordingcam.fps *
+                                                                                         1000)).toString()))
     # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
@@ -190,6 +204,7 @@ def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionSnapshot.setDisabled(True)
+    ui.menubar.close()
     #ui.previewLabel.close()
     #ui.camView.close()
 

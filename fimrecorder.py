@@ -68,6 +68,7 @@ def recordVideo(toggled=bool):
 
         recthread.start()
         recordingcam.startProcessing(camera.frame_grabbed)
+        ui.actionRecord.setText('Cancel')
     else:
         recordingcam.cancelProcessing()
         # Does terminate without blocking main thread.
@@ -77,6 +78,7 @@ def recordVideo(toggled=bool):
         # recthread.exit(0)
         # recthread.wait(100)
         # recthread.wait(100)
+        ui.actionRecord.setText('Record')
 
 
 def pullSettings():
@@ -186,6 +188,7 @@ def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionSnapshot.setDisabled(True)
+    ui.menubar.close()
     #ui.previewLabel.close()
     #ui.camView.close()
 

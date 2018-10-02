@@ -120,7 +120,7 @@ class Ui_fimWindow(object):
         self.UserDataTable.verticalHeader().setVisible(True)
         self.UserDataTable.verticalHeader().setStretchLastSection(True)
         self.gridLayout_3.addWidget(self.UserDataTable, 2, 0, 1, 2)
-        spacerItem = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        spacerItem = QtWidgets.QSpacerItem(20, 5, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.gridLayout_3.addItem(spacerItem, 3, 0, 1, 1)
         self.tabWidget.addTab(self.tabMeasurement, "")
         self.tabCam = QtWidgets.QWidget()

@@ -151,6 +151,7 @@ def connectSignals():
     # Print messages to statusbar and console
     camera.device_status[str].connect(ui.statusbar.showMessage)
     camera.device_status[str].connect(print)
+    camera.device_name[str].connect(lambda val: ui.camLabel.setText("Preview (" + val + "):"))
     disposablecam.status[str].connect(print)
     recordingcam.status[str].connect(print)
 

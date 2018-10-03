@@ -21,6 +21,7 @@ class QCamWorker(QObject):
     frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
     device_status = pyqtSignal(str)
+    device_name = pyqtSignal(str)
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -58,6 +59,7 @@ class QCamWorker(QObject):
             # Print the model name of the camera.
             print("Using device ", self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
+            self.device_name.emit(self._cam.GetDeviceInfo().GetModelName())
 
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
@@ -68,6 +70,8 @@ class QCamWorker(QObject):
             print("An exception occurred.")
             print(str(e))
             self.device_status.emit("No device found.")
+            self.device_name.emit("no device")
+
 
     @pyqtSlot()
     def grabFrames(self):
@@ -117,6 +121,7 @@ class QCamera(QObject):
     is_grabbing = pyqtSignal()
     device_stop = pyqtSignal()
     device_status = pyqtSignal(str)
+    device_name = pyqtSignal(str)
 
     #TODO overload signal to allow integer codes
     # 0: device found, using device
@@ -136,6 +141,7 @@ class QCamera(QObject):
     def grabInBackground(self):
         self.baslerace.moveToThread(self.camThread)
         # connect signals
+        self.baslerace.device_name.connect(self.device_name)
         self.baslerace.device_status.connect(self.device_status)
         self.baslerace.frame_grabbed.connect(self.frame_grabbed)
         self.baslerace.is_grabbing.connect(self.is_grabbing)

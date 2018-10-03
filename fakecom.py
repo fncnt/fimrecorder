@@ -19,6 +19,7 @@ class QCamWorker(QObject):
     frame_grabbed = pyqtSignal(numpy.ndarray)
     is_grabbing = pyqtSignal()
     device_status = pyqtSignal(str)
+    device_name = pyqtSignal(str)
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -46,13 +47,16 @@ class QCamWorker(QObject):
     def connectToCam(self):
         try:
             self._cam.open(self.fakedevice)
-            self.device_status.emit("Using fake device " + self.fakedevice + ": " + str(self._cam.isOpened()))
+            self.device_status.emit("Using fake device.")
+            self.device_name.emit("fakecam")
 
         except BaseException as e:
             # Error handling.
             print("An exception occurred.")
             print(str(e))
             self.device_status.emit("No device found.")
+            self.device_name.emit("no device")
+
 
     @pyqtSlot()
     def grabFrames(self):
@@ -89,6 +93,7 @@ class QCamera(QObject):
     is_grabbing = pyqtSignal()
     device_stop = pyqtSignal()
     device_status = pyqtSignal(str)
+    device_name = pyqtSignal(str)
 
     #TODO overload signal to allow integer codes
     # 0: device found, using device
@@ -108,11 +113,13 @@ class QCamera(QObject):
     def grabInBackground(self):
         self.baslerace.moveToThread(self.camThread)
         # connect signals
+        self.baslerace.device_name.connect(self.device_name)
         self.baslerace.device_status.connect(self.device_status)
         self.baslerace.frame_grabbed.connect(self.frame_grabbed)
         self.baslerace.is_grabbing.connect(self.is_grabbing)
 
         self.camThread.started.connect(self.baslerace.grabFrames)
+        self.baslerace.connectToCam()
         self.camThread.start()
 
     def stopGrabbing(self):

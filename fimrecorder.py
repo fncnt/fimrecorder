@@ -233,22 +233,21 @@ def main():
     # pull settings into cam classes and UI
     pullSettings()
 
-    # previewcam = pylonproc.QCamQPixmap()
-    # pcthread = QThread()
-    # previewcam.moveToThread(pcthread)
+    previewcam = pylonproc.QCamQPixmap()
+    pcthread = QThread()
+    previewcam.moveToThread(pcthread)
     ui.camView.setAlignment(Qt.AlignCenter)
     ui.camView.setScaledContents(True)
     # camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    # pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     # previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
-    #                                                                                 Qt.KeepAspectRatio,
-    #                                                                                 Qt.FastTransformation)))
-    # previewcam.img_processed.connect(ui.camView.setPixmap)
-    # previewcam.img_processed.connect(lambda discard: print(ui.camView.size()))
-    # pcthread.start()
-    # app.aboutToQuit.connect(pcthread.exit)
+    #                                                                                  Qt.KeepAspectRatio,
+    #                                                                                  Qt.FastTransformation)))
+    previewcam.img_processed.connect(ui.camView.setPixmap)
+    pcthread.start()
+    app.aboutToQuit.connect(pcthread.exit)
 
-    camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
+    #camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
 
     window.show()
     sys.exit(app.exec_())

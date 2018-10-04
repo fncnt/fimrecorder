@@ -114,14 +114,6 @@ class QCamRecorder(QCamProcessor):
         super().finishProcessing()
 
 
-class QCamQPixmap(QCamProcessor):
-
-    def processImg(self, img=numpy.ndarray):
-        qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Grayscale8)
-        qpxmp = QPixmap(qimg)
-        self.img_processed.emit(qpxmp)
-
-
 class Canvas(app.Canvas):
     vertex = """
                 attribute vec2 position;

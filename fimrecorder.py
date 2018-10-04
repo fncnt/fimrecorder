@@ -3,10 +3,8 @@
 import sys
 import os
 import math
-import numpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
-from PyQt5.QtCore import QThread, QTime, Qt
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import QThread, QTime
 
 from fimui import ui_fimwindow
 import fakecom
@@ -195,19 +193,11 @@ def connectSignals():
     app.aboutToQuit.connect(pushSettings)
 
 
-def processPreviewData(img=numpy.ndarray):
-    qimg = QImage(img, img.data.shape[0], img.data.shape[1], QImage.Format_Grayscale8)
-    qpxmp = QPixmap(qimg.smoothScaled(ui.camView.width(), ui.camView.width()))
-    ui.camView.setPixmap(qpxmp)
-
-
 def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionSnapshot.setDisabled(True)
     ui.menubar.close()
-    #ui.previewLabel.close()
-    #ui.camView.close()
 
 
 def main():
@@ -232,20 +222,6 @@ def main():
     camera.grabInBackground()
     # pull settings into cam classes and UI
     pullSettings()
-
-    # previewcam = pylonproc.QCamQPixmap()
-    # pcthread = QThread()
-    # previewcam.moveToThread(pcthread)
-    # ui.camView.setAlignment(Qt.AlignCenter)
-    # ui.camView.setScaledContents(True)
-    # camera.frame_grabbed[numpy.ndarray].connect(previewcam.processImg)
-    # pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
-    # previewcam.img_processed.connect(lambda qpxmp: ui.camView.setPixmap(qpxmp.scaled(ui.camView.size(),
-    #                                                                                  Qt.KeepAspectRatio,
-    #                                                                                  Qt.FastTransformation)))
-    # previewcam.img_processed.connect(ui.camView.setPixmap)
-    # pcthread.start()
-    # app.aboutToQuit.connect(pcthread.exit)
 
     previewcam = pylonproc.QCamGLPreview()
     ui.camWidget.setLayout(QVBoxLayout())

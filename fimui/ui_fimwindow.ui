@@ -368,9 +368,9 @@
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QOpenGLWidget" name="camGL">
+     <widget class="QWidget" name="camWidget" native="true">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
         <horstretch>4</horstretch>
         <verstretch>4</verstretch>
        </sizepolicy>

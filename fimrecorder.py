@@ -4,7 +4,6 @@ import sys
 import os
 import math
 import numpy
-import glumpy
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
 from PyQt5.QtCore import QThread, QTime, Qt
 from PyQt5.QtGui import QPixmap, QImage

@@ -6,6 +6,8 @@ import errno
 import math
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
 from PyQt5.QtGui import QPixmap, QImage
+from vispy import app
+from vispy import gloo
 
 
 class QCamProcessor(QObject):
@@ -112,7 +114,6 @@ class QCamRecorder(QCamProcessor):
         super().finishProcessing()
 
 
-
 class QCamQPixmap(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
@@ -120,6 +121,73 @@ class QCamQPixmap(QCamProcessor):
         qpxmp = QPixmap(qimg)
         self.img_processed.emit(qpxmp)
 
+
+class Canvas(app.Canvas):
+    vertex = """
+                attribute vec2 position;
+                attribute vec2 texcoord;
+                varying vec2 v_texcoord;
+                void main()
+                {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                    v_texcoord = texcoord;
+                }
+            """
+    fragment = """
+                uniform sampler2D texture;
+                varying vec2 v_texcoord;
+                void main()
+                {
+                    gl_FragColor = texture2D(texture, v_texcoord);
+
+                    // HACK: the image is in BGR instead of RGB.
+                    float temp = gl_FragColor.r;
+                    gl_FragColor.r = gl_FragColor.b;
+                    gl_FragColor.b = temp;
+                }
+            """
+
+    currentframe = numpy.zeros((360, 360, 3)).astype(numpy.uint8)
+
+    def __init__(self):
+        app.Canvas.__init__(self, size=(360, 360), keys='interactive')
+        self.image = gloo.Program(self.vertex, self.fragment, 4)
+        self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
+        self.image['texcoord'] = [(1, 1), (1, 0), (0, 1), (0, 0)]
+        self.image['texture'] = self.currentframe
+
+        width, height = self.physical_size
+        gloo.set_viewport(0, 0, width, height)
+        gloo.set_clear_color('black')
+        self.show()
+
+    def on_resize(self, event):
+        width, height = event.physical_size
+        gloo.set_viewport(0, 0, width, height)
+
+    def on_draw(self, event):
+        gloo.clear('black')
+        self.image['texture'][...] = self.currentframe
+        self.image.draw('triangle_strip')
+
+    def updateFrame(self, newframe=numpy.ndarray):
+        self.currentframe = newframe
+
+
+class QCamGLPreview(QCamProcessor):
+
+    def __init__(self):
+        super().__init__()
+        self.canvas = Canvas()
+
+    def processImg(self, img=numpy.ndarray):
+        self.canvas.updateFrame(img)
+
+    def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
+        #super().startProcessing(img_received)
+        self.is_processing = img_received
+        self.is_processing[numpy.ndarray].connect(self.processImg)
+        app.run()
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()

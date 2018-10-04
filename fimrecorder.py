@@ -4,7 +4,7 @@ import sys
 import os
 import math
 import numpy
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtCore import QThread, QTime, Qt
 from PyQt5.QtGui import QPixmap, QImage
 
@@ -246,6 +246,11 @@ def main():
     # previewcam.img_processed.connect(ui.camView.setPixmap)
     # pcthread.start()
     # app.aboutToQuit.connect(pcthread.exit)
+
+    previewcam = pylonproc.QCamGLPreview()
+    ui.camWidget.setLayout(QVBoxLayout())
+    ui.camWidget.layout().addWidget(previewcam.canvas.native)
+    previewcam.startProcessing()
 
     #camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
 

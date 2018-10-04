@@ -250,7 +250,7 @@ def main():
 
     #camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
 
-    
+
 
 
     window.show()

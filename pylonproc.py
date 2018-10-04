@@ -139,7 +139,7 @@ class Canvas(app.Canvas):
                 }
             """
 
-    currentframe = numpy.zeros((360, 360, 3)).astype(numpy.uint8)
+    currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
 
     def __init__(self):
         # app.Canvas.__init__(self, size=(360, 360))
@@ -161,6 +161,8 @@ class Canvas(app.Canvas):
         gloo.clear('black')
         self.image['texture'][...] = self.currentframe
         self.image.draw('triangle_strip')
+        self.update()
+
 
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe

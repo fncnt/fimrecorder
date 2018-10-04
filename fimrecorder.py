@@ -250,10 +250,11 @@ def main():
     previewcam = pylonproc.QCamGLPreview()
     ui.camWidget.setLayout(QVBoxLayout())
     ui.camWidget.layout().addWidget(previewcam.canvas.native)
-    previewcam.startProcessing()
-
-    #camera.frame_grabbed[numpy.ndarray].connect(processPreviewData)
-
+    pcthread = QThread()
+    previewcam.moveToThread(pcthread)
+    app.aboutToQuit.connect(pcthread.exit)
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
+    pcthread.start()
 
 
 

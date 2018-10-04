@@ -150,7 +150,8 @@ class Canvas(app.Canvas):
     currentframe = numpy.zeros((360, 360, 3)).astype(numpy.uint8)
 
     def __init__(self):
-        app.Canvas.__init__(self, size=(360, 360), keys='interactive')
+        # app.Canvas.__init__(self, size=(360, 360))
+        app.Canvas.__init__(self)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         self.image['texcoord'] = [(1, 1), (1, 0), (0, 1), (0, 0)]
@@ -159,7 +160,6 @@ class Canvas(app.Canvas):
         width, height = self.physical_size
         gloo.set_viewport(0, 0, width, height)
         gloo.set_clear_color('black')
-        self.show()
 
     def on_resize(self, event):
         width, height = event.physical_size
@@ -182,12 +182,15 @@ class QCamGLPreview(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
         self.canvas.updateFrame(img)
+        self.status.emit("Updating framebuffer.")
 
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
-        #super().startProcessing(img_received)
-        self.is_processing = img_received
-        self.is_processing[numpy.ndarray].connect(self.processImg)
-        app.run()
+        super().startProcessing(img_received)
+        app.use_app(backend_name="PyQt5", call_reuse=True)
+        #self.canvas.app.run()
+        #app.run()
+        #self.canvas.show(run=True)
+        #self.show()
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()

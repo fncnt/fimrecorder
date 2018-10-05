@@ -146,7 +146,8 @@ class Canvas(app.Canvas):
         app.Canvas.__init__(self)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
-        self.image['texcoord'] = [(1, 1), (1, 0), (0, 1), (0, 0)]
+        # bottom left, top left, bottom right, top right
+        self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         self.image['texture'] = self.currentframe
 
         width, height = self.physical_size

@@ -22,6 +22,8 @@ disposablecam = pylonproc.QCamSnapshot()
 dcthread = QThread()
 recordingcam = pylonproc.QCamRecorder()
 recthread = QThread()
+previewcam = pylonproc.QCamGLPreview()
+pcthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
 ui.selectparamfile = QFileDialog()
@@ -30,6 +32,7 @@ speciescell = QTableWidgetItem("")
 straincell = QTableWidgetItem("")
 genotypecell = QTableWidgetItem("")
 moreinfocell = QTableWidgetItem("")
+
 
 def QTimeToMsecs(time: QTime):
     msecs = 0
@@ -170,6 +173,8 @@ def connectSignals():
     recordingcam.frame_written.connect(lambda: ui.progressBar.setFormat(QTime.fromMSecsSinceStartOfDay(math.floor(recordingcam.framecount /
                                                                                          recordingcam.fps *
                                                                                          1000)).toString()))
+    app.aboutToQuit.connect(pcthread.exit)
+    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
@@ -202,6 +207,9 @@ def disableUiElements():
 
 def main():
     ui.setupUi(window)
+    # set up OpenGL preview
+    ui.camWidget.setLayout(QVBoxLayout())
+    ui.camWidget.layout().addWidget(previewcam.canvas.native)
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
@@ -212,25 +220,24 @@ def main():
 
     # Disable UI elements that don't work yet
     disableUiElements()
+
     recordingcam.moveToThread(recthread)
+    previewcam.moveToThread(pcthread)
+
+    # Handles interaction between UI and cam stuff
+    connectSignals()
+    pcthread.start()
+
     # more refined logic needed here to improve UX
     # if camera.baslerace._cam.IsOpen():
     #    camera.grabInBackground()
-    # Handles interaction between UI and cam stuff
-    connectSignals()
     # fakecom specific code:
     camera.grabInBackground()
+    
     # pull settings into cam classes and UI
     pullSettings()
 
-    previewcam = pylonproc.QCamGLPreview()
-    ui.camWidget.setLayout(QVBoxLayout())
-    ui.camWidget.layout().addWidget(previewcam.canvas.native)
-    pcthread = QThread()
-    previewcam.moveToThread(pcthread)
-    app.aboutToQuit.connect(pcthread.exit)
-    pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
-    pcthread.start()
+
 
 
 

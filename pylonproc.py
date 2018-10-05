@@ -142,7 +142,6 @@ class Canvas(app.Canvas):
     currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
 
     def __init__(self):
-        # app.Canvas.__init__(self, size=(360, 360))
         app.Canvas.__init__(self)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
@@ -182,10 +181,7 @@ class QCamGLPreview(QCamProcessor):
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         super().startProcessing(img_received)
         app.use_app(backend_name="PyQt5", call_reuse=True)
-        #self.canvas.app.run()
-        #app.run()
-        #self.canvas.show(run=True)
-        #self.show()
+
 
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()

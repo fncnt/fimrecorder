@@ -233,7 +233,7 @@ def main():
     #    camera.grabInBackground()
     # fakecom specific code:
     camera.grabInBackground()
-    
+
     # pull settings into cam classes and UI
     pullSettings()
 

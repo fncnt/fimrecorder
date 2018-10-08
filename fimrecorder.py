@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidget
 from PyQt5.QtCore import QThread, QTime
 
 from fimui import ui_fimwindow
-import fakecom
+import pyloncom
 import pylonproc
 import settingshandler
 
@@ -17,7 +17,7 @@ import settingshandler
 app = QApplication(sys.argv)
 window = QMainWindow()
 ui = ui_fimwindow.Ui_fimWindow()
-camera = fakecom.QCamera()
+camera = pyloncom.QCamera()
 disposablecam = pylonproc.QCamSnapshot()
 dcthread = QThread()
 recordingcam = pylonproc.QCamRecorder()
@@ -229,10 +229,10 @@ def main():
     pcthread.start()
 
     # more refined logic needed here to improve UX
-    # if camera.baslerace._cam.IsOpen():
-    #    camera.grabInBackground()
+    if camera.baslerace._cam.IsOpen():
+       camera.grabInBackground()
     # fakecom specific code:
-    camera.grabInBackground()
+    # camera.grabInBackground()
 
     # pull settings into cam classes and UI
     pullSettings()

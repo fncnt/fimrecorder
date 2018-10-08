@@ -1,6 +1,5 @@
 from pypylon import pylon
 from pypylon import genicam
-import cv2
 import numpy
 import os
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
@@ -29,10 +28,6 @@ class QCamWorker(QObject):
     def __init__(self):
         super().__init__()
         self.connectToCam()
-
-    def __del__(self):
-        cv2.destroyWindow('Preview')
-        super(QCamWorker, self).__del__()
 
     #check for compatible type in function
     #I'd like to avoid setters
@@ -63,7 +58,6 @@ class QCamWorker(QObject):
 
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
-
 
         except genicam.GenericException as e:
             # Error handling.
@@ -96,13 +90,6 @@ class QCamWorker(QObject):
                 img = image.GetArray()
                 # img = numpy.rot90(img, 1)
                 self.frame_grabbed.emit(img)
-                # self.device_status.emit(str(type(img)))
-                cv2.namedWindow('Preview', cv2.WINDOW_NORMAL)  # cv2.WINDOW_KEEPRATIO)
-                cv2.imshow('Preview', img)  # cv2.resize(img, dsize=(300, 300), interpolation=cv2.INTER_CUBIC))
-                k = cv2.waitKey(1)
-                if k == 27:
-                    break
-
             else:
                 print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
                 self.device_status.emit("Can't grab frames from camera.")
@@ -148,6 +135,7 @@ class QCamera(QObject):
 
         self.camThread.started.connect(self.baslerace.grabFrames)
         self.camThread.start()
+        self.device_name.emit(self.baslerace._cam.GetDeviceInfo().GetModelName())
 
     def stopGrabbing(self):
         self.baslerace.stop()

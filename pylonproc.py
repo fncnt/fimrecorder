@@ -150,28 +150,29 @@ class Canvas(app.Canvas):
         self.image['texture'] = self.currentframe
 
         width, height = self.physical_size
-        self.old_physical_size = self.physical_size
         gloo.set_viewport(0, 0, height, height)
         gloo.set_clear_color('black')
 
     def on_resize(self, event):
         width, height = event.physical_size
-        oldwidth, oldheight = self.old_physical_size
-        # needs work
-        #gloo.set_viewport(abs((width-oldwidth)/2),
-        #                  abs((height-oldheight)/2),
-        #                  max(width, height),
-        #                  max(width, height))
-        # gloo.set_viewport(0, 0, width, height)
-        gloo.set_viewport(0, 0, height, height)
-
+        if width < height:
+            gloo.set_viewport(0,
+                              abs((height - width) / 2),
+                              width,
+                              width)
+        elif width > height:
+            gloo.set_viewport(abs((width - height) / 2),
+                              0,
+                              height,
+                              height)
+        else:
+            gloo.set_viewport(0, 0, width, height)
 
     def on_draw(self, event):
         gloo.clear('black')
         self.image['texture'][...] = self.currentframe
         self.image.draw('triangle_strip')
         self.update()
-
 
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe

@@ -1,4 +1,4 @@
-import cv2
+import imageio
 import numpy
 import time
 import os
@@ -47,17 +47,16 @@ class QCamProcessor(QObject):
 class QCamRecorder(QCamProcessor):
 
     img_processed = pyqtSignal()
-    frame_written = pyqtSignal() # just to let the progressBar know when to update
+    frame_written = pyqtSignal()  # just to let the progressBar know when to update
     fimjson_path = pyqtSignal(str)
     timelimit_reached = pyqtSignal()
 
     fpath = ''
 
-    fcc = 'XVID'
+    codec = 'libx264'
 
     def __init__(self):
         super().__init__()
-        self.cvcodec = None  # cv2.VideoWriter_fourcc()
         self.out = None  # cv2.VideoWriter()
         self.fps = 41.58177  # max. FPS
         self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
@@ -84,15 +83,14 @@ class QCamRecorder(QCamProcessor):
                     raise
         fimfile = 'FIM_' + currenttime + '.avi'
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
+        self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps)
 
-        self.cvcodec = cv2.VideoWriter_fourcc(*self.fcc)
-        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.cvcodec, self.fps, (1200, 1200), False)  # isColor=False
         super().startProcessing(img_received)
 
     def processImg(self, img=numpy.ndarray):
         try:
             if self.framecount < self.maxframes:
-                self.out.write(img)
+                self.out.append_data(img)
                 self.status.emit("Writing frame.")
                 self.frame_written.emit()
                 self.framecount += 1
@@ -106,7 +104,7 @@ class QCamRecorder(QCamProcessor):
         self.finishProcessing()
 
     def finishProcessing(self):
-        self.out.release()
+        self.out.close()
         self.status.emit("Released file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()

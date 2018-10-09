@@ -5,7 +5,6 @@ import os
 import math
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtCore import QThread, QTime
-
 from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
@@ -100,7 +99,7 @@ def pullSettings():
     moreinfocell.setText(fimsettings.parameters['User Data']['More Info'])
 
     recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time()))
-    recordingcam.fcc = fimsettings.settings['Video Codec']
+    recordingcam.codec = fimsettings.settings['Video Codec']
     recordingcam.fpath = fimsettings.settings['Recording Directory']
     disposablecam.fpath = fimsettings.settings['Snapshot Directory']
     camera.baslerace.fpath = fimsettings.settings['Configuration Directory']

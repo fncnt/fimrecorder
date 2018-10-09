@@ -237,10 +237,6 @@ def main():
     # pull settings into cam classes and UI
     pullSettings()
 
-
-
-
-
     window.show()
     sys.exit(app.exec_())
 

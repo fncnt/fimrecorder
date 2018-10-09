@@ -4,8 +4,7 @@ import time
 import os
 import errno
 import math
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, Qt
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from vispy import app
 from vispy import gloo
 

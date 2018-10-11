@@ -135,6 +135,7 @@ class QCamera(QObject):
 
         self.camThread.started.connect(self.baslerace.grabFrames)
         self.camThread.start()
+        self.camThread.setPriority(QThread.HighestPriority)
         self.device_name.emit(self.baslerace._cam.GetDeviceInfo().GetModelName())
 
     def stopGrabbing(self):

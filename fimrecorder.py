@@ -18,10 +18,11 @@ window = QMainWindow()
 ui = ui_fimwindow.Ui_fimWindow()
 camera = pyloncom.QCamera()
 disposablecam = pylonproc.QCamSnapshot()
-dcthread = QThread()
 recordingcam = pylonproc.QCamRecorder()
-recthread = QThread()
 previewcam = pylonproc.QCamGLPreview()
+
+dcthread = QThread()
+recthread = QThread()
 pcthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
@@ -59,6 +60,7 @@ def saveSnapshot():
 
     dcthread.started.connect(lambda: disposablecam.startProcessing(camera.frame_grabbed))
     dcthread.start()
+    dcthread.setPriority(QThread.LowPriority)
     disposablecam.img_processed.connect(dcthread.quit)
 
 
@@ -69,6 +71,7 @@ def recordVideo(toggled=bool):
         recordingcam.framecount = 0
 
         recthread.start()
+        recthread.setPriority(QThread.HighestPriority)
         recordingcam.startProcessing(camera.frame_grabbed)
         ui.actionRecord.setText('Cancel')
         ui.progressBar.setMaximum(recordingcam.maxframes)
@@ -208,6 +211,8 @@ def main():
     # set up OpenGL preview
     ui.camWidget.setLayout(QVBoxLayout())
     ui.camWidget.layout().addWidget(previewcam.canvas.native)
+
+    QThread.currentThread().setPriority(QThread.HighestPriority)
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
@@ -225,6 +230,7 @@ def main():
     # Handles interaction between UI and cam stuff
     connectSignals()
     pcthread.start()
+    pcthread.setPriority(QThread.HighPriority)
 
     # more refined logic needed here to improve UX
     if camera.baslerace._cam.IsOpen():

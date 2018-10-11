@@ -57,7 +57,7 @@ class QCamRecorder(QCamProcessor):
 
     def __init__(self):
         super().__init__()
-        self.out = None  # cv2.VideoWriter()
+        self.out = None  # imageio.get_writer(...)
         self.fps = 41.58177  # max. FPS
         self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
         self.framecount = 0
@@ -83,7 +83,7 @@ class QCamRecorder(QCamProcessor):
                     raise
         fimfile = 'FIM_' + currenttime + '.avi'
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
-        self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps)
+        self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
 
         super().startProcessing(img_received)
 
@@ -91,7 +91,9 @@ class QCamRecorder(QCamProcessor):
         try:
             if self.framecount < self.maxframes:
                 self.out.append_data(img)
-                self.status.emit("Writing frame.")
+                # self.status.emit is not a good idea.
+                # Slows down recording using imageio (cv2 works fine, but not on linux).
+                # self.status.emit("Writing frame.")
                 self.frame_written.emit()
                 self.framecount += 1
             else:

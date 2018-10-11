@@ -25,7 +25,7 @@ class SettingsHandler:
                          'Recording Directory': "FIMrecordings",
                          'Configuration Directory': "config",
                          'Default Camera Parameters': "FIM_NodeMap.pfs",
-                         'Video Codec': 'XVID'
+                         'Video Codec': 'libx264'
                          }
         # load settings file on init or create a new one if there is no present
         try:

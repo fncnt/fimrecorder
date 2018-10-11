@@ -199,13 +199,18 @@ class QCamGLPreview(QCamProcessor):
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()
     fpath = ''
+
     def processImg(self, img=numpy.ndarray):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
         fimfile ='FIMsnapshot_' + currenttime + '.png'
-        self.status.emit(fimfile)
-        cv2.imwrite(os.path.join(self.fpath, fimfile), img)
-
+        fpath = os.path.join(self.fpath, fimfile)
+        # we just want to save one frame, so when we receive one, we immediately stop.
+        if not os.path.isfile(fpath):
+            try:
+                imageio.imwrite(fpath, img)
+                self.status.emit(fimfile)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
-
-

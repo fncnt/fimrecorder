@@ -34,6 +34,15 @@ genotypecell = QTableWidgetItem("")
 moreinfocell = QTableWidgetItem("")
 
 
+def bootstrapCam():
+    # more refined logic needed here to improve UX
+    if camera.baslerace._cam.IsOpen():
+        try:
+            camera.grabInBackground()
+        except RuntimeError as e:
+            print(str(e))
+
+
 def QTimeToMsecs(time: QTime):
     msecs = 0
     msecs += time.msec()
@@ -160,7 +169,7 @@ def connectSignals():
 
     # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)
-    ui.actionRefresh.triggered.connect(camera.reset)
+    ui.actionRefresh.triggered.connect(bootstrapCam)
     ui.actionRecord.toggled[bool].connect(recordVideo)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
@@ -205,6 +214,12 @@ def disableUiElements():
     ui.menubar.close()
 
 
+def renderPreview():
+    previewcam.moveToThread(pcthread)
+    pcthread.start()
+    pcthread.setPriority(QThread.HighPriority)
+
+
 def main():
     ui.setupUi(window)
     # set up OpenGL preview
@@ -219,24 +234,18 @@ def main():
     ui.UserDataTable.setItem(0, 1, straincell)
     ui.UserDataTable.setItem(1, 1, genotypecell)
     ui.UserDataTable.setItem(2, 1, moreinfocell)
-
     # Disable UI elements that don't work yet
     disableUiElements()
 
     recordingcam.moveToThread(recthread)
-    previewcam.moveToThread(pcthread)
 
     # Handles interaction between UI and cam stuff
     connectSignals()
-    pcthread.start()
-    pcthread.setPriority(QThread.HighPriority)
-
-    # more refined logic needed here to improve UX
-    if camera.baslerace._cam.IsOpen():
-       camera.grabInBackground()
-    # fakecom specific code:
-    # camera.grabInBackground()
-
+    # Start grabbing if cam is available
+    # handle missing devices and try to reload.
+    bootstrapCam()
+    # render Preview
+    renderPreview()
     # pull settings into cam classes and UI
     pullSettings()
 

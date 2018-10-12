@@ -63,7 +63,7 @@ class QCamWorker(QObject):
             # Error handling.
             print("An exception occurred.")
             print(str(e))
-            self.device_status.emit("No device found.")
+            self.device_status.emit("No device found. Make sure to use a USB3 port.")
             self.device_name.emit("no device")
 
 

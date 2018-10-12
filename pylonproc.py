@@ -204,7 +204,8 @@ class QCamSnapshot(QCamProcessor):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
         fimfile ='FIMsnapshot_' + currenttime + '.png'
         fpath = os.path.join(self.fpath, fimfile)
-        # we just want to save one frame, so when we receive one, we immediately stop.
+        # we just want to save one frame, so when we receive one,
+        # we immediately stop by checking if there is already a file saved.
         if not os.path.isfile(fpath):
             try:
                 imageio.imwrite(fpath, img)

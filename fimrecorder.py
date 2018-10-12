@@ -212,6 +212,8 @@ def connectSignals():
 
 def disableUiElements():
     ui.ExpAutoChkBx.setDisabled(True)
+    ui.actionRefresh.setDisabled(True)
+    ui.actionRefresh.setVisible(False)
     ui.menubar.close()
 
 

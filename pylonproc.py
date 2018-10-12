@@ -163,13 +163,11 @@ class Canvas(app.Canvas):
                               abs((height - width) / 2),
                               width,
                               width)
-        elif width > height:
+        else:
             gloo.set_viewport(abs((width - height) / 2),
                               0,
                               height,
                               height)
-        else:
-            gloo.set_viewport(0, 0, width, height)
 
     def on_draw(self, event):
         gloo.clear('black')

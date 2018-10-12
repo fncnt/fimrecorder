@@ -80,20 +80,25 @@ class QCamWorker(QObject):
         self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
 
         while self._cam.IsGrabbing():
-            self.is_grabbing.emit()
-            # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
-            grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+            try:
+                self.is_grabbing.emit()
+                # Wait for an image and then retrieve it. A timeout of 5000 ms is used.
+                grabresult = self._cam.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
 
-            if grabresult.GrabSucceeded():
-                # Access the image data
-                image = converter.Convert(grabresult)
-                img = image.GetArray()
-                # img = numpy.rot90(img, 1)
-                self.frame_grabbed.emit(img)
-            else:
-                print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
-                self.device_status.emit("Can't grab frames from camera.")
-            grabresult.Release()
+                if grabresult.GrabSucceeded():
+                    # Access the image data
+                    image = converter.Convert(grabresult)
+                    img = image.GetArray()
+                    # img = numpy.rot90(img, 1)
+                    self.frame_grabbed.emit(img)
+                else:
+                    print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
+                    self.device_status.emit("Can't grab frames from camera.")
+                grabresult.Release()
+            except BaseException as e:
+                print("An exception occurred.")
+                print(str(e))
+                self.device_status.emit("The device has been disconnected.")
 
         self.device_status.emit("Stopped frame-grabbing.")
         self.device_stopped.emit()

@@ -35,11 +35,12 @@ moreinfocell = QTableWidgetItem("")
 
 
 def bootstrapCam():
+    camera.__init__()
     # more refined logic needed here to improve UX
     if camera.baslerace._cam.IsOpen():
         try:
             camera.grabInBackground()
-        except RuntimeError as e:
+        except BaseException as e:
             print(str(e))
 
 

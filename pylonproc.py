@@ -62,6 +62,7 @@ class QCamRecorder(QCamProcessor):
         self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
         self.framecount = 0
         self.fimjson = ''
+        self.iscancelled = False
 
     # @pyqtSlot(float)
     def changeFps(self, newfps):
@@ -84,12 +85,12 @@ class QCamRecorder(QCamProcessor):
         fimfile = 'FIM_' + currenttime + '.avi'
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
         self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
-
+        self.iscancelled = False
         super().startProcessing(img_received)
 
     def processImg(self, img=numpy.ndarray):
         try:
-            if self.framecount < self.maxframes:
+            if self.framecount < self.maxframes and not self.iscancelled:
                 self.out.append_data(img)
                 # self.status.emit is not a good idea.
                 # Slows down recording using imageio (cv2 works fine, but not on linux).
@@ -102,6 +103,7 @@ class QCamRecorder(QCamProcessor):
             self.status.emit(str(e))
 
     def cancelProcessing(self):
+        self.iscancelled = True
         super().cancelProcessing()
         self.finishProcessing()
 

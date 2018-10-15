@@ -77,7 +77,7 @@ class QCamWorker(QObject):
 
         # default = 10
         self._cam.MaxNumBuffer = 10
-        self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
+        #self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
 
         while self._cam.IsGrabbing():
             try:

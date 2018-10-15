@@ -35,7 +35,7 @@ moreinfocell = QTableWidgetItem("")
 
 
 def bootstrapCam():
-    camera.__init__()
+    # camera.__init__()
     # more refined logic needed here to improve UX
     if camera.baslerace._cam.IsOpen():
         try:

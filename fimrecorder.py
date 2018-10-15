@@ -182,9 +182,11 @@ def connectSignals():
                                                                     )
                                            )
     recordingcam.frame_written.connect(lambda: ui.progressBar.setValue(recordingcam.framecount))
-    recordingcam.frame_written.connect(lambda: ui.progressBar.setFormat(QTime.fromMSecsSinceStartOfDay(math.floor(recordingcam.framecount /
-                                                                                         recordingcam.fps *
-                                                                                         1000)).toString()))
+    recordingcam.frame_written.connect(lambda: ui.progressBar.setFormat(QTime.fromMSecsSinceStartOfDay(
+        math.floor(recordingcam.framecount /
+                   recordingcam.fps *
+                   1000)).toString()))
+
     app.aboutToQuit.connect(pcthread.exit)
     pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))
     # Connect widgets to cam classes and SettingsHandler
@@ -205,6 +207,7 @@ def connectSignals():
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
     )
     # Doesn't work without lambda? o.ô
+    # TODO: Update Time when fps gets changed
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))
     ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
     app.aboutToQuit.connect(pushSettings)

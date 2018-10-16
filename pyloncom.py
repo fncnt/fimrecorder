@@ -59,6 +59,13 @@ class QCamWorker(QObject):
 
             self.device_status.emit("Loading device configuration")
             pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
+            # Attempt to ensure realtime grabbing
+            # Max == 15 for non-admin users
+            self._cam.GrabLoopThreadPriorityOverride = True
+            self._cam.InternalGrabEngineThreadPriorityOverride = True
+            self._cam.GrabLoopThreadPriority = 30
+            self._cam.InternalGrabEngineThreadPriority = 31
+            self._cam.StreamGrabber.TransferLoopThreadPriority = 32
 
         except genicam.GenericException as e:
             # Error handling.

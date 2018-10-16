@@ -7,3 +7,8 @@
 /venv
 /venv_linux
 /vispy-examples
+/FIMrecordings
+/build
+/dist
+*.spec
+

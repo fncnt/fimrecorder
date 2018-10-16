@@ -243,7 +243,8 @@ def main():
     ui.UserDataTable.setItem(2, 1, moreinfocell)
     # Disable UI elements that don't work yet
     disableUiElements()
-
+    # window.showMaximized()
+    # window.showNormal()
     recordingcam.moveToThread(recthread)
 
     # Handles interaction between UI and cam stuff

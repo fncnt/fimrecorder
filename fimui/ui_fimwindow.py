@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_fimwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.2
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,8 +11,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_fimWindow(object):
     def setupUi(self, fimWindow):
         fimWindow.setObjectName("fimWindow")
-        fimWindow.resize(800, 600)
-        fimWindow.setMinimumSize(QtCore.QSize(800, 600))
+        fimWindow.resize(900, 600)
+        fimWindow.setMinimumSize(QtCore.QSize(900, 600))
         self.centralwidget = QtWidgets.QWidget(fimWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(1)
@@ -178,7 +178,7 @@ class Ui_fimWindow(object):
         self.gridLayout_2.addWidget(self.camWidget, 1, 1, 1, 1)
         fimWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(fimWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 15))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 18))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")

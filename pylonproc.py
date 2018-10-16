@@ -91,11 +91,6 @@ class QCamRecorder(QCamProcessor):
     def processImg(self, img=numpy.ndarray):
         try:
             if self.framecount < self.maxframes and not self.iscancelled:
-                # TODO
-                # using imageio.get_writer().append_data() is extremely expensive
-                # slows down whole thread at high frame rates (41.58177)
-                # speeds up whole thread at low frame rates (10.0)
-                # so maybe there's a discrepancy betweeen framegrabbing and recording
                 self.out.append_data(img)
                 self.frame_written.emit()
                 self.framecount += 1

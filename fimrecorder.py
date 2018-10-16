@@ -81,7 +81,7 @@ def recordVideo(toggled=bool):
         recordingcam.framecount = 0
 
         recthread.start()
-        recthread.setPriority(QThread.HighestPriority)
+        recthread.setPriority(QThread.TimeCriticalPriority)
         recordingcam.startProcessing(camera.frame_grabbed)
         ui.actionRecord.setText('Cancel')
         ui.progressBar.setMaximum(recordingcam.maxframes)
@@ -233,7 +233,7 @@ def main():
     ui.camWidget.setLayout(QVBoxLayout())
     ui.camWidget.layout().addWidget(previewcam.canvas.native)
 
-    QThread.currentThread().setPriority(QThread.HighestPriority)
+    QThread.currentThread().setPriority(QThread.HighPriority)
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)

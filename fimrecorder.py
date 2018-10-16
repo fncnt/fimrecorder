@@ -207,8 +207,9 @@ def connectSignals():
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
     )
     # Doesn't work without lambda? o.ô
-    # TODO: Update Time when fps gets changed
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))
+    # Update recording duration when fps gets changed
+    ui.FpsDSpinBox.valueChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time())))
     ui.RecDurTEdit.timeChanged.connect(lambda val: recordingcam.msecsToFrames(QTimeToMsecs(val)))
     app.aboutToQuit.connect(pushSettings)
 

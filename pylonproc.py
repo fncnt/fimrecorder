@@ -1,4 +1,5 @@
 import imageio
+import cv2
 import numpy
 import time
 import os
@@ -84,7 +85,8 @@ class QCamRecorder(QCamProcessor):
                     raise
         fimfile = 'FIM_' + currenttime + '.avi'
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
-        self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
+        #self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
+        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), cv2.VideoWriter_fourcc(*'XVID'), self.fps, (1200, 1200))
         self.iscancelled = False
         super().startProcessing(img_received)
 
@@ -93,6 +95,7 @@ class QCamRecorder(QCamProcessor):
             if self.framecount < self.maxframes and not self.iscancelled:
                 # imageio is very expensive and slows down grabbing and recording threads.
                 #self.out.append_data(img)
+                self.out.write(img)
                 self.frame_written.emit()
                 self.framecount += 1
             else:
@@ -106,7 +109,8 @@ class QCamRecorder(QCamProcessor):
         self.finishProcessing()
 
     def finishProcessing(self):
-        self.out.close()
+        #self.out.close()
+        self.out.release()
         self.status.emit("Released file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()

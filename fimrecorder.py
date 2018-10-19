@@ -4,10 +4,12 @@ import sys
 import os
 import math
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
-from PyQt5.QtCore import QThread, QTime
+from PyQt5.QtCore import QThread, QTime, pyqtSlot
 from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
+from pypylon.genicam import IEnumeration
+import pypylon
 import settingshandler
 
 # TODO: make this a class Fim()
@@ -53,16 +55,30 @@ def QTimeToMsecs(time: QTime):
     return msecs
 
 
-# Doesn't work yet
+# little helper so we can safely disconnect is_grabbing from setting ExpTimeSpinBox
+# without disconnecting all slots.
+@pyqtSlot()
+def updateExpTimeSpinbox():
+    ui.ExpTimeSpinBox.setValue(camera.baslerace._cam.ExposureTime.GetValue())
+
+
 def toggleExposureAuto(on: bool):
     if on:
-        # Apparantly setattr() doesn't do any type conversion as = does?
-        # camera.baslerace.setCamAttr('ExposureAuto', 'ExposureAuto_Continuous')
-        camera.baslerace._cam.ExposureAuto = 'ExposureAuto_Continuous'
-        # camera.baslerace._cam.ExposureAuto.SetValue('ExposureAuto_Continuous')
+        camera.baslerace.setCamAttr('ExposureAuto', 'Continuous')
+        camera.is_grabbing.connect(updateExpTimeSpinbox)
+        ui.ExpTimeSpinBox.valueChanged[int].disconnect()
     else:
-        # camera.baslerace.setCamAttr('ExposureAuto', 'ExposureAuto_Off')
-        camera.baslerace._cam.ExposureAuto = 'ExposureAuto_Off'
+        camera.baslerace.setCamAttr('ExposureAuto', 'Off')
+        # copied from connectSignals()
+        # better remove duplicate code
+        # Replace lambda by functools.partial?
+        camera.is_grabbing.disconnect(updateExpTimeSpinbox)
+        ui.ExpTimeSpinBox.valueChanged[int].connect(
+            lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
+        )
+        ui.ExpTimeSpinBox.valueChanged[int].connect(
+            lambda val: fimsettings.parameters.__setitem__('Exposure Time', val)
+        )
 
 
 def saveSnapshot():
@@ -215,7 +231,7 @@ def connectSignals():
 
 
 def disableUiElements():
-    ui.ExpAutoChkBx.setDisabled(True)
+    # ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionRefresh.setVisible(False)
     ui.menubar.close()

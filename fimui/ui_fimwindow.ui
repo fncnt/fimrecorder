@@ -57,7 +57,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -154,7 +154,7 @@
            <bool>true</bool>
           </attribute>
           <attribute name="verticalHeaderVisible">
-           <bool>true</bool>
+           <bool>false</bool>
           </attribute>
           <attribute name="verticalHeaderStretchLastSection">
            <bool>true</bool>
@@ -328,6 +328,9 @@
         </item>
         <item row="3" column="2">
          <widget class="QDoubleSpinBox" name="GammaDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="prefix">
            <string/>
           </property>
@@ -576,6 +579,22 @@
     <hint type="destinationlabel">
      <x>166</x>
      <y>117</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GammaChkBx</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>GammaDSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>285</x>
+     <y>148</y>
     </hint>
    </hints>
   </connection>

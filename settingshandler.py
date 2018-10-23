@@ -14,6 +14,7 @@ class SettingsHandler:
         self.parameters = {'Recording Duration': "00:05:00.0",
                            'Frame Rate': 41.58177,
                            'Exposure Time': 20000,
+                           'Gamma Correction': 1.00000,
                            'User Data': {'Species': "",
                                          'Strain': "",
                                          'Genotype': "",

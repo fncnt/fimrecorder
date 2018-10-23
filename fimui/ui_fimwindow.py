@@ -111,7 +111,7 @@ class Ui_fimWindow(object):
         self.UserDataTable.setItem(3, 0, item)
         self.UserDataTable.horizontalHeader().setVisible(False)
         self.UserDataTable.horizontalHeader().setStretchLastSection(True)
-        self.UserDataTable.verticalHeader().setVisible(True)
+        self.UserDataTable.verticalHeader().setVisible(False)
         self.UserDataTable.verticalHeader().setStretchLastSection(True)
         self.gridLayout_3.addWidget(self.UserDataTable, 2, 0, 1, 2)
         self.tabWidget.addTab(self.tabMeasurement, "")
@@ -151,6 +151,7 @@ class Ui_fimWindow(object):
         self.GammaChkBx.setObjectName("GammaChkBx")
         self.gridLayout.addWidget(self.GammaChkBx, 3, 0, 1, 1)
         self.GammaDSpinBox = QtWidgets.QDoubleSpinBox(self.tabCam)
+        self.GammaDSpinBox.setEnabled(False)
         self.GammaDSpinBox.setPrefix("")
         self.GammaDSpinBox.setDecimals(5)
         self.GammaDSpinBox.setMaximum(3.99998)
@@ -246,10 +247,11 @@ class Ui_fimWindow(object):
         self.toolBar.addAction(self.actionSnapshot)
 
         self.retranslateUi(fimWindow)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.actionSnapshot.triggered.connect(self.statusbar.update)
         self.ExpAutoChkBx.toggled['bool'].connect(self.ExpTimeSpinBox.setDisabled)
         self.FpsEnableChkBx.toggled['bool'].connect(self.FpsDSpinBox.setEnabled)
+        self.GammaChkBx.toggled['bool'].connect(self.GammaDSpinBox.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(fimWindow)
 
     def retranslateUi(self, fimWindow):

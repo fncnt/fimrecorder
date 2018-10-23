@@ -115,11 +115,12 @@ def recordVideo(toggled=bool):
         ui.progressBar.setMaximum(100)
         ui.progressBar.setMinimum(0)
 
-
+    # TODO: use iterator?
 def pullSettings():
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
     # if ui.FpsEnableChkBx.isChecked():
     ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
+    ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     # WIP not really nice that way
     speciescell.setText(fimsettings.parameters['User Data']['Species'])
@@ -139,6 +140,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Exposure Time'] = ui.ExpTimeSpinBox.value()
     # if ui.FpsEnableChkBx.isChecked():
     fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
+    fimsettings.parameters['Gamma Correction'] = ui.GammaDSpinBox.value()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
     fimsettings.parameters['User Data']['Strain'] = straincell.text()
@@ -221,6 +223,9 @@ def connectSignals():
     )
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
+    )
+    ui.GammaDSpinBox.valueChanged[float].connect(
+        lambda val: camera.baslerace.setCamAttr('Gamma', val)
     )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))

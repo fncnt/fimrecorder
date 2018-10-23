@@ -218,8 +218,7 @@ def connectSignals():
     # camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
     ui.ExpAutoChkBx.toggled[bool].connect(toggleExposureAuto)
     ui.FpsEnableChkBx.toggled[bool].connect(
-        # lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable	', int(val))
-        lambda val: camera.baslerace._cam.AcquisitionFrameRateEnable.SetValue(int(val))
+        lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', int(val))
     )
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)

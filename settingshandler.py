@@ -1,10 +1,13 @@
 import json
 import os
 import errno
+import logging
 from datetime import timezone, datetime
 # Handles loading and saving of settings and parameters related to measurements and UI
 # Parameters of Basler Ace cameras are dealt with in pyloncom.py
-#
+
+logger = logging.getLogger(__name__)
+
 
 class SettingsHandler:
 
@@ -25,6 +28,7 @@ class SettingsHandler:
         self.settings = {'Snapshot Directory': "snapshots",
                          'Recording Directory': "FIMrecordings",
                          'Configuration Directory': "config",
+                         'Logging Configuration': "loggingconf.json",
                          'Default Camera Parameters': "FIM_NodeMap.pfs",
                          'Video Codec': 'libx264'
                          }
@@ -35,8 +39,8 @@ class SettingsHandler:
             self.createDir(self.settings['Recording Directory'])
             self.createDir(self.settings['Configuration Directory'])
         except Exception as e:
-            print(str(e))
-            print("Creating new settings.json file")
+            logger.exception(str(e))
+            logger.debug("Creating new settings.json file")
             self.saveSettings()
 
     def createDir(self, path):
@@ -63,7 +67,7 @@ class SettingsHandler:
                 dumpling = dict(Settings=self.settings, Parameters=self.parameters)
             json.dump(dumpling, file, sort_keys=True, indent=4)
         except Exception as e:
-            print(str(e))
+            logger.exception(str(e))
         finally:
             file.close()
         return 0
@@ -80,7 +84,7 @@ class SettingsHandler:
                 try:
                     self.settings = {**self.settings, **dumpling['Settings']}
                 except Exception as e:
-                    print("There is no key ", str(e), ".")
+                    logger.exception("There is no key ", str(e), ".")
             self.parameters = {**self.parameters, **dumpling['Parameters']}
 
         except Exception as e:

@@ -2,6 +2,8 @@
 *.avi
 *.pyc
 *.xml
+*.log
+*.log.*
 /.idea
 */__pycache__
 /venv

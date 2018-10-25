@@ -5,8 +5,11 @@ import time
 import os
 import errno
 import math
+import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
-from vispy import app, gloo, util
+from vispy import app, gloo
+
+logger = logging.getLogger(__name__)
 
 
 class QCamProcessor(QObject):
@@ -38,7 +41,7 @@ class QCamProcessor(QObject):
         try:
             self.is_processing[numpy.ndarray].disconnect(self.processImg)
         except Exception as e:
-            print(str(e))
+            logger.exception(str(e))
 
     #clean up processing, i.e. save file etc.
     def finishProcessing(self):
@@ -69,10 +72,12 @@ class QCamRecorder(QCamProcessor):
     def changeFps(self, newfps):
         self.fps = newfps
         self.status.emit("Will record at " + str(self.fps) + " fps.")
+        logger.debug("Will record at " + str(self.fps) + " fps.")
 
     def msecsToFrames(self, mseconds):
         self.maxframes = math.floor(self.fps * mseconds / 1000)  # Rounding down for consistency
         self.status.emit("Will record " + str(self.maxframes) + " frames.")
+        logger.debug("Will record " + str(self.maxframes) + " frames.")
 
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
@@ -101,7 +106,7 @@ class QCamRecorder(QCamProcessor):
             else:
                 self.timelimit_reached.emit()
         except Exception as e:
-            self.status.emit(str(e))
+            logger.exception(str(e))
 
     def cancelProcessing(self):
         self.iscancelled = True
@@ -112,6 +117,7 @@ class QCamRecorder(QCamProcessor):
         #self.out.close()
         self.out.release()
         self.status.emit("Released file.")
+        logger.debug("Released file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
 

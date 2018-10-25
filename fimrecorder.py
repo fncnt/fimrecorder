@@ -3,14 +3,14 @@
 import sys
 import os
 import math
+import json
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtCore import QThread, QTime, pyqtSlot
 from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
-from pypylon.genicam import IEnumeration
-import pypylon
 import settingshandler
+import logging.config
 
 # TODO: make this a class Fim()
 # TODO: and create an object in main for readability
@@ -28,6 +28,13 @@ recthread = QThread()
 pcthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
+
+with open(os.path.join(fimsettings.settings['Configuration Directory'],
+                       fimsettings.settings['Logging Configuration'])) as f:
+    logging.config.dictConfig(json.load(f))
+logger = logging.getLogger(__name__)
+
+
 ui.selectparamfile = QFileDialog()
 
 speciescell = QTableWidgetItem("")
@@ -43,8 +50,7 @@ def bootstrapCam():
         try:
             camera.grabInBackground()
         except BaseException as e:
-            print(str(e))
-
+            logger.exception(str(e))
 
 def QTimeToMsecs(time: QTime):
     msecs = 0
@@ -115,7 +121,8 @@ def recordVideo(toggled=bool):
         ui.progressBar.setMaximum(100)
         ui.progressBar.setMinimum(0)
 
-    # TODO: use iterator?
+
+# TODO: use iterator?
 def pullSettings():
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
     # if ui.FpsEnableChkBx.isChecked():
@@ -162,7 +169,7 @@ def openParamFile():
         fimsettings.loadSettings(fpath, fname, True)
         pullSettings()
     except Exception as e:
-        print(str(e))
+        logger.exception(str(e))
 
 # TODO: Better error handling
 def writeParamFile():
@@ -175,16 +182,16 @@ def writeParamFile():
         fname = os.path.basename(completepath)
         fimsettings.saveSettings(fpath, fname, True)
     except Exception as e:
-        print(str(e))
+        logger.exception(str(e))
 
 
 def connectSignals():
     # Print messages to statusbar and console
     camera.device_status[str].connect(ui.statusbar.showMessage)
-    camera.device_status[str].connect(print)
+    #camera.device_status[str].connect(print)
     camera.device_name[str].connect(lambda val: ui.camLabel.setText("Preview (" + val + "):"))
-    disposablecam.status[str].connect(print)
-    recordingcam.status[str].connect(print)
+    #disposablecam.status[str].connect(print)
+    #recordingcam.status[str].connect(print)
 
     # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)

@@ -2,7 +2,10 @@ from pypylon import pylon
 from pypylon import genicam
 import numpy
 import os
+import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
+
+logger = logging.getLogger(__name__)
 
 
 class QCamWorker(QObject):
@@ -39,8 +42,10 @@ class QCamWorker(QObject):
             getattr(self._cam, attribute).SetValue(value)
             # self.device_status.emit(attribute + ": " + str(value))
             self.device_status.emit(attribute + ": " + getattr(self._cam, attribute).ToString())
+            logger.debug(attribute + ": " + getattr(self._cam, attribute).ToString())
         except Exception as e:
-            self.device_status.emit(str(e))
+            #self.device_status.emit(str(e))
+            logger.exception(str(e))
 
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
@@ -54,11 +59,12 @@ class QCamWorker(QObject):
                 self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
                 self._cam.Open()
             # Print the model name of the camera.
-            print("Using device ", self._cam.GetDeviceInfo().GetModelName())
+            logger.debug("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self.device_name.emit(self._cam.GetDeviceInfo().GetModelName())
 
             self.device_status.emit("Loading device configuration")
+            logger.debug("Loading device configuration")
             pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
             # Attempt to ensure realtime grabbing
             # Max == 15 for non-admin users
@@ -70,8 +76,8 @@ class QCamWorker(QObject):
 
         except genicam.GenericException as e:
             # Error handling.
-            print("An exception occurred.")
-            print(str(e))
+            logger.exception(str(e))
+            logger.debug("No device found. Make sure to use a USB3 port.")
             self.device_status.emit("No device found. Make sure to use a USB3 port.")
             self.device_name.emit("no device")
 
@@ -101,12 +107,13 @@ class QCamWorker(QObject):
                     # img = numpy.rot90(img, 1)
                     self.frame_grabbed.emit(img)
                 else:
-                    print("Error: ", grabresult.ErrorCode, grabresult.ErrorDescription)
+                    logger.error("Error: " + grabresult.ErrorCode + grabresult.ErrorDescription)
+                    logger.debug("Can't grab frames from camera.")
                     self.device_status.emit("Can't grab frames from camera.")
                 grabresult.Release()
             except BaseException as e:
-                print("An exception occurred.")
-                print(str(e))
+                logger.exception(str(e))
+                logger.debug("The device has been disconnected.")
                 self.device_status.emit("The device has been disconnected.")
 
         self.device_status.emit("Stopped frame-grabbing.")

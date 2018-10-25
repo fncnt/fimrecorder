@@ -8,7 +8,7 @@ a = Analysis(['fimrecorder.py'],
              binaries=[('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\ProducerU3V.cti', '.'),
                        ('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\PylonUsb_MD_VC120_V5_0_TL.dll', '.'),
                        ('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\uxapi_v10.dll', '.')],
-             datas=[('config/FIM_NodeMap.pfs', 'config')
+             datas=[('config/FIM_NodeMap.pfs', 'config'),
                     ('config/loggingconf.json', 'config')],
              hiddenimports=["vispy.ext._bundled.six", "vispy.app.backends._pyqt5"],
              hookspath=[],

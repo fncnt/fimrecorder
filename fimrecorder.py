@@ -255,6 +255,7 @@ def renderPreview():
 
 
 def main():
+    logger.debug("Starting new session.")
     ui.setupUi(window)
     # set up OpenGL preview
     ui.camWidget.setLayout(QVBoxLayout())

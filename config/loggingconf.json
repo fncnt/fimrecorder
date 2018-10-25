@@ -25,24 +25,24 @@
   },
   "loggers": {
     "fimrecorder": {
-      "handlers": ["logfile"],
+      "handlers": [],
       "level": "DEBUG"
     },
     "pyloncom": {
-      "handlers": ["logfile"],
+      "handlers": [],
       "level": "DEBUG"
     },
     "pylonproc": {
-      "handlers": ["logfile"],
+      "handlers": [],
       "level": "DEBUG"
     },
     "settingshandler": {
-      "handlers": ["logfile"],
+      "handlers": [],
       "level": "DEBUG"
     }
   },
   "root": {
-    "handlers": ["console"],
+    "handlers": ["console", "logfile"],
     "level": "DEBUG"
   }
 }

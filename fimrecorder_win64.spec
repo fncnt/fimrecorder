@@ -1,13 +1,21 @@
 # -*- mode: python -*-
 
+# Pyinstallers dependency analysis will not detect that pylons TL DLLs are
+# required (since they are searched and loaded from machine code at runtime).
+# Consequently it would not include them in the archive. This is amended by
+# simply adding all DLLs from the pypylon directory to the list of binaries.
+
+import pypylon
+import pathlib
+pypylon_dir = pathlib.Path(pypylon.__file__).parent
+pylon_dlls = [(str(dll), '.') for dll in pypylon_dir.glob('*.dll')]
+
 block_cipher = None
 
 
 a = Analysis(['fimrecorder.py'],
              pathex=['C:\\Users\\FIM\\Desktop\\FIM\\fimrecorder'],
-             binaries=[('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\ProducerU3V.cti', '.'),
-                       ('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\PylonUsb_MD_VC120_V5_0_TL.dll', '.'),
-                       ('C:\\Program Files\\Basler\\pylon 5\\Runtime\\x64\\uxapi_v10.dll', '.')],
+             binaries=pylon_dlls,        # make sure pylons TL DLLs are added
              datas=[('config/FIM_NodeMap.pfs', 'config'),
                     ('config/loggingconf.json', 'config')],
              hiddenimports=["vispy.ext._bundled.six", "vispy.app.backends._pyqt5"],

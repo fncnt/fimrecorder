@@ -21,6 +21,8 @@ class SettingsHandler:
                            'User Data': {'Species': "",
                                          'Strain': "",
                                          'Genotype': "",
+                                         'Experiment': "",
+                                         'Test Conditions': "",
                                          'More Info': ""
                                          }
                            }
@@ -85,7 +87,10 @@ class SettingsHandler:
                     self.settings = {**self.settings, **dumpling['Settings']}
                 except Exception as e:
                     logger.exception("There is no key ", str(e), ".")
-            self.parameters = {**self.parameters, **dumpling['Parameters']}
+            try:
+                self.parameters = {**self.parameters, **dumpling['Parameters']}
+            except Exception as e:
+                logger.exception("There is no key ", str(e), ".")
 
         except Exception as e:
             print(str(e))

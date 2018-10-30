@@ -1,15 +1,17 @@
 {
     "Parameters": {
-        "Date": "2018-10-25 14:16:23.895580+02:00",
+        "Date": "2018-10-30 13:30:46.221584+01:00",
         "Exposure Time": 20000,
         "Frame Rate": 41.58177,
         "Gamma Correction": 1.0,
         "Recording Duration": "00:05:00",
         "User Data": {
+            "Experiment": "",
             "Genotype": "",
             "More Info": "",
-            "Species": "",
-            "Strain": ""
+            "Species": "Drosophila melanogaster",
+            "Strain": "test",
+            "Test Conditions": ""
         }
     },
     "Settings": {

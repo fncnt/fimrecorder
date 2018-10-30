@@ -36,10 +36,12 @@ logger = logging.getLogger(__name__)
 
 
 ui.selectparamfile = QFileDialog()
-
+# TODO: use list and/or iterator for automation
 speciescell = QTableWidgetItem("")
 straincell = QTableWidgetItem("")
 genotypecell = QTableWidgetItem("")
+experimentcell = QTableWidgetItem("")
+testcondcell = QTableWidgetItem("")
 moreinfocell = QTableWidgetItem("")
 
 
@@ -130,9 +132,18 @@ def pullSettings():
     ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     # WIP not really nice that way
+    # use list/iterator and apply try-blocks to each cell
     speciescell.setText(fimsettings.parameters['User Data']['Species'])
     straincell.setText(fimsettings.parameters['User Data']['Strain'])
     genotypecell.setText(fimsettings.parameters['User Data']['Genotype'])
+    try:
+        experimentcell.setText(fimsettings.parameters['User Data']['Experiment'])
+    except KeyError as ke:
+        logger.error("Missing user data key " + str(ke) + ". Leaving corresponding field empty.")
+    try:
+        testcondcell.setText(fimsettings.parameters['User Data']['Test Conditions'])
+    except KeyError as ke:
+        logger.error("Missing user data key " + str(ke) + ". Leaving corresponding field empty.")
     moreinfocell.setText(fimsettings.parameters['User Data']['More Info'])
 
     recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time()))
@@ -152,6 +163,8 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
     fimsettings.parameters['User Data']['Strain'] = straincell.text()
     fimsettings.parameters['User Data']['Genotype'] = genotypecell.text()
+    fimsettings.parameters['User Data']['Experiment'] = experimentcell.text()
+    fimsettings.parameters['User Data']['Test Conditions'] = testcondcell.text()
     fimsettings.parameters['User Data']['More Info'] = moreinfocell.text()
 
     # temporarily
@@ -265,10 +278,14 @@ def main():
     # for some reason QT Designer doesn't apply this on its own
     # 1 = MinuteSection
     ui.RecDurTEdit.setCurrentSectionIndex(1)
+    # TODO: don't hardcode this. Use list and/or iterator
     ui.UserDataTable.setItem(-1, 1, speciescell)
     ui.UserDataTable.setItem(0, 1, straincell)
     ui.UserDataTable.setItem(1, 1, genotypecell)
-    ui.UserDataTable.setItem(2, 1, moreinfocell)
+    ui.UserDataTable.setItem(2, 1, experimentcell)
+    ui.UserDataTable.setItem(3, 1, testcondcell)
+    ui.UserDataTable.setItem(4, 1, moreinfocell)
+
     # Disable UI elements that don't work yet
     disableUiElements()
     # window.showMaximized()

@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 ui.selectparamfile = QFileDialog()
+ui.selectparamfile.setWindowFilePath(os.path.dirname(fimsettings.settings['Recording Directory']))
 # TODO: use list and/or iterator for automation
 speciescell = QTableWidgetItem("")
 straincell = QTableWidgetItem("")

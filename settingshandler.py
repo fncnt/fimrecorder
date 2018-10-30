@@ -59,19 +59,22 @@ class SettingsHandler:
     # such as default file paths
     def saveSettings(self, fpath="", fname="settings.json", onlyparameters=False):
         # We don't want the user to specify the date.
-        self.parameters['Date'] = str(datetime.now(timezone.utc).astimezone())
-        try:
-            file = open(os.path.join(fpath, fname), 'w')
-            #dumpling = None
-            if onlyparameters:
-                dumpling = dict(Parameters=self.parameters)
-            else:
-                dumpling = dict(Settings=self.settings, Parameters=self.parameters)
-            json.dump(dumpling, file, sort_keys=True, indent=4)
-        except Exception as e:
-            logger.exception(str(e))
-        finally:
-            file.close()
+        if not fname == "":
+            self.parameters['Date'] = str(datetime.now(timezone.utc).astimezone())
+            try:
+                file = open(os.path.join(fpath, fname), 'w')
+                #dumpling = None
+                if onlyparameters:
+                    dumpling = dict(Parameters=self.parameters)
+                else:
+                    dumpling = dict(Settings=self.settings, Parameters=self.parameters)
+                json.dump(dumpling, file, sort_keys=True, indent=4)
+            except Exception as e:
+                logger.exception(str(e))
+            finally:
+                file.close()
+        else:
+            logger.debug("No file selected for parameter saving.")
         return 0
 
     # call on startup of application
@@ -79,23 +82,26 @@ class SettingsHandler:
     # see https://www.python.org/dev/peps/pep-0448/ for merging dicts
     # This way incomplete json files cause no problems
     def loadSettings(self, fpath="", fname="settings.json", onlyparameters=False):
-        try:
-            file = open(os.path.join(fpath, fname), 'r')
-            dumpling = json.load(file)
-            if not onlyparameters:
+        if not fname == "":
+            try:
+                file = open(os.path.join(fpath, fname), 'r')
+                dumpling = json.load(file)
+                if not onlyparameters:
+                    try:
+                        self.settings = {**self.settings, **dumpling['Settings']}
+                    except Exception as e:
+                        logger.exception("There is no key ", str(e), ".")
                 try:
-                    self.settings = {**self.settings, **dumpling['Settings']}
+                    self.parameters = {**self.parameters, **dumpling['Parameters']}
                 except Exception as e:
                     logger.exception("There is no key ", str(e), ".")
-            try:
-                self.parameters = {**self.parameters, **dumpling['Parameters']}
-            except Exception as e:
-                logger.exception("There is no key ", str(e), ".")
 
-        except Exception as e:
-            print(str(e))
-        finally:
-            file.close()
+            except Exception as e:
+                print(str(e))
+            finally:
+                file.close()
+        else:
+            logger.debug("No file selected for parameter loading.")
         return 0
 
     def __str__(self):

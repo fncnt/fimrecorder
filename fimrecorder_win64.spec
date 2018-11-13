@@ -6,16 +6,19 @@
 # simply adding all DLLs from the pypylon directory to the list of binaries.
 
 import pypylon
+import cv2
 import pathlib
 pypylon_dir = pathlib.Path(pypylon.__file__).parent
 pylon_dlls = [(str(dll), '.') for dll in pypylon_dir.glob('*.dll')]
+cv2_dir = pathlib.Path(cv2.__file__).parent
+cv2_dlls = [(str(dll), '.') for dll in cv2_dir.glob('*.dll')]
 
 block_cipher = None
 
 
 a = Analysis(['fimrecorder.py'],
              pathex=['C:\\Users\\FIM\\Desktop\\FIM\\fimrecorder'],
-             binaries=pylon_dlls,        # make sure pylons TL DLLs are added
+             binaries=pylon_dlls + cv2_dlls,        # make sure pylons TL DLLs are added
              datas=[('config/FIM_NodeMap.pfs', 'config'),
                     ('config/loggingconf.json', 'config')],
              hiddenimports=["vispy.ext._bundled.six", "vispy.app.backends._pyqt5"],

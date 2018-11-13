@@ -114,8 +114,8 @@ def recordVideo(toggled=bool):
         recordingcam.cancelProcessing()
         # Does terminate without blocking main thread.
         # Also it's actually not recommended.
-        # recthread.terminate()
-        recthread.quit()
+        recthread.terminate()
+        # recthread.quit()
         # recthread.exit(0)
         # recthread.wait(100)
         # recthread.wait(100)

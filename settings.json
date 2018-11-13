@@ -1,10 +1,10 @@
 {
     "Parameters": {
-        "Date": "2018-11-13 13:24:39.512629+01:00",
+        "Date": "2018-11-13 14:29:39.168585+01:00",
         "Exposure Time": 20000,
         "Frame Rate": 41.58177,
         "Gamma Correction": 1.0,
-        "Recording Duration": "00:05:00",
+        "Recording Duration": "00:00:20",
         "User Data": {
             "Experiment": "",
             "Genotype": "",
@@ -17,7 +17,6 @@
     "Settings": {
         "Configuration Directory": "config",
         "Default Camera Parameters": "FIM_NodeMap.pfs",
-        "Logginf Configuration": "loggingconf.json",
         "Logging Configuration": "loggingconf.json",
         "Recording Directory": "FIMrecordings",
         "Snapshot Directory": "snapshots",

@@ -105,7 +105,7 @@ class QCamRecorder(QCamProcessor):
                 self.out.write(img)
                 self.frame_written.emit()
                 self.framecount += 1
-            else:
+            elif self.framecount >= self.maxframes:
                 self.timelimit_reached.emit()
         except Exception as e:
             logger.exception(str(e))

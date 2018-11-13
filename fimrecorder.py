@@ -132,7 +132,9 @@ def recordVideo(toggled=bool):
 def pullSettings():
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
     # if ui.FpsEnableChkBx.isChecked():
+    camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', 1)
     ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
+    #camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', 0)
     ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     # WIP not really nice that way
@@ -241,9 +243,9 @@ def connectSignals():
     )
     # camera.is_grabbing.connect(lambda: ui.statusbar.showMessage("grabbing..."))
     ui.ExpAutoChkBx.toggled[bool].connect(toggleExposureAuto)
-    ui.FpsEnableChkBx.toggled[bool].connect(
-        lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', int(val))
-    )
+    #ui.FpsEnableChkBx.toggled[bool].connect(
+    #    lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', int(val))
+    #)
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
     )

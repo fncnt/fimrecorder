@@ -1,10 +1,10 @@
 {
     "Parameters": {
-        "Date": "2018-10-30 13:44:27.373353+01:00",
+        "Date": "2018-11-13 12:17:37.443175+01:00",
         "Exposure Time": 20000,
         "Frame Rate": 41.58177,
         "Gamma Correction": 1.0,
-        "Recording Duration": "00:05:00",
+        "Recording Duration": "00:00:05",
         "User Data": {
             "Experiment": "",
             "Genotype": "",
@@ -21,6 +21,6 @@
         "Logging Configuration": "loggingconf.json",
         "Recording Directory": "FIMrecordings",
         "Snapshot Directory": "snapshots",
-        "Video Codec": "libx264"
+        "Video Codec": "XVID"
     }
 }

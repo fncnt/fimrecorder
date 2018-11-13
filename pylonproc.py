@@ -57,10 +57,11 @@ class QCamRecorder(QCamProcessor):
 
     fpath = ''
 
-    codec = 'libx264'
+    codec = 'XVID'
 
     def __init__(self):
         super().__init__()
+        self.fourcc = None
         self.out = None  # imageio.get_writer(...)
         self.fps = 41.58177  # max. FPS
         self.maxframes = 100  # arbitrary so that we record at least something for testing purposes
@@ -90,8 +91,9 @@ class QCamRecorder(QCamProcessor):
                     raise
         fimfile = 'FIM_' + currenttime + '.avi'
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
+        self.fourcc = cv2.VideoWriter_fourcc(*self.codec)
         #self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
-        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), cv2.VideoWriter_fourcc(*'XVID'), self.fps, (1200, 1200))
+        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, (1200, 1200), False)
         self.iscancelled = False
         super().startProcessing(img_received)
 

@@ -109,6 +109,8 @@ def recordVideo(toggled=bool):
         recthread.setPriority(QThread.TimeCriticalPriority)
         recordingcam.startProcessing(camera.frame_grabbed)
         ui.actionRecord.setText('Cancel')
+        ui.progressBar.setMinimum(0)
+        ui.progressBar.setValue(0)
         ui.progressBar.setMaximum(recordingcam.maxframes)
     else:
         recordingcam.cancelProcessing()
@@ -123,6 +125,7 @@ def recordVideo(toggled=bool):
         ui.progressBar.setValue(0)
         ui.progressBar.setMaximum(100)
         ui.progressBar.setMinimum(0)
+        ui.progressBar.setFormat("")
 
 
 # TODO: use iterator?

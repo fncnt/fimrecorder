@@ -29,7 +29,7 @@ RemoveParameterLimitSelector	Gain
 RemoveParameterLimit	0
 RemoveParameterLimitSelector	Gain
 ExposureMode	Timed
-ExposureTime	20000.0
+ExposureTime	3000.0
 AcquisitionBurstFrameCount	1
 TriggerSelector	FrameBurstStart
 TriggerMode	Off
@@ -47,7 +47,7 @@ TriggerSelector	FrameStart
 TriggerActivation	RisingEdge
 TriggerSelector	FrameStart
 TriggerDelay	0
-AcquisitionFrameRateEnable	1
+AcquisitionFrameRateEnable	0
 AcquisitionFrameRate	100.00000
 DeviceLinkSelector	0
 DeviceLinkThroughputLimitMode	On

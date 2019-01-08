@@ -68,6 +68,7 @@ class QCamRecorder(QCamProcessor):
         self.framecount = 0
         self.fimjson = ''
         self.iscancelled = False
+        self.resolution = (1200, 1200)
 
     # @pyqtSlot(float)
     def changeFps(self, newfps):
@@ -93,7 +94,7 @@ class QCamRecorder(QCamProcessor):
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
         self.fourcc = cv2.VideoWriter_fourcc(*self.codec)
         #self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
-        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, (1200, 1200), False)
+        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, self.resolution, False)
         self.iscancelled = False
         super().startProcessing(img_received)
 

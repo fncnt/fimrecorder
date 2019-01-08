@@ -294,7 +294,7 @@ def main():
 
     # Disable UI elements that don't work yet
     disableUiElements()
-    # window.showMaximized()
+    window.showMaximized()
     # window.showNormal()
     recordingcam.moveToThread(recthread)
 

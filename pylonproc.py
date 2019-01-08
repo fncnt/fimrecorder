@@ -145,17 +145,20 @@ class Canvas(app.Canvas):
                 {
                     gl_FragColor = texture2D(texture, v_texcoord);
                     
-                    float mouse_dist = distance(v_texcoord, mousecoord);
-                    
-                    //Draw the outline of the glass
-                    if (mouse_dist < 0.205)
-                        gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
-                    //Draw a zoomed-in version of the texture
-                    if (mouse_dist < 0.2)
-                        gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / 2.0);
+                    if (mousezoom > 1.0)
+                    {
+                        float mouse_dist = distance(v_texcoord, mousecoord);
+                        //Draw the outline of the glass
+                        if (mouse_dist < 0.205)
+                            gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
+                        //Draw a zoomed-in version of the texture
+                        if (mouse_dist < 0.2)
+                            gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / mousezoom);
+                    }
                 }
             """
     currentframe = None
+    mousezoom = 1.0
 
     def __init__(self):
         app.Canvas.__init__(self)
@@ -192,6 +195,7 @@ class Canvas(app.Canvas):
         gloo.clear('black')
         #self.image['texture'][...] = self.currentframe
         self.image['texture'] = self.currentframe
+        self.image['mousezoom'] = self.mousezoom
         self.image.draw('triangle_strip')
         self.update()
 
@@ -203,9 +207,10 @@ class Canvas(app.Canvas):
         self.image['mousecoord'] = (x/self.size[0], y/self.size[1])
         self.on_draw(event)
 
-    # def on_mouse_wheel(self, event):
-    #    _, delta = event.delta
-    #    self.image['mousezoom'] = delta
+    def on_mouse_wheel(self, event):
+        _, delta = event.delta
+        if 1.0 < self.mousezoom + delta <= 5.0:
+            self.mousezoom += delta
 
 
 class QCamGLPreview(QCamProcessor):

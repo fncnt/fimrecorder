@@ -104,7 +104,7 @@ def recordVideo(toggled=bool):
     if toggled:
         #make sure framecount is zero so we record everything we want:
         recordingcam.framecount = 0
-        recordingcam.resolution = (camera.baslerace.Width, camera.baslerace.Height)
+        recordingcam.resolution = (camera.baslerace._cam.Width.Value, camera.baslerace._cam.Height.Value)
         recthread.start()
         recthread.setPriority(QThread.TimeCriticalPriority)
         recordingcam.startProcessing(camera.frame_grabbed)

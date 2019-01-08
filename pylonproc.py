@@ -148,11 +148,11 @@ class Canvas(app.Canvas):
                     float mouse_dist = distance(v_texcoord, mousecoord);
                     
                     //Draw the outline of the glass
-                    if (mouse_dist < 0.31)
+                    if (mouse_dist < 0.205)
                         gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
                     //Draw a zoomed-in version of the texture
-                    if (mouse_dist < 0.3)
-                        gl_FragColor = texture2D(v_texture, (v_texcoord + mousecoord) / 2.0);
+                    if (mouse_dist < 0.2)
+                        gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / 2.0);
                 }
             """
     currentframe = None

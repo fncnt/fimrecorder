@@ -138,15 +138,21 @@ class Canvas(app.Canvas):
             """
     fragment = """
                 uniform sampler2D texture;
+                uniform vec2 mousecoord;
+                uniform float mousezoom;
                 varying vec2 v_texcoord;
                 void main()
                 {
                     gl_FragColor = texture2D(texture, v_texcoord);
-
-                    // HACK: the image is in BGR instead of RGB.
-                    float temp = gl_FragColor.r;
-                    gl_FragColor.r = gl_FragColor.b;
-                    gl_FragColor.b = temp;
+                    
+                    float mouse_dist = distance(v_texcoord, mousecoord);
+                    
+                    //Draw the outline of the glass
+                    if (mouse_dist < 0.31)
+                        gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
+                    //Draw a zoomed-in version of the texture
+                    if (mouse_dist < 0.3)
+                        gl_FragColor = texture2D(v_texture, (v_texcoord + mousecoord) / 2.0);
                 }
             """
     currentframe = None
@@ -191,6 +197,15 @@ class Canvas(app.Canvas):
 
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe
+
+    def on_mouse_move(self, event):
+        x, y = event.pos
+        self.image['mousecoord'] = (x/self.size[0], y/self.size[1])
+        self.on_draw(event)
+
+    # def on_mouse_wheel(self, event):
+    #    _, delta = event.delta
+    #    self.image['mousezoom'] = delta
 
 
 class QCamGLPreview(QCamProcessor):

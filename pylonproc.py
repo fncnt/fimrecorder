@@ -153,7 +153,7 @@ class Canvas(app.Canvas):
                             gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
                         //Draw a zoomed-in version of the texture
                         if (mouse_dist < 0.2)
-                            gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / mousezoom);
+                            gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / 2.0);
                     }
                 }
             """
@@ -205,12 +205,16 @@ class Canvas(app.Canvas):
     def on_mouse_move(self, event):
         x, y = event.pos
         self.image['mousecoord'] = (x/self.size[0], y/self.size[1])
-        self.on_draw(event)
 
     def on_mouse_wheel(self, event):
         _, delta = event.delta
-        if 1.0 < self.mousezoom + delta <= 5.0:
-            self.mousezoom += delta
+        mousezoom = self.mousezoom + delta
+        if 1.0 <= mousezoom <= 5.0:
+            self.mousezoom = mousezoom
+        elif mousezoom < 1.0:
+            self.mousezoom = 1.0
+        else:
+            self.mousezoom = 5.0
 
 
 class QCamGLPreview(QCamProcessor):

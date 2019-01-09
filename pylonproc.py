@@ -149,7 +149,7 @@ class Canvas(app.Canvas):
                     {
                         float mouse_dist = distance(v_texcoord, mousecoord);
                         //Draw the outline of the glass
-                        if (mouse_dist < 0.205)
+                        if (mouse_dist < 0.203)
                             gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
                         //Draw a zoomed-in version of the texture
                         if (mouse_dist < 0.2)
@@ -204,7 +204,12 @@ class Canvas(app.Canvas):
 
     def on_mouse_move(self, event):
         x, y = event.pos
-        self.image['mousecoord'] = (x/self.size[0], y/self.size[1])
+        width, height = self.physical_size
+        offset = abs(self.physical_size[0] - self.physical_size[1]) / 2
+        if width < height:
+            self.image['mousecoord'] = (x/width, (y-offset)/width)
+        else:
+            self.image['mousecoord'] = ((x-offset)/height, y/height)
 
     def on_mouse_wheel(self, event):
         _, delta = event.delta

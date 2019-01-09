@@ -153,7 +153,7 @@ class Canvas(app.Canvas):
                             gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
                         //Draw a zoomed-in version of the texture
                         if (mouse_dist < 0.2)
-                            gl_FragColor = texture2D(texture, (v_texcoord + mousecoord) / 2.0);
+                            gl_FragColor = texture2D(texture, (v_texcoord + (mousezoom - 1) * mousecoord) / mousezoom);
                     }
                 }
             """

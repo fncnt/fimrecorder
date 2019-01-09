@@ -65,7 +65,17 @@ class QCamWorker(QObject):
 
             self.device_status.emit("Loading device configuration")
             logger.debug("Loading device configuration")
-            pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
+            # pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
+            try:
+                pylon.FeaturePersistence.Load(os.path.join(self.fpath,
+                                                           self._cam.GetDeviceInfo().GetModelName() + '.pfs'),
+                                              self._cam.GetNodeMap(), True)
+            except BaseException as e:
+                pylon.FeaturePersistence.Save(os.path.join(self.fpath,
+                                                           self._cam.GetDeviceInfo().GetModelName() + '.pfs'),
+                                              self._cam.GetNodeMap())
+                logger.error("Couldn't find NodeMap file for " + self._cam.GetDeviceInfo().GetModelName())
+                logger.error("Saving default device configuration as " + self._cam.GetDeviceInfo().GetModelName() + '.pfs' )
             # Attempt to ensure realtime grabbing
             # Max == 15 for non-admin users
             # self._cam.GrabLoopThreadPriorityOverride = True

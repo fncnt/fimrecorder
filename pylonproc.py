@@ -68,6 +68,7 @@ class QCamRecorder(QCamProcessor):
         self.framecount = 0
         self.fimjson = ''
         self.iscancelled = False
+        self.resolution = (1200, 1200)
 
     # @pyqtSlot(float)
     def changeFps(self, newfps):
@@ -93,7 +94,7 @@ class QCamRecorder(QCamProcessor):
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
         self.fourcc = cv2.VideoWriter_fourcc(*self.codec)
         #self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
-        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, (1200, 1200), False)
+        self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, self.resolution, False)
         self.iscancelled = False
         super().startProcessing(img_received)
 
@@ -137,32 +138,41 @@ class Canvas(app.Canvas):
             """
     fragment = """
                 uniform sampler2D texture;
+                uniform vec2 mousecoord;
+                uniform float mousezoom;
                 varying vec2 v_texcoord;
                 void main()
                 {
                     gl_FragColor = texture2D(texture, v_texcoord);
-
-                    // HACK: the image is in BGR instead of RGB.
-                    float temp = gl_FragColor.r;
-                    gl_FragColor.r = gl_FragColor.b;
-                    gl_FragColor.b = temp;
+                    
+                    if (mousezoom > 1.0)
+                    {
+                        float mouse_dist = distance(v_texcoord, mousecoord);
+                        //Draw the outline of the glass
+                        if (mouse_dist < 0.203)
+                            gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
+                        //Draw a zoomed-in version of the texture
+                        if (mouse_dist < 0.2)
+                            gl_FragColor = texture2D(texture, (v_texcoord + (mousezoom - 1) * mousecoord) / mousezoom);
+                    }
                 }
             """
-
-    currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
+    currentframe = None
+    mousezoom = 1.0
 
     def __init__(self):
         app.Canvas.__init__(self)
+        #self.currentframe = numpy.zeros((framedimx, framedimy, 3)).astype(numpy.uint8)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         # bottom left, top left, bottom right, top right
         # This works on Windows. But why are the textures smaller?
-        self.image['texcoord'] = [(0, 1/3), (0, 0), (1/3, 1/3), (1/3, 0)]
+        #self.image['texcoord'] = [(0, 1/3), (0, 0), (1/3, 1/3), (1/3, 0)]
         # This works on linux:
         # (where DPI can't be determined automatically
-        # self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
+        self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         # How Can I stretch textures and why is that necessary?
-        self.image['texture'] = self.currentframe
+        #self.image['texture'] = self.currentframe
 
         width, height = self.physical_size
         gloo.set_viewport(0, 0, height, height)
@@ -183,12 +193,33 @@ class Canvas(app.Canvas):
 
     def on_draw(self, event):
         gloo.clear('black')
-        self.image['texture'][...] = self.currentframe
+        #self.image['texture'][...] = self.currentframe
+        self.image['texture'] = self.currentframe
+        self.image['mousezoom'] = self.mousezoom
         self.image.draw('triangle_strip')
         self.update()
 
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe
+
+    def on_mouse_move(self, event):
+        x, y = event.pos
+        width, height = self.physical_size
+        offset = abs(self.physical_size[0] - self.physical_size[1]) / 2
+        if width < height:
+            self.image['mousecoord'] = (x/width, (y-offset)/width)
+        else:
+            self.image['mousecoord'] = ((x-offset)/height, y/height)
+
+    def on_mouse_wheel(self, event):
+        _, delta = event.delta
+        mousezoom = self.mousezoom + delta
+        if 1.0 <= mousezoom <= 5.0:
+            self.mousezoom = mousezoom
+        elif mousezoom < 1.0:
+            self.mousezoom = 1.0
+        else:
+            self.mousezoom = 5.0
 
 
 class QCamGLPreview(QCamProcessor):

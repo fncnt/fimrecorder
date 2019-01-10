@@ -488,6 +488,7 @@
    <addaction name="actionRecord"/>
    <addaction name="actionRefresh"/>
    <addaction name="actionSnapshot"/>
+   <addaction name="actionExtract_Frames_from_AVI"/>
   </widget>
   <action name="actionLoad_Parameters">
    <property name="icon">
@@ -557,6 +558,22 @@
     <string>Alt+S</string>
    </property>
   </action>
+  <action name="actionExtract_Frames_from_AVI">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normalon>:/fa/fa-svgs/solid/film.svg</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Extract Frames from AVI</string>
+   </property>
+   <property name="toolTip">
+    <string>Choose a recorded .avi file to extract .png frames into a subfolder</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="fimui.qrc"/>
@@ -623,6 +640,38 @@
     <hint type="destinationlabel">
      <x>285</x>
      <y>148</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRecord</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>actionExtract_Frames_from_AVI</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExtract_Frames_from_AVI</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>actionRecord</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

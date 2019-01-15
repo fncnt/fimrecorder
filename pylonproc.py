@@ -256,3 +256,54 @@ class QCamSnapshot(QCamProcessor):
                     raise
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
+
+
+class QCamExtract(QCamProcessor):
+    maxframes = 0
+    framecount = 0
+    frame_written = pyqtSignal()  # just to let the progressBar know when to update
+    timelimit_reached = pyqtSignal()
+
+    def __init__(self):
+        self.iscancelled = False
+        super().__init__()
+
+    # Only this method should be overridden
+    def processImg(self, fpath, img=numpy.ndarray):
+        cv2.imwrite(os.path.join(fpath, "%d.png" % self.framecount), img)
+        self.framecount += 1
+        self.frame_written.emit()
+        if self.framecount == self.maxframes:
+            self.timelimit_reached.emit()
+        return 0
+
+    def startProcessing(self, fullpath):
+        # Handle QThread related stuff (i.e. signals and stuff here)
+        # This runs in MainThread so don't put loops here.
+        # processImg runs in separate thread.
+        self.iscancelled = False
+        framespath = os.path.join(os.path.dirname(fullpath), 'frames')
+        if not os.path.exists(framespath):
+            try:
+                os.makedirs(framespath)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+        cap = cv2.VideoCapture(fullpath)
+        self.maxframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        while cap.isOpened() and not self.iscancelled:
+            ret, frame = cap.read()
+            if ret:
+                self.processImg(framespath, frame)
+            else:
+                break
+        cap.release()
+        self.finishProcessing()
+
+    # when cancel signal is received
+    def cancelProcessing(self):
+        self.iscancelled = True
+
+    # clean up processing, i.e. save file etc.
+    def finishProcessing(self):
+        self.img_processed.emit()

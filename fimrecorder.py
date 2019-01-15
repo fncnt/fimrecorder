@@ -22,10 +22,12 @@ camera = pyloncom.QCamera()
 disposablecam = pylonproc.QCamSnapshot()
 recordingcam = pylonproc.QCamRecorder()
 previewcam = pylonproc.QCamGLPreview()
+extractcam = pylonproc.QCamExtract()
 
 dcthread = QThread()
 recthread = QThread()
 pcthread = QThread()
+ecthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
 
@@ -37,6 +39,8 @@ logger = logging.getLogger(__name__)
 
 ui.selectparamfile = QFileDialog()
 ui.selectparamfile.setWindowFilePath(os.path.dirname(fimsettings.settings['Recording Directory']))
+ui.selectvideofile = QFileDialog()
+ui.selectvideofile.setWindowFilePath(os.path.dirname(fimsettings.settings['Recording Directory']))
 # TODO: use list and/or iterator for automation
 speciescell = QTableWidgetItem("")
 straincell = QTableWidgetItem("")
@@ -99,7 +103,7 @@ def saveSnapshot():
     disposablecam.img_processed.connect(dcthread.quit)
 
 
-def recordVideo(toggled=bool):
+def recordVideo(toggled: bool):
     ui.progressBar.setEnabled(toggled)
     if toggled:
         #make sure framecount is zero so we record everything we want:
@@ -122,6 +126,46 @@ def recordVideo(toggled=bool):
         # recthread.wait(100)
         # recthread.wait(100)
         ui.actionRecord.setText('Record')
+        ui.progressBar.setValue(0)
+        ui.progressBar.setMaximum(100)
+        ui.progressBar.setMinimum(0)
+        ui.progressBar.setFormat("")
+
+
+def extractFrames(toggled: bool):
+    ui.progressBar.setEnabled(toggled)
+    if toggled:
+        ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
+        completepath = ''
+        try:
+            completepath = ui.selectvideofile.getOpenFileName(ui.selectvideofile, 'Open Video File',
+                                                              fimsettings.settings['Recording Directory'],
+                                                              '*.avi')[0]
+        except Exception as e:
+            logger.exception(str(e))
+        if completepath == '':
+            ui.actionExtract_Frames_from_AVI.toggle()
+        else:
+            ui.actionExtract_Frames_from_AVI.setText('Cancel Extraction')
+            ui.progressBar.setMinimum(0)
+            ui.progressBar.setValue(0)
+            extractcam.moveToThread(ecthread)
+
+            ecthread.started.connect(lambda: extractcam.startProcessing(completepath))
+            ecthread.start()
+            ecthread.setPriority(QThread.LowPriority)
+            extractcam.img_processed.connect(ecthread.quit)
+            ui.progressBar.setMaximum(extractcam.maxframes)
+    else:
+        extractcam.cancelProcessing()
+        # Does terminate without blocking main thread.
+        # Also it's actually not recommended.
+        #recthread.terminate()
+        recthread.quit()
+        # recthread.exit(0)
+        # recthread.wait(100)
+        # recthread.wait(100)
+        ui.actionExtract_Frames_from_AVI.setText('Extract Frames from AVI')
         ui.progressBar.setValue(0)
         ui.progressBar.setMaximum(100)
         ui.progressBar.setMinimum(0)
@@ -216,6 +260,7 @@ def connectSignals():
     ui.actionSnapshot.triggered.connect(saveSnapshot)
     ui.actionRefresh.triggered.connect(bootstrapCam)
     ui.actionRecord.toggled[bool].connect(recordVideo)
+    ui.actionExtract_Frames_from_AVI.toggled[bool].connect(extractFrames)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
     # Handle pyloncom & pylonproc signals
@@ -230,6 +275,11 @@ def connectSignals():
         math.floor(recordingcam.framecount /
                    recordingcam.fps *
                    1000)).toString()))
+    extractcam.timelimit_reached.connect(ui.actionExtract_Frames_from_AVI.toggle)
+    extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount))
+    extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount) +
+                                                                      '/' +
+                                                                      str(extractcam.maxframes)))
 
     app.aboutToQuit.connect(pcthread.exit)
     pcthread.started.connect(lambda: previewcam.startProcessing(camera.frame_grabbed))

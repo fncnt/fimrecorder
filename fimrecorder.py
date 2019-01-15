@@ -135,6 +135,7 @@ def recordVideo(toggled: bool):
 def extractFrames(toggled: bool):
     ui.progressBar.setEnabled(toggled)
     if toggled:
+        ecthread.started.connect(extractcam.startProcessing)
         ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
         completepath = ''
         try:
@@ -146,14 +147,13 @@ def extractFrames(toggled: bool):
         if completepath == '':
             ui.actionExtract_Frames_from_AVI.toggle()
         else:
+            extractcam.completepath = completepath
+            extractcam.framecount = 0
             ui.actionExtract_Frames_from_AVI.setText('Cancel Extraction')
             ui.progressBar.setMinimum(0)
             ui.progressBar.setValue(0)
-            extractcam.moveToThread(ecthread)
-
-            ecthread.started.connect(lambda: extractcam.startProcessing(completepath))
             ecthread.start()
-            ecthread.setPriority(QThread.LowPriority)
+            # ecthread.setPriority(QThread.LowPriority)
             extractcam.img_processed.connect(ecthread.quit)
             ui.progressBar.setMaximum(extractcam.maxframes)
     else:
@@ -161,7 +161,7 @@ def extractFrames(toggled: bool):
         # Does terminate without blocking main thread.
         # Also it's actually not recommended.
         #recthread.terminate()
-        recthread.quit()
+        ecthread.quit()
         # recthread.exit(0)
         # recthread.wait(100)
         # recthread.wait(100)
@@ -347,6 +347,7 @@ def main():
     window.showMaximized()
     # window.showNormal()
     recordingcam.moveToThread(recthread)
+    extractcam.moveToThread(ecthread)
 
     # Handles interaction between UI and cam stuff
     connectSignals()

@@ -261,6 +261,8 @@ class QCamSnapshot(QCamProcessor):
 class QCamExtract(QCamProcessor):
     maxframes = 0
     framecount = 0
+    framespath = ''
+    completepath = ''
     frame_written = pyqtSignal()  # just to let the progressBar know when to update
     timelimit_reached = pyqtSignal()
 
@@ -269,36 +271,37 @@ class QCamExtract(QCamProcessor):
         super().__init__()
 
     # Only this method should be overridden
-    def processImg(self, fpath, img=numpy.ndarray):
-        cv2.imwrite(os.path.join(fpath, "%d.png" % self.framecount), img)
-        self.framecount += 1
-        self.frame_written.emit()
-        if self.framecount == self.maxframes:
-            self.timelimit_reached.emit()
-        return 0
-
-    def startProcessing(self, fullpath):
-        # Handle QThread related stuff (i.e. signals and stuff here)
-        # This runs in MainThread so don't put loops here.
-        # processImg runs in separate thread.
-        self.iscancelled = False
-        framespath = os.path.join(os.path.dirname(fullpath), 'frames')
-        if not os.path.exists(framespath):
-            try:
-                os.makedirs(framespath)
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+    def processImg(self, fullpath):
         cap = cv2.VideoCapture(fullpath)
         self.maxframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         while cap.isOpened() and not self.iscancelled:
             ret, frame = cap.read()
             if ret:
-                self.processImg(framespath, frame)
+                cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
+                self.frame_written.emit()
+                logger.debug(str(self.framecount))
+                if self.framecount + 1 == self.maxframes:
+                    self.timelimit_reached.emit()
+                else:
+                    self.framecount += 1
             else:
                 break
         cap.release()
         self.finishProcessing()
+
+    def startProcessing(self):
+        # Handle QThread related stuff (i.e. signals and stuff here)
+        # This runs in MainThread so don't put loops here.
+        # processImg runs in separate thread.
+        self.iscancelled = False
+        self.framespath = os.path.join(os.path.dirname(self.completepath), 'frames')
+        if not os.path.exists(self.framespath):
+            try:
+                os.makedirs(self.framespath)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+        self.processImg(self.completepath)
 
     # when cancel signal is received
     def cancelProcessing(self):

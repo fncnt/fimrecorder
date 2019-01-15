@@ -152,10 +152,10 @@ def extractFrames(toggled: bool):
             ui.actionExtract_Frames_from_AVI.setText('Cancel Extraction')
             ui.progressBar.setMinimum(0)
             ui.progressBar.setValue(0)
-            ecthread.start()
-            # ecthread.setPriority(QThread.LowPriority)
             extractcam.img_processed.connect(ecthread.quit)
             ui.progressBar.setMaximum(extractcam.maxframes)
+            ecthread.setPriority(QThread.LowPriority)
+            ecthread.start()
     else:
         extractcam.cancelProcessing()
         # Does terminate without blocking main thread.

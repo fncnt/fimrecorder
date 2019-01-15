@@ -265,6 +265,7 @@ class QCamExtract(QCamProcessor):
     completepath = ''
     frame_written = pyqtSignal()  # just to let the progressBar know when to update
     timelimit_reached = pyqtSignal()
+    img_processed = pyqtSignal()
 
     def __init__(self):
         self.iscancelled = False
@@ -279,7 +280,6 @@ class QCamExtract(QCamProcessor):
             if ret:
                 cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
                 self.frame_written.emit()
-                logger.debug(str(self.framecount))
                 if self.framecount + 1 == self.maxframes:
                     self.timelimit_reached.emit()
                 else:

@@ -280,10 +280,9 @@ class QCamExtract(QCamProcessor):
             if ret:
                 cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
                 self.frame_written.emit()
-                if self.framecount + 1 == self.maxframes:
+                self.framecount += 1
+                if self.framecount == self.maxframes:
                     self.timelimit_reached.emit()
-                else:
-                    self.framecount += 1
             else:
                 break
         self.finishProcessing()
@@ -314,4 +313,5 @@ class QCamExtract(QCamProcessor):
     def finishProcessing(self):
         self.cap.release()
         self.img_processed.emit()
-        logger.debug("Extracted " + str(self.framecount + 1) + " frames to " + self.framespath)
+        logger.debug("Extracted " + str(self.framecount) + " frames to " + self.framespath)
+        self.framecount = 0

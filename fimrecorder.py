@@ -139,6 +139,7 @@ def extractFrames(toggled: bool):
         ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
         completepath = ''
         try:
+            logger.debug("Opening file dialog.")
             completepath = ui.selectvideofile.getOpenFileName(ui.selectvideofile, 'Open Video File',
                                                               fimsettings.settings['Recording Directory'],
                                                               '*.avi')[0]
@@ -275,10 +276,9 @@ def connectSignals():
                    recordingcam.fps *
                    1000)).toString()))
     extractcam.max_frames.connect(ui.progressBar.setMaximum)
-    extractcam.img_processed.connect(ecthread.quit)
     extractcam.timelimit_reached.connect(ui.actionExtract_Frames_from_AVI.toggle)
-    extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount + 1))
-    extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount + 1) +
+    extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount))
+    extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount) +
                                                                       '/' +
                                                                       str(extractcam.maxframes)))
 

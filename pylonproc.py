@@ -266,17 +266,17 @@ class QCamExtract(QCamProcessor):
     frame_written = pyqtSignal()  # just to let the progressBar know when to update
     timelimit_reached = pyqtSignal()
     img_processed = pyqtSignal()
+    max_frames = pyqtSignal(int)
+    cap = None
 
     def __init__(self):
         self.iscancelled = False
         super().__init__()
 
     # Only this method should be overridden
-    def processImg(self, fullpath):
-        cap = cv2.VideoCapture(fullpath)
-        self.maxframes = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        while cap.isOpened() and not self.iscancelled:
-            ret, frame = cap.read()
+    def processImg(self):
+        while self.cap.isOpened() and not self.iscancelled:
+            ret, frame = self.cap.read()
             if ret:
                 cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
                 self.frame_written.emit()
@@ -286,7 +286,6 @@ class QCamExtract(QCamProcessor):
                     self.framecount += 1
             else:
                 break
-        cap.release()
         self.finishProcessing()
 
     def startProcessing(self):
@@ -294,6 +293,9 @@ class QCamExtract(QCamProcessor):
         # This runs in MainThread so don't put loops here.
         # processImg runs in separate thread.
         self.iscancelled = False
+        self.cap = cv2.VideoCapture(self.completepath)
+        self.maxframes = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.max_frames[int].emit(self.maxframes)
         self.framespath = os.path.join(os.path.dirname(self.completepath), 'frames')
         if not os.path.exists(self.framespath):
             try:
@@ -301,7 +303,8 @@ class QCamExtract(QCamProcessor):
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
-        self.processImg(self.completepath)
+        self.processImg()
+
 
     # when cancel signal is received
     def cancelProcessing(self):
@@ -309,4 +312,6 @@ class QCamExtract(QCamProcessor):
 
     # clean up processing, i.e. save file etc.
     def finishProcessing(self):
+        self.cap.release()
         self.img_processed.emit()
+        logger.debug("Extracted " + str(self.framecount + 1) + " frames to " + self.framespath)

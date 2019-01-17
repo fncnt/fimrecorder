@@ -126,10 +126,10 @@ def recordVideo(toggled: bool):
         # recthread.wait(100)
         # recthread.wait(100)
         ui.actionRecord.setText('Record')
-        ui.progressBar.setValue(0)
-        ui.progressBar.setMaximum(100)
-        ui.progressBar.setMinimum(0)
-        ui.progressBar.setFormat("")
+        #ui.progressBar.setValue(0)
+        #ui.progressBar.setMaximum(100)
+        #ui.progressBar.setMinimum(0)
+        #ui.progressBar.setFormat("")
 
 
 def extractFrames(toggled: bool):
@@ -149,13 +149,12 @@ def extractFrames(toggled: bool):
         else:
             extractcam.completepath = completepath
             extractcam.framecount = 0
+            ecthread.setPriority(QThread.LowPriority)
+            ecthread.start()
             ui.actionExtract_Frames_from_AVI.setText('Cancel Extraction')
             ui.progressBar.setMinimum(0)
             ui.progressBar.setValue(0)
-            extractcam.img_processed.connect(ecthread.quit)
-            ui.progressBar.setMaximum(extractcam.maxframes)
-            ecthread.setPriority(QThread.LowPriority)
-            ecthread.start()
+
     else:
         extractcam.cancelProcessing()
         # Does terminate without blocking main thread.
@@ -166,10 +165,10 @@ def extractFrames(toggled: bool):
         # recthread.wait(100)
         # recthread.wait(100)
         ui.actionExtract_Frames_from_AVI.setText('Extract Frames from AVI')
-        ui.progressBar.setValue(0)
-        ui.progressBar.setMaximum(100)
-        ui.progressBar.setMinimum(0)
-        ui.progressBar.setFormat("")
+        #ui.progressBar.setValue(0)
+        #ui.progressBar.setMaximum(100)
+        #ui.progressBar.setMinimum(0)
+        #ui.progressBar.setFormat("")
 
 
 # TODO: use iterator?
@@ -275,9 +274,11 @@ def connectSignals():
         math.floor(recordingcam.framecount /
                    recordingcam.fps *
                    1000)).toString()))
+    extractcam.max_frames.connect(ui.progressBar.setMaximum)
+    extractcam.img_processed.connect(ecthread.quit)
     extractcam.timelimit_reached.connect(ui.actionExtract_Frames_from_AVI.toggle)
-    extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount))
-    extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount) +
+    extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount + 1))
+    extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount + 1) +
                                                                       '/' +
                                                                       str(extractcam.maxframes)))
 

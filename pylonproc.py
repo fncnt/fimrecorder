@@ -304,7 +304,6 @@ class QCamExtract(QCamProcessor):
                     raise
         self.processImg()
 
-
     # when cancel signal is received
     def cancelProcessing(self):
         self.iscancelled = True

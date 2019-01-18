@@ -275,10 +275,12 @@ class QCamExtract(QCamProcessor):
 
     # Only this method should be overridden
     def processImg(self):
+        # calculate how many leading zeros we need (number of digits-1)
+        leadingzeros = int(math.log10(self.maxframes)) + 1
         while self.cap.isOpened() and not self.iscancelled:
             ret, frame = self.cap.read()
             if ret:
-                cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
+                cv2.imwrite(os.path.join(self.framespath, '%0*d.png' % (leadingzeros, self.framecount)), frame)
                 self.frame_written.emit()
                 self.framecount += 1
                 if self.framecount == self.maxframes:

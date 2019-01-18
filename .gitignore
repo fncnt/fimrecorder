@@ -1,4 +1,8 @@
 *.png
+*.jpg
+*.bmp
+*.tif
+*.tiff
 *.avi
 *.pyc
 *.xml

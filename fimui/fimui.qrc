@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="fa">
+    <file>fa-svgs/solid/film.svg</file>
     <file>fa-svgs/solid/video.svg</file>
     <file>fa-svgs/solid/video-slash.svg</file>
     <file>fa-svgs/solid/save.svg</file>

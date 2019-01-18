@@ -256,3 +256,61 @@ class QCamSnapshot(QCamProcessor):
                     raise
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
+
+
+class QCamExtract(QCamProcessor):
+    maxframes = 0
+    framecount = 0
+    framespath = ''
+    completepath = ''
+    frame_written = pyqtSignal()  # just to let the progressBar know when to update
+    timelimit_reached = pyqtSignal()
+    img_processed = pyqtSignal()
+    max_frames = pyqtSignal(int)
+    cap = None
+
+    def __init__(self):
+        self.iscancelled = False
+        super().__init__()
+
+    # Only this method should be overridden
+    def processImg(self):
+        while self.cap.isOpened() and not self.iscancelled:
+            ret, frame = self.cap.read()
+            if ret:
+                cv2.imwrite(os.path.join(self.framespath, "%d.png" % self.framecount), frame)
+                self.frame_written.emit()
+                self.framecount += 1
+                if self.framecount == self.maxframes:
+                    self.timelimit_reached.emit()
+            else:
+                break
+        self.finishProcessing()
+
+    def startProcessing(self):
+        # Handle QThread related stuff (i.e. signals and stuff here)
+        # This runs in MainThread so don't put loops here.
+        # processImg runs in separate thread.
+        self.iscancelled = False
+        self.cap = cv2.VideoCapture(self.completepath)
+        self.maxframes = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.max_frames[int].emit(self.maxframes)
+        self.framespath = os.path.join(os.path.dirname(self.completepath), 'frames')
+        if not os.path.exists(self.framespath):
+            try:
+                os.makedirs(self.framespath)
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+        self.processImg()
+
+    # when cancel signal is received
+    def cancelProcessing(self):
+        self.iscancelled = True
+
+    # clean up processing, i.e. save file etc.
+    def finishProcessing(self):
+        self.cap.release()
+        self.img_processed.emit()
+        logger.debug("Extracted " + str(self.framecount) + " frames to " + self.framespath)
+        self.framecount = 0

@@ -247,6 +247,12 @@ class Ui_fimWindow(object):
         icon4.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/camera.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSnapshot.setIcon(icon4)
         self.actionSnapshot.setObjectName("actionSnapshot")
+        self.actionExtract_Frames_from_AVI = QtWidgets.QAction(fimWindow)
+        self.actionExtract_Frames_from_AVI.setCheckable(True)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/film.svg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
+        self.actionExtract_Frames_from_AVI.setIcon(icon5)
+        self.actionExtract_Frames_from_AVI.setObjectName("actionExtract_Frames_from_AVI")
         self.menuFile.addAction(self.actionLoad_Parameters)
         self.menuFile.addAction(self.actionSave_Parameters)
         self.menuCamera.addAction(self.actionRecord)
@@ -259,6 +265,7 @@ class Ui_fimWindow(object):
         self.toolBar.addAction(self.actionRecord)
         self.toolBar.addAction(self.actionRefresh)
         self.toolBar.addAction(self.actionSnapshot)
+        self.toolBar.addAction(self.actionExtract_Frames_from_AVI)
 
         self.retranslateUi(fimWindow)
         self.tabWidget.setCurrentIndex(0)
@@ -266,6 +273,8 @@ class Ui_fimWindow(object):
         self.ExpAutoChkBx.toggled['bool'].connect(self.ExpTimeSpinBox.setDisabled)
         self.FpsEnableChkBx.toggled['bool'].connect(self.FpsDSpinBox.setEnabled)
         self.GammaChkBx.toggled['bool'].connect(self.GammaDSpinBox.setEnabled)
+        self.actionRecord.toggled['bool'].connect(self.actionExtract_Frames_from_AVI.setDisabled)
+        self.actionExtract_Frames_from_AVI.toggled['bool'].connect(self.actionRecord.setDisabled)
         QtCore.QMetaObject.connectSlotsByName(fimWindow)
 
     def retranslateUi(self, fimWindow):
@@ -311,5 +320,7 @@ class Ui_fimWindow(object):
         self.actionRefresh.setShortcut(_translate("fimWindow", "F5"))
         self.actionSnapshot.setText(_translate("fimWindow", "Snapshot"))
         self.actionSnapshot.setShortcut(_translate("fimWindow", "Alt+S"))
+        self.actionExtract_Frames_from_AVI.setText(_translate("fimWindow", "Extract Frames from AVI"))
+        self.actionExtract_Frames_from_AVI.setToolTip(_translate("fimWindow", "Choose a recorded .avi file to extract .png frames into a subfolder"))
 
 from . import fimui_rc

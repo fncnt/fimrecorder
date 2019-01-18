@@ -256,7 +256,8 @@ def connectSignals():
     #camera.device_status[str].connect(print)
     camera.device_name[str].connect(lambda val: ui.camLabel.setText("Preview (" + val + "):"))
     #disposablecam.status[str].connect(print)
-    #recordingcam.status[str].connect(print)
+    recordingcam.status[str].connect(ui.statusbar.showMessage)
+    extractcam.status[str].connect(ui.statusbar.showMessage)
 
     # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)

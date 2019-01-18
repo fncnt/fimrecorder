@@ -315,4 +315,5 @@ class QCamExtract(QCamProcessor):
         self.cap.release()
         self.img_processed.emit()
         logger.debug("Extracted " + str(self.framecount) + " frames to " + self.framespath)
+        self.status.emit("Extracted " + str(self.framecount) + " frames to " + self.framespath)
         self.framecount = 0

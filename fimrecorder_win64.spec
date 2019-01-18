@@ -12,6 +12,8 @@ pypylon_dir = pathlib.Path(pypylon.__file__).parent
 pylon_dlls = [(str(dll), '.') for dll in pypylon_dir.glob('*.dll')]
 cv2_dir = pathlib.Path(cv2.__file__).parent
 cv2_dlls = [(str(dll), '.') for dll in cv2_dir.glob('*.dll')]
+pfs_dir = pathlib.Path('config')
+basler_nodemaps = [(str(pfs), 'config') for pfs in pfs_dir.glob('*.pfs')]
 
 block_cipher = None
 
@@ -19,8 +21,7 @@ block_cipher = None
 a = Analysis(['fimrecorder.py'],
              pathex=['C:\\Users\\FIM\\Desktop\\FIM\\fimrecorder'],
              binaries=pylon_dlls + cv2_dlls,        # make sure pylons TL DLLs are added
-             datas=[('config/FIM_NodeMap.pfs', 'config'),
-                    ('config/loggingconf.json', 'config')],
+             datas=[('config/loggingconf.json', 'config')] + basler_nodemaps,
              hiddenimports=["vispy.ext._bundled.six", "vispy.app.backends._pyqt5"],
              hookspath=[],
              runtime_hooks=[],

@@ -173,7 +173,7 @@ class Canvas(app.Canvas):
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         # How Can I stretch textures and why is that necessary?
         #self.image['texture'] = self.currentframe
-
+        self._timer = app.Timer('auto', connect=self.on_timer, start=True)
         width, height = self.physical_size
         gloo.set_viewport(0, 0, height, height)
         gloo.set_clear_color('black')
@@ -197,6 +197,9 @@ class Canvas(app.Canvas):
         self.image['texture'] = self.currentframe
         self.image['mousezoom'] = self.mousezoom
         self.image.draw('triangle_strip')
+        #self.update()
+
+    def on_timer(self, event):
         self.update()
 
     def updateFrame(self, newframe=numpy.ndarray):

@@ -277,7 +277,7 @@ class Ui_fimWindow(object):
         self.toolBar.addAction(self.actionExtract_Frames_from_AVI)
 
         self.retranslateUi(fimWindow)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.actionSnapshot.triggered.connect(self.statusbar.update)
         self.ExpAutoChkBx.toggled['bool'].connect(self.ExpTimeSpinBox.setDisabled)
         self.FpsEnableChkBx.toggled['bool'].connect(self.FpsDSpinBox.setEnabled)

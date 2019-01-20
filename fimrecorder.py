@@ -135,6 +135,7 @@ def recordVideo(toggled: bool):
 def extractFrames(toggled: bool):
     ui.progressBar.setEnabled(toggled)
     if toggled:
+        extractcam.framesmodulo = ui.FramesModuloSpinBox.value()
         ecthread.started.connect(extractcam.startProcessing)
         ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
         completepath = ''

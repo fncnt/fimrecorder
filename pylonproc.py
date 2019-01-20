@@ -264,6 +264,7 @@ class QCamSnapshot(QCamProcessor):
 class QCamExtract(QCamProcessor):
     maxframes = 0
     framecount = 0
+    framesmodulo = 1
     framespath = ''
     completepath = ''
     frame_written = pyqtSignal()  # just to let the progressBar know when to update
@@ -283,7 +284,8 @@ class QCamExtract(QCamProcessor):
         while self.cap.isOpened() and not self.iscancelled:
             ret, frame = self.cap.read()
             if ret:
-                cv2.imwrite(os.path.join(self.framespath, '%0*d.png' % (leadingzeros, self.framecount)), frame)
+                if (self.framecount + 1) % self.framesmodulo == 0:
+                    cv2.imwrite(os.path.join(self.framespath, '%0*d.png' % (leadingzeros, self.framecount)), frame)
                 self.frame_written.emit()
                 self.framecount += 1
                 if self.framecount == self.maxframes:
@@ -317,6 +319,8 @@ class QCamExtract(QCamProcessor):
     def finishProcessing(self):
         self.cap.release()
         self.img_processed.emit()
-        logger.debug("Extracted " + str(self.framecount) + " frames to " + self.framespath)
-        self.status.emit("Extracted " + str(self.framecount) + " frames to " + self.framespath)
+        msg = "Extracted " + str(self.framecount // self.framesmodulo) + " of " + \
+              str(self.maxframes) + " frames to " + self.framespath
+        logger.debug(msg)
+        self.status.emit(msg)
         self.framecount = 0

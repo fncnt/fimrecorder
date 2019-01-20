@@ -140,7 +140,7 @@ def extractFrames(toggled: bool):
         completepath = ''
         try:
             logger.debug("Opening file dialog.")
-            completepath = ui.selectvideofile.getOpenFileName(ui.selectvideofile, 'Open Video File',
+            completepath = ui.selectvideofile.getOpenFileName(ui.centralwidget, 'Open Video File',
                                                               fimsettings.settings['Recording Directory'],
                                                               '*.avi')[0]
         except Exception as e:
@@ -226,7 +226,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
 def openParamFile():
     ui.selectparamfile.setAcceptMode(QFileDialog.AcceptOpen)
     try:
-        completepath = ui.selectparamfile.getOpenFileName(ui.selectparamfile, 'Open Parameter File',
+        completepath = ui.selectparamfile.getOpenFileName(ui.centralwidget, 'Open Parameter File',
                                                       fimsettings.settings['Recording Directory'],
                                                       '*.json')[0]
         fpath = os.path.dirname(completepath)
@@ -240,7 +240,7 @@ def openParamFile():
 def writeParamFile():
     ui.selectparamfile.setAcceptMode(QFileDialog.AcceptSave)
     try:
-        completepath = ui.selectparamfile.getSaveFileName(ui.selectparamfile, 'Save Parameter File',
+        completepath = ui.selectparamfile.getSaveFileName(ui.centralwidget, 'Save Parameter File',
                                                       fimsettings.settings['Recording Directory'],
                                                       '*.json')[0]
         fpath = os.path.dirname(completepath)

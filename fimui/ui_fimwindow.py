@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_fimwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.2
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -124,7 +124,7 @@ class Ui_fimWindow(object):
         self.UserDataTable.horizontalHeader().setVisible(False)
         self.UserDataTable.horizontalHeader().setDefaultSectionSize(80)
         self.UserDataTable.horizontalHeader().setStretchLastSection(True)
-        self.UserDataTable.verticalHeader().setVisible(False)
+        self.UserDataTable.verticalHeader().setVisible(True)
         self.UserDataTable.verticalHeader().setDefaultSectionSize(29)
         self.UserDataTable.verticalHeader().setStretchLastSection(True)
         self.gridLayout_3.addWidget(self.UserDataTable, 2, 0, 1, 2)
@@ -213,7 +213,7 @@ class Ui_fimWindow(object):
         self.gridLayout_2.addWidget(self.camWidget, 1, 1, 1, 1)
         fimWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(fimWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 18))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")

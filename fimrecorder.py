@@ -135,6 +135,7 @@ def recordVideo(toggled: bool):
 def extractFrames(toggled: bool):
     ui.progressBar.setEnabled(toggled)
     if toggled:
+        extractcam.framesmodulo = ui.FramesModuloSpinBox.value()
         ecthread.started.connect(extractcam.startProcessing)
         ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
         completepath = ''
@@ -183,6 +184,7 @@ def pullSettings():
     #camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', 0)
     ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
+    ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
     # WIP not really nice that way
     # use list/iterator and apply try-blocks to each cell
     speciescell.setText(fimsettings.parameters['User Data']['Species'])
@@ -218,6 +220,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['User Data']['Experiment'] = experimentcell.text()
     fimsettings.parameters['User Data']['Test Conditions'] = testcondcell.text()
     fimsettings.parameters['User Data']['More Info'] = moreinfocell.text()
+    fimsettings.settings['Extract every n-th Frame'] = ui.FramesModuloSpinBox.value()
 
     # temporarily
     fimsettings.saveSettings(fpath, fname, onlyparameters)

@@ -285,7 +285,7 @@ class QCamExtract(QCamProcessor):
             ret, frame = self.cap.read()
             if ret:
                 if (self.framecount + 1) % self.framesmodulo == 0:
-                    cv2.imwrite(os.path.join(self.framespath, '%0*d.png' % (leadingzeros, self.framecount)), frame)
+                    cv2.imwrite(os.path.join(self.framespath, '%0*d.tif' % (leadingzeros, self.framecount)), frame)
                     self.frame_written.emit()
                 self.framecount += 1
                 if self.framecount == self.maxframes:

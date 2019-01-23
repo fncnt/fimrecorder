@@ -1,4 +1,3 @@
-import imageio
 import cv2
 import numpy
 import time
@@ -246,13 +245,13 @@ class QCamSnapshot(QCamProcessor):
 
     def processImg(self, img=numpy.ndarray):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
-        fimfile ='FIMsnapshot_' + currenttime + '.png'
+        fimfile ='FIMsnapshot_' + currenttime + '.tif'
         fpath = os.path.join(self.fpath, fimfile)
         # we just want to save one frame, so when we receive one,
         # we immediately stop by checking if there is already a file saved.
         if not os.path.isfile(fpath):
             try:
-                imageio.imwrite(fpath, img)
+                cv2.imwrite(fpath, img)
                 self.status.emit(fimfile)
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:

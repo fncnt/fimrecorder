@@ -18,7 +18,6 @@ up to Python 3.6 are currently supported).
 Install the following packages using `pip`:
 - `pypylon`
 - `PyQT5`
-- `ìmageio`
 - `opencv-python`
 - `vispy`
 

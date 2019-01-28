@@ -313,6 +313,12 @@ def connectSignals():
     ui.GammaDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('Gamma', val)
     )
+    ui.GainDSpinBox.valueChanged[float].connect(
+        lambda val: camera.baslerace.setCamAttr('Gain', val)
+    )
+    ui.BlacklvlDSpinBox.valueChanged[float].connect(
+        lambda val: camera.baslerace.setCamAttr('BlackLevel', val)
+    )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))
     # Update recording duration when fps gets changed

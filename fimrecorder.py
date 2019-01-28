@@ -183,6 +183,8 @@ def pullSettings():
     ui.FpsDSpinBox.setValue(fimsettings.parameters['Frame Rate'])
     #camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', 0)
     ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
+    ui.GainDSpinBox.setValue(fimsettings.parameters['Gain'])
+    ui.BlacklvlDSpinBox.setValue(fimsettings.parameters['Black Level'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
     # WIP not really nice that way
@@ -213,6 +215,8 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     # if ui.FpsEnableChkBx.isChecked():
     fimsettings.parameters['Frame Rate'] = ui.FpsDSpinBox.value()
     fimsettings.parameters['Gamma Correction'] = ui.GammaDSpinBox.value()
+    fimsettings.parameters['Gain'] = ui.GainDSpinBox.value()
+    fimsettings.parameters['Black Level'] = ui.BlacklvlDSpinBox.value()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
     fimsettings.parameters['User Data']['Strain'] = straincell.text()

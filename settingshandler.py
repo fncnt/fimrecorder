@@ -18,6 +18,8 @@ class SettingsHandler:
                            'Frame Rate': 41.58177,
                            'Exposure Time': 20000,
                            'Gamma Correction': 1.00000,
+                           'Gain': 18.00000,
+                           'Black Level': 15.00000,
                            'User Data': {'Species': "",
                                          'Strain': "",
                                          'Genotype': "",

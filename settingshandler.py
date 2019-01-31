@@ -35,7 +35,8 @@ class SettingsHandler:
                          'Logging Configuration': "loggingconf.json",
                          'Default Camera Parameters': "FIM_NodeMap.pfs",
                          'Video Codec': 'XVID',
-                         'Extract every n-th Frame': 1
+                         'Extract every n-th Frame': 1,
+                         'Background Substraction': False
                          }
         # load settings file on init or create a new one if there is no present
         try:

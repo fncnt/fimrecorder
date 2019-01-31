@@ -275,6 +275,13 @@
         <string>Camera</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="FpsEnableChkBx">
+          <property name="text">
+           <string>Frame Rate [fps]</string>
+          </property>
+         </widget>
+        </item>
         <item row="4" column="0">
          <widget class="QCheckBox" name="GainChkBx">
           <property name="text">
@@ -282,10 +289,81 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="FpsEnableChkBx">
+        <item row="4" column="2">
+         <widget class="QDoubleSpinBox" name="GainDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="locale">
+           <locale language="English" country="UnitedKingdom"/>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <double>36.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QCheckBox" name="GammaChkBx">
           <property name="text">
-           <string>Frame Rate [fps]</string>
+           <string>Gamma Correction</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="ExposureTimeLabel">
+          <property name="text">
+           <string>Exposure Time [µs]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QDoubleSpinBox" name="BlacklvlDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="locale">
+           <locale language="English" country="UnitedKingdom"/>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <double>31.937500000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="2">
+         <widget class="QSpinBox" name="FramesModuloSpinBox">
+          <property name="toolTip">
+           <string>Choosing a value corresponding to the frame rate of your file results in extracting one frame every second of the video.</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100000</number>
           </property>
          </widget>
         </item>
@@ -314,6 +392,42 @@
           </property>
          </widget>
         </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="FramesModuloLabel">
+          <property name="toolTip">
+           <string>How many frames do you want to include when extracting frames from a video file?</string>
+          </property>
+          <property name="text">
+           <string>Extract every n-th frame from Video:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="ExpTimeSpinBox">
+          <property name="minimum">
+           <number>34</number>
+          </property>
+          <property name="maximum">
+           <number>10000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>3000</number>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="BlacklvlChkBx">
+          <property name="text">
+           <string>Black Level</string>
+          </property>
+         </widget>
+        </item>
         <item row="3" column="2">
          <widget class="QDoubleSpinBox" name="GammaDSpinBox">
           <property name="enabled">
@@ -339,36 +453,6 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="GammaChkBx">
-          <property name="text">
-           <string>Gamma Correction</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QSpinBox" name="ExpTimeSpinBox">
-          <property name="minimum">
-           <number>34</number>
-          </property>
-          <property name="maximum">
-           <number>10000000</number>
-          </property>
-          <property name="singleStep">
-           <number>100</number>
-          </property>
-          <property name="value">
-           <number>3000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="ExposureTimeLabel">
-          <property name="text">
-           <string>Exposure Time [µs]</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="2">
          <widget class="QCheckBox" name="ExpAutoChkBx">
           <property name="text">
@@ -377,86 +461,12 @@
          </widget>
         </item>
         <item row="6" column="0">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="7" column="2">
-         <widget class="QSpinBox" name="FramesModuloSpinBox">
+         <widget class="QCheckBox" name="BgSubChkBx">
           <property name="toolTip">
-           <string>Choosing a value corresponding to the frame rate of your file results in extracting one frame every second of the video.</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="FramesModuloLabel">
-          <property name="toolTip">
-           <string>How many frames do you want to include when extracting frames from a video file?</string>
+           <string>Apply automatic background substraction to reduce noise of static reflecting featrues such as bubbles, food, or scratches.</string>
           </property>
           <property name="text">
-           <string>Extract every n-th frame from Video:</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="BlacklvlChkBx">
-          <property name="text">
-           <string>Black Level</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QDoubleSpinBox" name="GainDSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="locale">
-           <locale language="English" country="UnitedKingdom"/>
-          </property>
-          <property name="decimals">
-           <number>5</number>
-          </property>
-          <property name="maximum">
-           <double>36.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QDoubleSpinBox" name="BlacklvlDSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="locale">
-           <locale language="English" country="UnitedKingdom"/>
-          </property>
-          <property name="decimals">
-           <number>5</number>
-          </property>
-          <property name="maximum">
-           <double>31.937500000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
+           <string>Automatic Background Substraction</string>
           </property>
          </widget>
         </item>
@@ -521,6 +531,9 @@
         <width>360</width>
         <height>360</height>
        </size>
+      </property>
+      <property name="toolTip">
+       <string>This reduces noise induces by static reflecting features such as scratches, air bubbles or food.</string>
       </property>
      </widget>
     </item>

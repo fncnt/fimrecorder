@@ -1,6 +1,7 @@
 from pypylon import pylon
 from pypylon import genicam
 import numpy
+import cv2
 import os
 import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
@@ -17,6 +18,7 @@ class QCamWorker(QObject):
 
     fpath = 'config'
     fname = 'FIM_NodeMap.pfs'
+    substractbg = False
 
     _cam = pylon.InstantCamera()
     device_stopped = pyqtSignal()
@@ -35,6 +37,7 @@ class QCamWorker(QObject):
     #check for compatible type in function
     #I'd like to avoid setters
     #but this way I don't have to  define a function for every Attribute
+
     @pyqtSlot(str, object)
     def setCamAttr(self, attribute: str, value):
         try:
@@ -104,6 +107,8 @@ class QCamWorker(QObject):
         self._cam.MaxNumBuffer = 10
         self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
 
+        bgsub = cv2.createBackgroundSubtractorMOG2(history=50, detectShadows=False)
+
         while self._cam.IsGrabbing():
             try:
                 self.is_grabbing.emit()
@@ -113,7 +118,10 @@ class QCamWorker(QObject):
                 if grabresult.GrabSucceeded():
                     # Access the image data
                     image = converter.Convert(grabresult)
-                    img = image.GetArray()
+                    if self.substractbg:
+                        img = bgsub.apply(image.GetArray(), learningRate=0)
+                    else:
+                        img = image.GetArray()
                     # img = numpy.rot90(img, 1)
                     self.frame_grabbed.emit(img)
                 else:

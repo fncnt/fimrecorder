@@ -14,7 +14,7 @@ OffsetX	0
 OffsetY	0
 ExposureTimeAbs	20000
 ExposureTimeBaseAbs	1
-ExposureTimeRaw	20000
+ExposureTimeRaw	10000
 AcquisitionMode	Continuous
 TriggerSelector	AcquisitionStart
 TriggerSelector	AcquisitionStart
@@ -23,7 +23,7 @@ TriggerSelector	AcquisitionStart
 TriggerSource	Software
 ExposureMode	Timed
 AcquisitionFrameRateEnable	1
-AcquisitionFrameRateAbs	20
+AcquisitionFrameRateAbs	40
 AcquisitionStatusSelector	FrameTriggerWait
 DeviceUserID	
 ForceFailedBufferCount	100

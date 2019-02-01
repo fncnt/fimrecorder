@@ -24,6 +24,7 @@ class QCamWorker(QObject):
     is_grabbing = pyqtSignal()
     device_status = pyqtSignal(str)
     device_name = pyqtSignal(str)
+    emulated = False
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -91,6 +92,7 @@ class QCamWorker(QObject):
             self.device_status.emit("No device found. Make sure to use a USB3 port.")
             self.device_name.emit("no device")
             os.environ['PYLON_CAMEMU'] = '1'
+            self.emulated = True
             self.connectToCam()
 
     @pyqtSlot()

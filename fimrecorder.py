@@ -30,6 +30,8 @@ pcthread = QThread()
 ecthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
+EXPOSURETIME = 'ExposureTime'
+ACQUISITIONFRAMERATE = 'AcquisitionFrameRate'
 
 with open(os.path.join(fimsettings.settings['Configuration Directory'],
                        fimsettings.settings['Logging Configuration'])) as f:
@@ -297,7 +299,7 @@ def connectSignals():
     # Connect widgets to cam classes and SettingsHandler
     # Replace lambda by functools.partial?
     ui.ExpTimeSpinBox.valueChanged[int].connect(
-        lambda val: camera.baslerace.setCamAttr('ExposureTime', val)
+        lambda val: camera.baslerace.setCamAttr(EXPOSURETIME, val)
     )
     ui.ExpTimeSpinBox.valueChanged[int].connect(
         lambda val: fimsettings.parameters.__setitem__('Exposure Time', val)
@@ -308,7 +310,7 @@ def connectSignals():
     #    lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', int(val))
     #)
     ui.FpsDSpinBox.valueChanged[float].connect(
-        lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRate', val)
+        lambda val: camera.baslerace.setCamAttr(ACQUISITIONFRAMERATE, val)
     )
     ui.GammaDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('Gamma', val)
@@ -333,6 +335,15 @@ def disableUiElements():
     ui.actionRefresh.setVisible(False)
     ui.menubar.close()
 
+    if camera.baslerace.emulated:
+        ui.BlacklvlChkBx.setDisabled(True)
+        ui.GainChkBx.setDisabled(True)
+        ui.GammaChkBx.setDisabled(True)
+        ui.ExpAutoChkBx.setDisabled(True)
+        global EXPOSURETIME, ACQUISITIONFRAMERATE
+        EXPOSURETIME += 'Abs'
+        ACQUISITIONFRAMERATE += 'Abs'
+
 
 def renderPreview():
     previewcam.moveToThread(pcthread)
@@ -342,6 +353,7 @@ def renderPreview():
 
 def main():
     logger.debug("Starting new session.")
+
     ui.setupUi(window)
     # set up OpenGL preview
     ui.camWidget.setLayout(QVBoxLayout())

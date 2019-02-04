@@ -1,6 +1,7 @@
 from pypylon import pylon
 from pypylon import genicam
 import numpy
+import cv2
 import os
 import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
@@ -25,6 +26,7 @@ class QCamWorker(QObject):
     device_status = pyqtSignal(str)
     device_name = pyqtSignal(str)
     emulated = False
+    threshold = 0
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -117,6 +119,8 @@ class QCamWorker(QObject):
                     # Access the image data
                     image = converter.Convert(grabresult)
                     img = image.GetArray()
+                    if self.threshold > 0:
+                    _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO+cv2.THRESH_TRIANGLE)
                     # img = numpy.rot90(img, 1)
                     self.frame_grabbed.emit(img)
                 else:

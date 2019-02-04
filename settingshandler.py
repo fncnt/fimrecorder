@@ -20,6 +20,7 @@ class SettingsHandler:
                            'Gamma Correction': 1.00000,
                            'Gain': 0.00000,
                            'Black Level': 0.00000,
+                           'Cutoff Threshold': 0,
                            'User Data': {'Species': "",
                                          'Strain': "",
                                          'Genotype': "",

@@ -120,7 +120,7 @@ class QCamWorker(QObject):
                     image = converter.Convert(grabresult)
                     img = image.GetArray()
                     if self.threshold > 0:
-                        _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO+cv2.THRESH_TRIANGLE)
+                        _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
                     self.frame_grabbed.emit(img)
                 else:

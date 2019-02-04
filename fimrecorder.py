@@ -323,6 +323,12 @@ def connectSignals():
     ui.BlacklvlDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('BlackLevel', val)
     )
+    ui.CutoffSpinBox.valueChanged[int].connect(
+        lambda val: setattr(camera.baslerace, 'threshold', val)
+    )
+    ui.CutoffSpinBox.valueChanged[int].connect(
+        lambda val: logger.debug("Cutoff Threshold: " + str(val))
+    )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))
     # Update recording duration when fps gets changed

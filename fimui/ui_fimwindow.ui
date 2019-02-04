@@ -275,10 +275,85 @@
         <string>Camera</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="GainChkBx">
+        <item row="0" column="0">
+         <widget class="QLabel" name="ExposureTimeLabel">
           <property name="text">
-           <string>Gain [dB]</string>
+           <string>Exposure Time [µs]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="0">
+         <widget class="QCheckBox" name="BlacklvlChkBx">
+          <property name="text">
+           <string>Black Level</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QSpinBox" name="ExpTimeSpinBox">
+          <property name="minimum">
+           <number>34</number>
+          </property>
+          <property name="maximum">
+           <number>10000000</number>
+          </property>
+          <property name="singleStep">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>3000</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QCheckBox" name="ExpAutoChkBx">
+          <property name="text">
+           <string>Automatic Exposure</string>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="QLabel" name="FramesModuloLabel">
+          <property name="toolTip">
+           <string>How many frames do you want to include when extracting frames from a video file?</string>
+          </property>
+          <property name="text">
+           <string>Extract every n-th frame from Video:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QDoubleSpinBox" name="BlacklvlDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="locale">
+           <locale language="English" country="UnitedKingdom"/>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <double>31.937500000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -289,8 +364,21 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QDoubleSpinBox" name="FpsDSpinBox">
+        <item row="8" column="2">
+         <widget class="QSpinBox" name="FramesModuloSpinBox">
+          <property name="toolTip">
+           <string>Choosing a value corresponding to the frame rate of your file results in extracting one frame every second of the video.</string>
+          </property>
+          <property name="minimum">
+           <number>1</number>
+          </property>
+          <property name="maximum">
+           <number>100000</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QDoubleSpinBox" name="GainDSpinBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -300,17 +388,11 @@
           <property name="decimals">
            <number>5</number>
           </property>
-          <property name="minimum">
-           <double>1.000000000000000</double>
-          </property>
           <property name="maximum">
-           <double>41.581769999999999</double>
-          </property>
-          <property name="singleStep">
-           <double>0.500000000000000</double>
+           <double>36.000000000000000</double>
           </property>
           <property name="value">
-           <double>41.581769999999999</double>
+           <double>0.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -346,117 +428,55 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QSpinBox" name="ExpTimeSpinBox">
+        <item row="2" column="2">
+         <widget class="QDoubleSpinBox" name="FpsDSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="locale">
+           <locale language="English" country="UnitedKingdom"/>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
           <property name="minimum">
-           <number>34</number>
+           <double>1.000000000000000</double>
           </property>
           <property name="maximum">
-           <number>10000000</number>
+           <double>41.581769999999999</double>
           </property>
           <property name="singleStep">
-           <number>100</number>
+           <double>0.500000000000000</double>
           </property>
           <property name="value">
-           <number>3000</number>
+           <double>41.581769999999999</double>
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="ExposureTimeLabel">
+        <item row="4" column="0">
+         <widget class="QCheckBox" name="GainChkBx">
           <property name="text">
-           <string>Exposure Time [µs]</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="ExpAutoChkBx">
-          <property name="text">
-           <string>Automatic Exposure</string>
+           <string>Gain [dB]</string>
           </property>
          </widget>
         </item>
         <item row="6" column="0">
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="7" column="2">
-         <widget class="QSpinBox" name="FramesModuloSpinBox">
+         <widget class="QCheckBox" name="CutoffChkBx">
           <property name="toolTip">
-           <string>Choosing a value corresponding to the frame rate of your file results in extracting one frame every second of the video.</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>100000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QLabel" name="FramesModuloLabel">
-          <property name="toolTip">
-           <string>How many frames do you want to include when extracting frames from a video file?</string>
+           <string>This sets all pixel values below the specified threshold to black.</string>
           </property>
           <property name="text">
-           <string>Extract every n-th frame from Video:</string>
-          </property>
-          <property name="wordWrap">
-           <bool>true</bool>
+           <string>Cutoff Threshold</string>
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="BlacklvlChkBx">
-          <property name="text">
-           <string>Black Level</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="2">
-         <widget class="QDoubleSpinBox" name="GainDSpinBox">
+        <item row="6" column="2">
+         <widget class="QSpinBox" name="CutoffSpinBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
-          <property name="locale">
-           <locale language="English" country="UnitedKingdom"/>
-          </property>
-          <property name="decimals">
-           <number>5</number>
-          </property>
           <property name="maximum">
-           <double>36.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="QDoubleSpinBox" name="BlacklvlDSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="locale">
-           <locale language="English" country="UnitedKingdom"/>
-          </property>
-          <property name="decimals">
-           <number>5</number>
-          </property>
-          <property name="maximum">
-           <double>31.937500000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
+           <number>255</number>
           </property>
          </widget>
         </item>
@@ -788,6 +808,22 @@
     <hint type="destinationlabel">
      <x>285</x>
      <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>CutoffChkBx</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>CutoffSpinBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>103</x>
+     <y>216</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>285</x>
+     <y>217</y>
     </hint>
    </hints>
   </connection>

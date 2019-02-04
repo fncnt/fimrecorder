@@ -187,6 +187,7 @@ def pullSettings():
     ui.GammaDSpinBox.setValue(fimsettings.parameters['Gamma Correction'])
     ui.GainDSpinBox.setValue(fimsettings.parameters['Gain'])
     ui.BlacklvlDSpinBox.setValue(fimsettings.parameters['Black Level'])
+    ui.CutoffSpinBox.setValue(fimsettings.parameters['Cutoff Threshold'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
     # WIP not really nice that way
@@ -219,6 +220,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Gamma Correction'] = ui.GammaDSpinBox.value()
     fimsettings.parameters['Gain'] = ui.GainDSpinBox.value()
     fimsettings.parameters['Black Level'] = ui.BlacklvlDSpinBox.value()
+    fimsettings.parameters['Cutoff Threshold'] = ui.CutoffSpinBox.value()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
     fimsettings.parameters['User Data']['Strain'] = straincell.text()
@@ -320,6 +322,12 @@ def connectSignals():
     )
     ui.BlacklvlDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('BlackLevel', val)
+    )
+    ui.CutoffSpinBox.valueChanged[int].connect(
+        lambda val: setattr(camera.baslerace, 'threshold', val)
+    )
+    ui.CutoffSpinBox.valueChanged[int].connect(
+        lambda val: logger.debug("Cutoff Threshold: " + str(val))
     )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))

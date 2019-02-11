@@ -188,8 +188,10 @@ def pullSettings():
     ui.GainDSpinBox.setValue(fimsettings.parameters['Gain'])
     ui.BlacklvlDSpinBox.setValue(fimsettings.parameters['Black Level'])
     ui.CutoffSpinBox.setValue(fimsettings.parameters['Cutoff Threshold'])
+    ui.BgChkBx.setChecked(fimsettings.parameters['Background Subtraction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
+    ui.BgSpinBox.setValue(fimsettings.settings['Background Frames to average'])
     # WIP not really nice that way
     # use list/iterator and apply try-blocks to each cell
     speciescell.setText(fimsettings.parameters['User Data']['Species'])
@@ -221,6 +223,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Gain'] = ui.GainDSpinBox.value()
     fimsettings.parameters['Black Level'] = ui.BlacklvlDSpinBox.value()
     fimsettings.parameters['Cutoff Threshold'] = ui.CutoffSpinBox.value()
+    fimsettings.parameters['Background Subtraction'] = ui.BgChkBx.isChecked()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
     fimsettings.parameters['User Data']['Strain'] = straincell.text()
@@ -229,6 +232,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['User Data']['Test Conditions'] = testcondcell.text()
     fimsettings.parameters['User Data']['More Info'] = moreinfocell.text()
     fimsettings.settings['Extract every n-th Frame'] = ui.FramesModuloSpinBox.value()
+    fimsettings.settings['Background Frames to average'] = ui.BgSpinBox.value()
 
     # temporarily
     fimsettings.saveSettings(fpath, fname, onlyparameters)

@@ -311,6 +311,12 @@ def connectSignals():
     #ui.FpsEnableChkBx.toggled[bool].connect(
     #    lambda val: camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', int(val))
     #)
+    ui.BgChkBx.toggled[bool].connect(
+        lambda val: setattr(camera.baslerace, 'subtractbg', val)
+    )
+    ui.RecalcBgBtn.pressed.connect(
+        lambda: camera.baslerace.resetbackground(ui.BgSpinBox.value())
+    )
     ui.FpsDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr(ACQUISITIONFRAMERATE, val)
     )

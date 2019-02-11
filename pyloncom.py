@@ -108,7 +108,9 @@ class QCamWorker(QObject):
         # default = 10
         self._cam.MaxNumBuffer = 10
         self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
-
+        bgcount = 0
+        background = numpy.zeros((1200, 1200)).astype(numpy.float)
+        # background = numpy.zeros((1200, 1200)).astype(numpy.uint8)
         while self._cam.IsGrabbing():
             try:
                 self.is_grabbing.emit()
@@ -122,6 +124,13 @@ class QCamWorker(QObject):
                     if self.threshold > 0:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
+                    if bgcount < 100:
+                        #background = (bgcount/100) * background + (1 - bgcount/100) * img
+                        background = cv2.accumulateWeighted(img.astype(numpy.float), background, alpha=1-bgcount/100)
+                        bgcount += 1
+                    else:
+                        img = cv2.subtract(img.astype(numpy.uint8), background.astype(numpy.uint8))
+
                     self.frame_grabbed.emit(img)
                 else:
                     logger.error("Error: " + grabresult.ErrorCode + grabresult.ErrorDescription)

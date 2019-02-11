@@ -27,6 +27,9 @@ class QCamWorker(QObject):
     device_name = pyqtSignal(str)
     emulated = False
     threshold = 0
+    bgcount = 0
+    maxinbg = 100
+    subtractbg = False
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -34,6 +37,8 @@ class QCamWorker(QObject):
     def __init__(self):
         super().__init__()
         self.connectToCam()
+        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+        # self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.uint8)
 
     #check for compatible type in function
     #I'd like to avoid setters
@@ -53,6 +58,12 @@ class QCamWorker(QObject):
     def stop(self):
         #self.device_status.emit("Stopping frame-grabbing...")
         self._cam.StopGrabbing()
+
+    @pyqtSlot(int)
+    def resetbackground(self, maxinbg=100):
+        self.bgcount = 0
+        self.maxinbg = maxinbg
+        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
 
     @pyqtSlot()
     def connectToCam(self):
@@ -122,6 +133,15 @@ class QCamWorker(QObject):
                     if self.threshold > 0:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
+                    if self.subtractbg:
+                        if self.bgcount < self.maxinbg:
+                            #self.background = (bgcount/100) * self.background + (1 - bgcount/100) * img
+                            self.background = cv2.accumulateWeighted(img.astype(numpy.float), self.background, alpha=1-self.bgcount/self.maxinbg)
+                            self.bgcount += 1
+                        img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
+                    else:
+                        self.resetbackground(self.maxinbg)
+
                     self.frame_grabbed.emit(img)
                 else:
                     logger.error("Error: " + grabresult.ErrorCode + grabresult.ErrorDescription)

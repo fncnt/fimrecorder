@@ -21,6 +21,7 @@ class SettingsHandler:
                            'Gain': 0.00000,
                            'Black Level': 0.00000,
                            'Cutoff Threshold': 0,
+                           'Background Subtraction': False,
                            'User Data': {'Species': "",
                                          'Strain': "",
                                          'Genotype': "",
@@ -36,7 +37,8 @@ class SettingsHandler:
                          'Logging Configuration': "loggingconf.json",
                          'Default Camera Parameters': "FIM_NodeMap.pfs",
                          'Video Codec': 'XVID',
-                         'Extract every n-th Frame': 1
+                         'Extract every n-th Frame': 1,
+                         'Background Frames to average': 100
                          }
         # load settings file on init or create a new one if there is no present
         try:

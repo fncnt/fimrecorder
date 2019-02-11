@@ -59,6 +59,12 @@ class QCamWorker(QObject):
         #self.device_status.emit("Stopping frame-grabbing...")
         self._cam.StopGrabbing()
 
+    @pyqtSlot(int)
+    def resetbackground(self, maxinbg=100):
+        self.bgcount = 0
+        self.maxinbg = maxinbg
+        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+
     @pyqtSlot()
     def connectToCam(self):
         try:
@@ -134,8 +140,7 @@ class QCamWorker(QObject):
                             self.bgcount += 1
                         img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
                     else:
-                        self.bgcount = 0
-                        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+                        self.resetbackground(self.maxinbg)
 
                     self.frame_grabbed.emit(img)
                 else:

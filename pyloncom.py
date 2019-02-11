@@ -27,6 +27,9 @@ class QCamWorker(QObject):
     device_name = pyqtSignal(str)
     emulated = False
     threshold = 0
+    bgcount = 0
+    maxinbg = 100
+    subtractbg = False
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -34,6 +37,8 @@ class QCamWorker(QObject):
     def __init__(self):
         super().__init__()
         self.connectToCam()
+        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+        # self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.uint8)
 
     #check for compatible type in function
     #I'd like to avoid setters
@@ -108,9 +113,7 @@ class QCamWorker(QObject):
         # default = 10
         self._cam.MaxNumBuffer = 10
         self._cam.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) #or GrabStrategy_OneByOne
-        bgcount = 0
-        background = numpy.zeros((1200, 1200)).astype(numpy.float)
-        # background = numpy.zeros((1200, 1200)).astype(numpy.uint8)
+
         while self._cam.IsGrabbing():
             try:
                 self.is_grabbing.emit()
@@ -124,12 +127,15 @@ class QCamWorker(QObject):
                     if self.threshold > 0:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
-                    if bgcount < 100:
-                        #background = (bgcount/100) * background + (1 - bgcount/100) * img
-                        background = cv2.accumulateWeighted(img.astype(numpy.float), background, alpha=1-bgcount/100)
-                        bgcount += 1
+                    if self.subtractbg:
+                        if self.bgcount < self.maxinbg:
+                            #self.background = (bgcount/100) * self.background + (1 - bgcount/100) * img
+                            self.background = cv2.accumulateWeighted(img.astype(numpy.float), self.background, alpha=1-self.bgcount/self.maxinbg)
+                            self.bgcount += 1
+                        img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
                     else:
-                        img = cv2.subtract(img.astype(numpy.uint8), background.astype(numpy.uint8))
+                        self.bgcount = 0
+                        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
 
                     self.frame_grabbed.emit(img)
                 else:

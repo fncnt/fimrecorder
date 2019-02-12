@@ -354,6 +354,9 @@ def disableUiElements():
     ui.menubar.close()
 
     if camera.baslerace.emulated:
+        ui.BlackLevelLbl.setDisabled(True)
+        ui.GainLbl.setDisabled(True)
+        ui.GammaLbl.setDisabled(True)
         ui.BlacklvlDSpinBox.setDisabled(True)
         ui.GainDSpinBox.setDisabled(True)
         ui.GammaDSpinBox.setDisabled(True)

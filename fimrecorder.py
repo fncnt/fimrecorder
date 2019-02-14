@@ -188,6 +188,7 @@ def pullSettings():
     ui.GainDSpinBox.setValue(fimsettings.parameters['Gain'])
     ui.BlacklvlDSpinBox.setValue(fimsettings.parameters['Black Level'])
     ui.CutoffSpinBox.setValue(fimsettings.parameters['Cutoff Threshold'])
+    ui.CutoffChkBx.setChecked(fimsettings.parameters['Cutoff'])
     ui.BgChkBx.setChecked(fimsettings.parameters['Background Subtraction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
@@ -223,6 +224,7 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Gain'] = ui.GainDSpinBox.value()
     fimsettings.parameters['Black Level'] = ui.BlacklvlDSpinBox.value()
     fimsettings.parameters['Cutoff Threshold'] = ui.CutoffSpinBox.value()
+    fimsettings.parameters['Cutoff'] = ui.CutoffChkBx.isChecked()
     fimsettings.parameters['Background Subtraction'] = ui.BgChkBx.isChecked()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
@@ -317,6 +319,9 @@ def connectSignals():
     #)
     ui.BgChkBx.toggled[bool].connect(
         lambda val: setattr(camera.baslerace, 'subtractbg', val)
+    )
+    ui.CutoffChkBx.toggled[bool].connect(
+        lambda val: setattr(camera.baslerace, 'cutoff', val)
     )
     ui.RecalcBgBtn.pressed.connect(
         lambda: camera.baslerace.resetbackground(ui.BgSpinBox.value())

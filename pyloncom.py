@@ -27,6 +27,7 @@ class QCamWorker(QObject):
     device_name = pyqtSignal(str)
     emulated = False
     threshold = 0
+    cutoff = False
     bgcount = 0
     maxinbg = 100
     subtractbg = False
@@ -130,7 +131,7 @@ class QCamWorker(QObject):
                     # Access the image data
                     image = converter.Convert(grabresult)
                     img = image.GetArray()
-                    if self.threshold > 0:
+                    if self.threshold > 0 and self.cutoff:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
                     if self.subtractbg:

@@ -21,6 +21,7 @@ class SettingsHandler:
                            'Gain': 0.00000,
                            'Black Level': 0.00000,
                            'Cutoff Threshold': 0,
+                           'Cutoff': False,
                            'Background Subtraction': False,
                            'User Data': {'Species': "",
                                          'Strain': "",

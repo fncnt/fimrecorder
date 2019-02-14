@@ -354,9 +354,12 @@ def disableUiElements():
     ui.menubar.close()
 
     if camera.baslerace.emulated:
-        ui.BlacklvlChkBx.setDisabled(True)
-        ui.GainChkBx.setDisabled(True)
-        ui.GammaChkBx.setDisabled(True)
+        ui.BlackLevelLbl.setDisabled(True)
+        ui.GainLbl.setDisabled(True)
+        ui.GammaLbl.setDisabled(True)
+        ui.BlacklvlDSpinBox.setDisabled(True)
+        ui.GainDSpinBox.setDisabled(True)
+        ui.GammaDSpinBox.setDisabled(True)
         ui.ExpAutoChkBx.setDisabled(True)
         global EXPOSURETIME, ACQUISITIONFRAMERATE
         EXPOSURETIME += 'Abs'

@@ -275,10 +275,41 @@
         <string>Camera</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="ExposureTimeLabel">
+          <property name="text">
+           <string>Exposure Time [µs]</string>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="2">
          <widget class="QCheckBox" name="ExpAutoChkBx">
           <property name="text">
            <string>Automatic Exposure</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QSpinBox" name="CutoffSpinBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximum">
+           <number>255</number>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QCheckBox" name="BgChkBx">
+          <property name="text">
+           <string>Subtract Background</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="BlackLevelLbl">
+          <property name="text">
+           <string>Black Level</string>
           </property>
          </widget>
         </item>
@@ -298,20 +329,6 @@
           </property>
          </widget>
         </item>
-        <item row="5" column="0">
-         <widget class="QCheckBox" name="BlacklvlChkBx">
-          <property name="text">
-           <string>Black Level</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="FpsEnableChkBx">
-          <property name="text">
-           <string>Frame Rate [fps]</string>
-          </property>
-         </widget>
-        </item>
         <item row="9" column="2">
          <widget class="QSpinBox" name="FramesModuloSpinBox">
           <property name="toolTip">
@@ -322,30 +339,6 @@
           </property>
           <property name="maximum">
            <number>100000</number>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="ExposureTimeLabel">
-          <property name="text">
-           <string>Exposure Time [µs]</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QCheckBox" name="GammaChkBx">
-          <property name="text">
-           <string>Gamma Correction</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QCheckBox" name="CutoffChkBx">
-          <property name="toolTip">
-           <string>This sets all pixel values below the specified threshold to black.</string>
-          </property>
-          <property name="text">
-           <string>Cutoff Threshold</string>
           </property>
          </widget>
         </item>
@@ -362,57 +355,23 @@
           </property>
          </spacer>
         </item>
-        <item row="9" column="0">
-         <widget class="QLabel" name="FramesModuloLabel">
+        <item row="6" column="0">
+         <widget class="QCheckBox" name="CutoffChkBx">
           <property name="toolTip">
-           <string>How many frames do you want to include when extracting frames from a video file?</string>
+           <string>This sets all pixel values below the specified threshold to black.</string>
           </property>
           <property name="text">
-           <string>Extract every n-th frame from Video:</string>
+           <string>Cutoff Threshold</string>
           </property>
-          <property name="wordWrap">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QCheckBox" name="GainChkBx">
-          <property name="text">
-           <string>Gain [dB]</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="QCheckBox" name="BgChkBx">
-          <property name="text">
-           <string>Subtract Background</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="QSpinBox" name="BgSpinBox">
-          <property name="enabled">
+          <property name="tristate">
            <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>500</number>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="1">
-         <widget class="QPushButton" name="RecalcBgBtn">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="text">
-           <string>Recalculate Background</string>
           </property>
          </widget>
         </item>
         <item row="2" column="2">
          <widget class="QDoubleSpinBox" name="FpsDSpinBox">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="locale">
            <locale language="English" country="UnitedKingdom"/>
@@ -437,7 +396,7 @@
         <item row="3" column="2">
          <widget class="QDoubleSpinBox" name="GammaDSpinBox">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="locale">
            <locale language="English" country="UnitedKingdom"/>
@@ -459,29 +418,10 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="QDoubleSpinBox" name="GainDSpinBox">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="locale">
-           <locale language="English" country="UnitedKingdom"/>
-          </property>
-          <property name="decimals">
-           <number>5</number>
-          </property>
-          <property name="maximum">
-           <double>36.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.000000000000000</double>
-          </property>
-         </widget>
-        </item>
         <item row="5" column="2">
          <widget class="QDoubleSpinBox" name="BlacklvlDSpinBox">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="locale">
            <locale language="English" country="UnitedKingdom"/>
@@ -497,13 +437,76 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
-         <widget class="QSpinBox" name="CutoffSpinBox">
+        <item row="4" column="2">
+         <widget class="QDoubleSpinBox" name="GainDSpinBox">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="locale">
+           <locale language="English" country="UnitedKingdom"/>
+          </property>
+          <property name="decimals">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <double>36.000000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="RecalcBgBtn">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>Recalculate Background</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="QLabel" name="FramesModuloLabel">
+          <property name="toolTip">
+           <string>How many frames do you want to include when extracting frames from a video file?</string>
+          </property>
+          <property name="text">
+           <string>Extract every n-th frame from Video:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QSpinBox" name="BgSpinBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
           <property name="maximum">
-           <number>255</number>
+           <number>500</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="GainLbl">
+          <property name="text">
+           <string>Gain [dB]</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="GammaLbl">
+          <property name="text">
+           <string>Gamma Correction</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="FpsLbl">
+          <property name="text">
+           <string>Frame Rate [fps]</string>
           </property>
          </widget>
         </item>
@@ -579,7 +582,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>18</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -743,38 +746,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>FpsEnableChkBx</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>FpsDSpinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>63</x>
-     <y>116</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>166</x>
-     <y>117</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>GammaChkBx</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>GammaDSpinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>103</x>
-     <y>147</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>285</x>
-     <y>148</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionRecord</sender>
    <signal>toggled(bool)</signal>
    <receiver>actionExtract_Frames_from_AVI</receiver>
@@ -803,38 +774,6 @@
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>BlacklvlChkBx</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BlacklvlDSpinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>103</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>285</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>GainChkBx</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>GainDSpinBox</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>103</x>
-     <y>170</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>285</x>
-     <y>171</y>
     </hint>
    </hints>
   </connection>

@@ -131,8 +131,6 @@ class QCamWorker(QObject):
                     # Access the image data
                     image = converter.Convert(grabresult)
                     img = image.GetArray()
-                    if self.threshold > 0 and self.cutoff:
-                        _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
                     # img = numpy.rot90(img, 1)
                     if self.subtractbg:
                         if self.bgcount < self.maxinbg:
@@ -142,6 +140,9 @@ class QCamWorker(QObject):
                         img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
                     else:
                         self.resetbackground(self.maxinbg)
+                        
+                    if self.threshold > 0 and self.cutoff:
+                        _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
 
                     self.frame_grabbed.emit(img)
                 else:

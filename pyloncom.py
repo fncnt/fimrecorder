@@ -31,6 +31,8 @@ class QCamWorker(QObject):
     bgcount = 0
     maxinbg = 100
     subtractbg = False
+    multiplyframes = False
+    multiplyscale = 0
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found
@@ -143,6 +145,9 @@ class QCamWorker(QObject):
                         
                     if self.threshold > 0 and self.cutoff:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)
+
+                    if self.multiplyscale >= 0 and self.multiplyframes:
+                        img = cv2.multiply(img, img, scale=self.multiplyscale/255)
 
                     self.frame_grabbed.emit(img)
                 else:

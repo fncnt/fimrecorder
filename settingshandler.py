@@ -22,6 +22,8 @@ class SettingsHandler:
                            'Black Level': 0.00000,
                            'Cutoff Threshold': 0,
                            'Cutoff': False,
+                           'Multiplicative Scale': 0.00000,
+                           'Multiplicative Contrast': False,
                            'Background Subtraction': False,
                            'User Data': {'Species': "",
                                          'Strain': "",

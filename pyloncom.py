@@ -32,7 +32,7 @@ class QCamWorker(QObject):
     maxinbg = 100
     subtractbg = False
     multiplyframes = False
-    multiplyscale = 0
+    multiplyscale = 0.0
     # TODO overload signal to allow integer codes
     # 0: device found, using device
     # 1: no device found

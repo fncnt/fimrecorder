@@ -323,6 +323,9 @@ def connectSignals():
     ui.CutoffChkBx.toggled[bool].connect(
         lambda val: setattr(camera.baslerace, 'cutoff', val)
     )
+    ui.MultChkBx.toggled[bool].connect(
+        lambda val: setattr(camera.baslerace, 'multiplyframes', val)
+    )
     ui.RecalcBgBtn.pressed.connect(
         lambda: camera.baslerace.resetbackground(ui.BgSpinBox.value())
     )
@@ -343,6 +346,12 @@ def connectSignals():
     )
     ui.CutoffSpinBox.valueChanged[int].connect(
         lambda val: logger.debug("Cutoff Threshold: " + str(val))
+    )
+    ui.MultDSpinBox.valueChanged[float].connect(
+        lambda val: setattr(camera.baslerace, 'multiplyscale', val)
+    )
+    ui.MultDSpinBox.valueChanged[float].connect(
+        lambda val: logger.debug("Multiplicative Contrast Scale: " + str(val))
     )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))

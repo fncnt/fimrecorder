@@ -572,6 +572,9 @@
         </item>
         <item row="9" column="0">
          <widget class="QCheckBox" name="MultChkBx">
+          <property name="toolTip">
+           <string>This increases contrast by multiplying frames elementwise with themselves. This can be adjustet with a certain scale factor.</string>
+          </property>
           <property name="text">
            <string>Multiplicative Contrast</string>
           </property>
@@ -590,6 +593,9 @@
           </property>
           <property name="maximum">
            <double>100.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.100000000000000</double>
           </property>
          </widget>
         </item>

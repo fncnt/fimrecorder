@@ -648,10 +648,13 @@
    </attribute>
    <addaction name="actionLoad_Parameters"/>
    <addaction name="actionSave_Parameters"/>
+   <addaction name="separator"/>
    <addaction name="actionRecord"/>
    <addaction name="actionRefresh"/>
    <addaction name="actionSnapshot"/>
    <addaction name="actionExtract_Frames_from_AVI"/>
+   <addaction name="separator"/>
+   <addaction name="actionSettings"/>
   </widget>
   <action name="actionLoad_Parameters">
    <property name="icon">
@@ -735,6 +738,18 @@
    </property>
    <property name="toolTip">
     <string>Choose a recorded .avi file to extract .png frames into a subfolder</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="fimui.qrc">
+     <normaloff>:/fa/fa-svgs/solid/cogs.svg</normaloff>:/fa/fa-svgs/solid/cogs.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Open settings file</string>
    </property>
   </action>
  </widget>

@@ -287,6 +287,7 @@ def connectSignals():
     ui.actionExtract_Frames_from_AVI.toggled[bool].connect(extractFrames)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
+    ui.actionSettings.triggered.connect(lambda: os.startfile("settings.json"))
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     recordingcam.fimjson_path[str].connect(lambda val: pushSettings(os.path.dirname(val),

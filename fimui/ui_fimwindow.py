@@ -318,6 +318,11 @@ class Ui_fimWindow(object):
         icon5.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/film.svg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.actionExtract_Frames_from_AVI.setIcon(icon5)
         self.actionExtract_Frames_from_AVI.setObjectName("actionExtract_Frames_from_AVI")
+        self.actionSettings = QtWidgets.QAction(fimWindow)
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/cogs.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSettings.setIcon(icon6)
+        self.actionSettings.setObjectName("actionSettings")
         self.menuFile.addAction(self.actionLoad_Parameters)
         self.menuFile.addAction(self.actionSave_Parameters)
         self.menuCamera.addAction(self.actionRecord)
@@ -327,10 +332,13 @@ class Ui_fimWindow(object):
         self.menubar.addAction(self.menuCamera.menuAction())
         self.toolBar.addAction(self.actionLoad_Parameters)
         self.toolBar.addAction(self.actionSave_Parameters)
+        self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionRecord)
         self.toolBar.addAction(self.actionRefresh)
         self.toolBar.addAction(self.actionSnapshot)
         self.toolBar.addAction(self.actionExtract_Frames_from_AVI)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionSettings)
 
         self.retranslateUi(fimWindow)
         self.tabWidget.setCurrentIndex(0)
@@ -400,5 +408,7 @@ class Ui_fimWindow(object):
         self.actionSnapshot.setShortcut(_translate("fimWindow", "Alt+S"))
         self.actionExtract_Frames_from_AVI.setText(_translate("fimWindow", "Extract Frames from AVI"))
         self.actionExtract_Frames_from_AVI.setToolTip(_translate("fimWindow", "Choose a recorded .avi file to extract .png frames into a subfolder"))
+        self.actionSettings.setText(_translate("fimWindow", "Settings"))
+        self.actionSettings.setToolTip(_translate("fimWindow", "Open settings file"))
 
 from . import fimui_rc

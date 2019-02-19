@@ -2,6 +2,7 @@
 
 import sys
 import os
+import subprocess
 import math
 import json
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
@@ -271,6 +272,15 @@ def writeParamFile():
         logger.exception(str(e))
 
 
+def open_extern(fname="settings.json"):
+    if sys.platform == "win32":
+        os.startfile(fname)
+    elif sys.platform == "darwin":
+        subprocess.call(["open", fname])
+    else:
+        subprocess.call(["xdg-open", fname])
+
+
 def connectSignals():
     # Print messages to statusbar and console
     camera.device_status[str].connect(ui.statusbar.showMessage)
@@ -287,7 +297,7 @@ def connectSignals():
     ui.actionExtract_Frames_from_AVI.toggled[bool].connect(extractFrames)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
-    ui.actionSettings.triggered.connect(lambda: os.startfile("settings.json"))
+    ui.actionSettings.triggered.connect(lambda: open_extern())
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     recordingcam.fimjson_path[str].connect(lambda val: pushSettings(os.path.dirname(val),

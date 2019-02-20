@@ -213,6 +213,7 @@ def pullSettings():
 
     recordingcam.msecsToFrames(QTimeToMsecs(ui.RecDurTEdit.time()))
     recordingcam.codec = fimsettings.settings['Video Codec']
+    recordingcam.containerformat = fimsettings.settings['Video Container Format']
     recordingcam.fpath = fimsettings.settings['Recording Directory']
     disposablecam.fpath = fimsettings.settings['Snapshot Directory']
     disposablecam.fileformat = fimsettings.settings['Single Image Format']

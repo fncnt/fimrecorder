@@ -55,7 +55,7 @@ class QCamRecorder(QCamProcessor):
     timelimit_reached = pyqtSignal()
 
     fpath = ''
-
+    containerformat = ".avi"
     codec = 'XVID'
 
     def __init__(self):
@@ -89,10 +89,11 @@ class QCamRecorder(QCamProcessor):
             except OSError as exc:  # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
-        fimfile = 'FIM_' + currenttime + '.avi'
+        fimfile = 'FIM_' + currenttime + self.containerformat
         self.fimjson = os.path.join(subpath, 'FIM_' + currenttime + '.json')
         self.fourcc = cv2.VideoWriter_fourcc(*self.codec)
         #self.out = imageio.get_writer(os.path.join(subpath, fimfile), 'ffmpeg', 'I', fps=self.fps, codec=self.codec)
+        # I'd like to catch OpenCV: FFMPEG: fallback to use tag errors but cv2 just prints messages and doesn't raise any exceptions
         self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, self.resolution, False)
         self.iscancelled = False
         super().startProcessing(img_received)

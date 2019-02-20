@@ -215,6 +215,8 @@ def pullSettings():
     recordingcam.codec = fimsettings.settings['Video Codec']
     recordingcam.fpath = fimsettings.settings['Recording Directory']
     disposablecam.fpath = fimsettings.settings['Snapshot Directory']
+    disposablecam.fileformat = fimsettings.settings['Single Image Format']
+    extractcam.fileformat = fimsettings.settings['Single Image Format']
     camera.baslerace.fpath = fimsettings.settings['Configuration Directory']
     camera.baslerace.fname = fimsettings.settings['Default Camera Parameters']
 

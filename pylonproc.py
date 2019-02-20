@@ -242,10 +242,11 @@ class QCamGLPreview(QCamProcessor):
 class QCamSnapshot(QCamProcessor):
     img_processed = pyqtSignal()
     fpath = ''
+    fileformat = ".tif"
 
     def processImg(self, img=numpy.ndarray):
         currenttime = time.strftime('%d-%m-%Y_%H-%M-%S', time.localtime())
-        fimfile ='FIMsnapshot_' + currenttime + '.tif'
+        fimfile ='FIMsnapshot_' + currenttime + self.fileformat
         fpath = os.path.join(self.fpath, fimfile)
         # we just want to save one frame, so when we receive one,
         # we immediately stop by checking if there is already a file saved.
@@ -270,6 +271,7 @@ class QCamExtract(QCamProcessor):
     timelimit_reached = pyqtSignal()
     img_processed = pyqtSignal()
     max_frames = pyqtSignal(int)
+    fileformat = ".tif"
     cap = None
 
     def __init__(self):
@@ -280,11 +282,12 @@ class QCamExtract(QCamProcessor):
     def processImg(self):
         # calculate how many leading zeros we need (number of digits-1)
         leadingzeros = int(math.log10(self.maxframes)) + 1
+        filename = '%0*d' + self.fileformat
         while self.cap.isOpened() and not self.iscancelled:
             ret, frame = self.cap.read()
             if ret:
                 if (self.framecount + 1) % self.framesmodulo == 0:
-                    cv2.imwrite(os.path.join(self.framespath, '%0*d.tif' % (leadingzeros, self.framecount)), frame)
+                    cv2.imwrite(os.path.join(self.framespath, filename % (leadingzeros, self.framecount)), frame)
                     self.frame_written.emit()
                 self.framecount += 1
                 if self.framecount == self.maxframes:

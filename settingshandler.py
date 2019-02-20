@@ -39,6 +39,8 @@ class SettingsHandler:
                          'Configuration Directory': "config",
                          'Logging Configuration': "loggingconf.json",
                          'Default Camera Parameters': "FIM_NodeMap.pfs",
+                         'Single Image Format': ".tif",
+                         'Video Container Format': ".avi",
                          'Video Codec': 'XVID',
                          'Extract every n-th Frame': 1,
                          'Background Frames to average': 100

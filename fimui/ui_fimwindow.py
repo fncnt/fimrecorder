@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_fimwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -269,7 +269,7 @@ class Ui_fimWindow(object):
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 3, 1)
         fimWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(fimWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 30))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -312,12 +312,12 @@ class Ui_fimWindow(object):
         icon4.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/camera.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSnapshot.setIcon(icon4)
         self.actionSnapshot.setObjectName("actionSnapshot")
-        self.actionExtract_Frames_from_AVI = QtWidgets.QAction(fimWindow)
-        self.actionExtract_Frames_from_AVI.setCheckable(True)
+        self.actionExtract_Frames_from_Video = QtWidgets.QAction(fimWindow)
+        self.actionExtract_Frames_from_Video.setCheckable(True)
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/film.svg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
-        self.actionExtract_Frames_from_AVI.setIcon(icon5)
-        self.actionExtract_Frames_from_AVI.setObjectName("actionExtract_Frames_from_AVI")
+        self.actionExtract_Frames_from_Video.setIcon(icon5)
+        self.actionExtract_Frames_from_Video.setObjectName("actionExtract_Frames_from_Video")
         self.actionSettings = QtWidgets.QAction(fimWindow)
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(":/fa/fa-svgs/solid/cogs.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -336,7 +336,7 @@ class Ui_fimWindow(object):
         self.toolBar.addAction(self.actionRecord)
         self.toolBar.addAction(self.actionRefresh)
         self.toolBar.addAction(self.actionSnapshot)
-        self.toolBar.addAction(self.actionExtract_Frames_from_AVI)
+        self.toolBar.addAction(self.actionExtract_Frames_from_Video)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionSettings)
 
@@ -344,8 +344,8 @@ class Ui_fimWindow(object):
         self.tabWidget.setCurrentIndex(0)
         self.actionSnapshot.triggered.connect(self.statusbar.update)
         self.ExpAutoChkBx.toggled['bool'].connect(self.ExpTimeSpinBox.setDisabled)
-        self.actionRecord.toggled['bool'].connect(self.actionExtract_Frames_from_AVI.setDisabled)
-        self.actionExtract_Frames_from_AVI.toggled['bool'].connect(self.actionRecord.setDisabled)
+        self.actionRecord.toggled['bool'].connect(self.actionExtract_Frames_from_Video.setDisabled)
+        self.actionExtract_Frames_from_Video.toggled['bool'].connect(self.actionRecord.setDisabled)
         self.CutoffChkBx.toggled['bool'].connect(self.CutoffSpinBox.setEnabled)
         self.BgChkBx.toggled['bool'].connect(self.BgSpinBox.setEnabled)
         self.BgChkBx.toggled['bool'].connect(self.RecalcBgBtn.setEnabled)
@@ -406,8 +406,8 @@ class Ui_fimWindow(object):
         self.actionRefresh.setShortcut(_translate("fimWindow", "F5"))
         self.actionSnapshot.setText(_translate("fimWindow", "Snapshot"))
         self.actionSnapshot.setShortcut(_translate("fimWindow", "Alt+S"))
-        self.actionExtract_Frames_from_AVI.setText(_translate("fimWindow", "Extract Frames from AVI"))
-        self.actionExtract_Frames_from_AVI.setToolTip(_translate("fimWindow", "Choose a recorded .avi file to extract .png frames into a subfolder"))
+        self.actionExtract_Frames_from_Video.setText(_translate("fimWindow", "Extract Frames from Video"))
+        self.actionExtract_Frames_from_Video.setToolTip(_translate("fimWindow", "Choose a recorded .avi file to extract .png frames into a subfolder"))
         self.actionSettings.setText(_translate("fimWindow", "Settings"))
         self.actionSettings.setToolTip(_translate("fimWindow", "Open settings file"))
 

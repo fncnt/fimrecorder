@@ -611,7 +611,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>18</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -652,7 +652,7 @@
    <addaction name="actionRecord"/>
    <addaction name="actionRefresh"/>
    <addaction name="actionSnapshot"/>
-   <addaction name="actionExtract_Frames_from_AVI"/>
+   <addaction name="actionExtract_Frames_from_Video"/>
    <addaction name="separator"/>
    <addaction name="actionSettings"/>
   </widget>
@@ -724,7 +724,7 @@
     <string>Alt+S</string>
    </property>
   </action>
-  <action name="actionExtract_Frames_from_AVI">
+  <action name="actionExtract_Frames_from_Video">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -734,7 +734,7 @@
     </iconset>
    </property>
    <property name="text">
-    <string>Extract Frames from AVI</string>
+    <string>Extract Frames from Video</string>
    </property>
    <property name="toolTip">
     <string>Choose a recorded .avi file to extract .png frames into a subfolder</string>
@@ -792,7 +792,7 @@
   <connection>
    <sender>actionRecord</sender>
    <signal>toggled(bool)</signal>
-   <receiver>actionExtract_Frames_from_AVI</receiver>
+   <receiver>actionExtract_Frames_from_Video</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -806,7 +806,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionExtract_Frames_from_AVI</sender>
+   <sender>actionExtract_Frames_from_Video</sender>
    <signal>toggled(bool)</signal>
    <receiver>actionRecord</receiver>
    <slot>setDisabled(bool)</slot>

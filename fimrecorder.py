@@ -141,23 +141,23 @@ def extractFrames(toggled: bool):
         extractcam.framesmodulo = ui.FramesModuloSpinBox.value()
         ecthread.started.connect(extractcam.startProcessing)
         ui.selectvideofile.setAcceptMode(QFileDialog.AcceptOpen)
+        ui.selectvideofile.setFileMode(QFileDialog.ExistingFile)
         completepath = ''
         try:
-            logger.debug("Opening file dialog.")
             completepath = ui.selectvideofile.getOpenFileName(ui.centralwidget, 'Open Video File',
                                                               fimsettings.settings['Recording Directory'],
-                                                              '*.avi')[0]
+                                                              initialFilter='Video *.avi, *.mp4 (*.avi *.mp4)',
+                                                              filter='Video *.avi, *.mp4 (*.avi *.mp4);;All Files (*.*)')[0]
         except Exception as e:
             logger.exception(str(e))
         if completepath == '':
-            ui.actionExtract_Frames_from_AVI.toggle()
+            ui.actionExtract_Frames_from_Video.toggle()
         else:
             extractcam.completepath = completepath
             extractcam.framecount = 0
             ecthread.setPriority(QThread.LowPriority)
             ecthread.start()
-            logger.debug("Started")
-            ui.actionExtract_Frames_from_AVI.setText('Cancel Extraction')
+            ui.actionExtract_Frames_from_Video.setText('Cancel Extraction')
             ui.progressBar.setMinimum(0)
             ui.progressBar.setValue(0)
 
@@ -171,7 +171,7 @@ def extractFrames(toggled: bool):
         # recthread.exit(0)
         # recthread.wait(100)
         # recthread.wait(100)
-        ui.actionExtract_Frames_from_AVI.setText('Extract Frames from AVI')
+        ui.actionExtract_Frames_from_Video.setText('Extract Frames from AVI')
         #ui.progressBar.setValue(0)
         #ui.progressBar.setMaximum(100)
         #ui.progressBar.setMinimum(0)
@@ -294,7 +294,7 @@ def connectSignals():
     ui.actionSnapshot.triggered.connect(saveSnapshot)
     ui.actionRefresh.triggered.connect(bootstrapCam)
     ui.actionRecord.toggled[bool].connect(recordVideo)
-    ui.actionExtract_Frames_from_AVI.toggled[bool].connect(extractFrames)
+    ui.actionExtract_Frames_from_Video.toggled[bool].connect(extractFrames)
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
     ui.actionSettings.triggered.connect(lambda: open_extern())
@@ -311,7 +311,7 @@ def connectSignals():
                    recordingcam.fps *
                    1000)).toString()))
     extractcam.max_frames.connect(ui.progressBar.setMaximum)
-    extractcam.timelimit_reached.connect(ui.actionExtract_Frames_from_AVI.toggle)
+    extractcam.timelimit_reached.connect(ui.actionExtract_Frames_from_Video.toggle)
     extractcam.frame_written.connect(lambda: ui.progressBar.setValue(extractcam.framecount))
     extractcam.frame_written.connect(lambda: ui.progressBar.setFormat(str(extractcam.framecount) +
                                                                       '/' +

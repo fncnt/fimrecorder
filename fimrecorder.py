@@ -277,11 +277,15 @@ def writeParamFile():
 
 def open_extern(fname="settings.json"):
     if sys.platform == "win32":
-        os.startfile(fname)
+        # os.startfile(fname)
+        # subprocess.run blocks, subprocess.Popen doesn't
+        command = ["cmd" , "/c", fname]
     elif sys.platform == "darwin":
-        subprocess.call(["open", fname])
+        command = ["open", fname]
     else:
-        subprocess.call(["xdg-open", fname])
+        command = ["xdg-open", fname]
+
+    settingsproc = subprocess.Popen(command)
 
 
 def connectSignals():
@@ -383,6 +387,8 @@ def disableUiElements():
     # ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionRefresh.setVisible(False)
+    ui.actionSettings.setDisabled(True)
+    ui.actionSettings.setVisible(False)
     ui.menubar.close()
 
     if camera.baslerace.emulated:

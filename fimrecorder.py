@@ -281,15 +281,13 @@ def open_extern(fname="settings.json"):
     # not quite perfect
     pushSettings()
     if sys.platform == "win32":
-        # os.startfile(fname)
-        # subprocess.run blocks, subprocess.Popen doesn't
-        command = ["cmd", "/c", fname]
+        os.startfile(fname)
+        # command = ["cmd", "/c", fname, "&& exit"]
     elif sys.platform == "darwin":
-        command = ["open", fname]
+        subprocess.Popen(["open", fname])
     else:
-        command = ["xdg-open", fname]
-
-    subprocess.Popen(command)
+        subprocess.Popen(["xdg-open", fname])
+    # subprocess.run blocks, subprocess.Popen doesn't
 
 
 def connectSignals():

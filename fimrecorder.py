@@ -6,7 +6,7 @@ import subprocess
 import math
 import json
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
-from PyQt5.QtCore import QThread, QTime, pyqtSlot
+from PyQt5.QtCore import QThread, QTime, pyqtSlot, QFileSystemWatcher
 from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
@@ -31,6 +31,7 @@ pcthread = QThread()
 ecthread = QThread()
 # loads settings on __init__()
 fimsettings = settingshandler.SettingsHandler()
+settingswatchdog = QFileSystemWatcher()
 EXPOSURETIME = 'ExposureTime'
 ACQUISITIONFRAMERATE = 'AcquisitionFrameRate'
 
@@ -276,16 +277,19 @@ def writeParamFile():
 
 
 def open_extern(fname="settings.json"):
+    # pushSettings() to edit an up-to-date file
+    # not quite perfect
+    pushSettings()
     if sys.platform == "win32":
         # os.startfile(fname)
         # subprocess.run blocks, subprocess.Popen doesn't
-        command = ["cmd" , "/c", fname]
+        command = ["cmd", "/c", fname]
     elif sys.platform == "darwin":
         command = ["open", fname]
     else:
         command = ["xdg-open", fname]
 
-    settingsproc = subprocess.Popen(command)
+    subprocess.Popen(command)
 
 
 def connectSignals():
@@ -296,6 +300,14 @@ def connectSignals():
     #disposablecam.status[str].connect(print)
     recordingcam.status[str].connect(ui.statusbar.showMessage)
     extractcam.status[str].connect(ui.statusbar.showMessage)
+
+    if settingswatchdog.addPath("settings.json"):
+
+        def reloadSettings():
+            fimsettings.loadSettings()
+            pullSettings()
+
+        settingswatchdog.fileChanged[str].connect(reloadSettings)
 
     # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)
@@ -387,8 +399,8 @@ def disableUiElements():
     # ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionRefresh.setVisible(False)
-    ui.actionSettings.setDisabled(True)
-    ui.actionSettings.setVisible(False)
+    # ui.actionSettings.setDisabled(True)
+    # ui.actionSettings.setVisible(False)
     ui.menubar.close()
 
     if camera.baslerace.emulated:

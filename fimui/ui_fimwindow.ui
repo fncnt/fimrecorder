@@ -571,17 +571,17 @@
          </widget>
         </item>
         <item row="9" column="0">
-         <widget class="QCheckBox" name="MultChkBx">
+         <widget class="QCheckBox" name="StretchHistoChkBx">
           <property name="toolTip">
            <string>This increases contrast by multiplying frames elementwise with themselves. This can be adjustet with a certain scale factor.</string>
           </property>
           <property name="text">
-           <string>Multiplicative Contrast</string>
+           <string>Stretch Histogram</string>
           </property>
          </widget>
         </item>
         <item row="9" column="2">
-         <widget class="QDoubleSpinBox" name="MultDSpinBox">
+         <widget class="QDoubleSpinBox" name="StretchHistoDSpinBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -611,7 +611,7 @@
      <x>0</x>
      <y>0</y>
      <width>900</width>
-     <height>30</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -870,9 +870,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>MultChkBx</sender>
+   <sender>StretchHistoChkBx</sender>
    <signal>toggled(bool)</signal>
-   <receiver>MultDSpinBox</receiver>
+   <receiver>StretchHistoDSpinBox</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

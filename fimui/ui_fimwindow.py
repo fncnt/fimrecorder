@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_fimwindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.2
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -254,22 +254,22 @@ class Ui_fimWindow(object):
         self.FramesModuloSpinBox.setMaximum(100000)
         self.FramesModuloSpinBox.setObjectName("FramesModuloSpinBox")
         self.gridLayout.addWidget(self.FramesModuloSpinBox, 11, 2, 1, 1)
-        self.MultChkBx = QtWidgets.QCheckBox(self.tabCam)
-        self.MultChkBx.setObjectName("MultChkBx")
-        self.gridLayout.addWidget(self.MultChkBx, 9, 0, 1, 1)
-        self.MultDSpinBox = QtWidgets.QDoubleSpinBox(self.tabCam)
-        self.MultDSpinBox.setEnabled(False)
-        self.MultDSpinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
-        self.MultDSpinBox.setDecimals(5)
-        self.MultDSpinBox.setMaximum(100.0)
-        self.MultDSpinBox.setSingleStep(0.1)
-        self.MultDSpinBox.setObjectName("MultDSpinBox")
-        self.gridLayout.addWidget(self.MultDSpinBox, 9, 2, 1, 1)
+        self.StretchHistoChkBx = QtWidgets.QCheckBox(self.tabCam)
+        self.StretchHistoChkBx.setObjectName("StretchHistoChkBx")
+        self.gridLayout.addWidget(self.StretchHistoChkBx, 9, 0, 1, 1)
+        self.StretchHistoDSpinBox = QtWidgets.QDoubleSpinBox(self.tabCam)
+        self.StretchHistoDSpinBox.setEnabled(False)
+        self.StretchHistoDSpinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedKingdom))
+        self.StretchHistoDSpinBox.setDecimals(5)
+        self.StretchHistoDSpinBox.setMaximum(100.0)
+        self.StretchHistoDSpinBox.setSingleStep(0.1)
+        self.StretchHistoDSpinBox.setObjectName("StretchHistoDSpinBox")
+        self.gridLayout.addWidget(self.StretchHistoDSpinBox, 9, 2, 1, 1)
         self.tabWidget.addTab(self.tabCam, "")
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 3, 1)
         fimWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(fimWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 30))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 900, 18))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -349,7 +349,7 @@ class Ui_fimWindow(object):
         self.CutoffChkBx.toggled['bool'].connect(self.CutoffSpinBox.setEnabled)
         self.BgChkBx.toggled['bool'].connect(self.BgSpinBox.setEnabled)
         self.BgChkBx.toggled['bool'].connect(self.RecalcBgBtn.setEnabled)
-        self.MultChkBx.toggled['bool'].connect(self.MultDSpinBox.setEnabled)
+        self.StretchHistoChkBx.toggled['bool'].connect(self.StretchHistoDSpinBox.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(fimWindow)
 
     def retranslateUi(self, fimWindow):
@@ -390,8 +390,8 @@ class Ui_fimWindow(object):
         self.FpsLbl.setText(_translate("fimWindow", "Frame Rate [fps]"))
         self.BgChkBx.setText(_translate("fimWindow", "Subtract Background"))
         self.FramesModuloSpinBox.setToolTip(_translate("fimWindow", "Choosing a value corresponding to the frame rate of your file results in extracting one frame every second of the video."))
-        self.MultChkBx.setToolTip(_translate("fimWindow", "This increases contrast by multiplying frames elementwise with themselves. This can be adjustet with a certain scale factor."))
-        self.MultChkBx.setText(_translate("fimWindow", "Multiplicative Contrast"))
+        self.StretchHistoChkBx.setToolTip(_translate("fimWindow", "This increases contrast by multiplying frames elementwise with themselves. This can be adjustet with a certain scale factor."))
+        self.StretchHistoChkBx.setText(_translate("fimWindow", "Stretch Histogram"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabCam), _translate("fimWindow", "Camera"))
         self.menuFile.setTitle(_translate("fimWindow", "File"))
         self.menuCamera.setTitle(_translate("fimWindow", "Camera"))

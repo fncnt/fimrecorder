@@ -190,8 +190,8 @@ def pullSettings():
     ui.BlacklvlDSpinBox.setValue(fimsettings.parameters['Black Level'])
     ui.CutoffSpinBox.setValue(fimsettings.parameters['Cutoff Threshold'])
     ui.CutoffChkBx.setChecked(fimsettings.parameters['Cutoff'])
-    ui.MultDSpinBox.setValue(fimsettings.parameters['Multiplicative Scale'])
-    ui.MultChkBx.setChecked(fimsettings.parameters['Multiplicative Contrast'])
+    ui.StretchHistoDSpinBox.setValue(fimsettings.parameters['Histogram Stretch Factor'])
+    ui.StretchHistoChkBx.setChecked(fimsettings.parameters['Stretch Histogram'])
     ui.BgChkBx.setChecked(fimsettings.parameters['Background Subtraction'])
     ui.RecDurTEdit.setTime(QTime.fromString(fimsettings.parameters['Recording Duration']))
     ui.FramesModuloSpinBox.setValue(fimsettings.settings['Extract every n-th Frame'])
@@ -231,8 +231,8 @@ def pushSettings(fpath="", fname="settings.json", onlyparameters=False):
     fimsettings.parameters['Black Level'] = ui.BlacklvlDSpinBox.value()
     fimsettings.parameters['Cutoff Threshold'] = ui.CutoffSpinBox.value()
     fimsettings.parameters['Cutoff'] = ui.CutoffChkBx.isChecked()
-    fimsettings.parameters['Multiplicative Contrast'] = ui.MultChkBx.isChecked()
-    fimsettings.parameters['Multiplicative Scale'] = ui.MultDSpinBox.value()
+    fimsettings.parameters['Stretch Histogram'] = ui.StretchHistoChkBx.isChecked()
+    fimsettings.parameters['Histogram Stretch Factor'] = ui.StretchHistoDSpinBox.value()
     fimsettings.parameters['Background Subtraction'] = ui.BgChkBx.isChecked()
     fimsettings.parameters['Recording Duration'] = ui.RecDurTEdit.time().toString()
     fimsettings.parameters['User Data']['Species'] = speciescell.text()
@@ -345,8 +345,8 @@ def connectSignals():
     ui.CutoffChkBx.toggled[bool].connect(
         lambda val: setattr(camera.baslerace, 'cutoff', val)
     )
-    ui.MultChkBx.toggled[bool].connect(
-        lambda val: setattr(camera.baslerace, 'multiplyframes', val)
+    ui.StretchHistoChkBx.toggled[bool].connect(
+        lambda val: setattr(camera.baslerace, 'stretchhistogram', val)
     )
     ui.RecalcBgBtn.pressed.connect(
         lambda: camera.baslerace.resetbackground(ui.BgSpinBox.value())
@@ -369,11 +369,11 @@ def connectSignals():
     ui.CutoffSpinBox.valueChanged[int].connect(
         lambda val: logger.debug("Cutoff Threshold: " + str(val))
     )
-    ui.MultDSpinBox.valueChanged[float].connect(
-        lambda val: setattr(camera.baslerace, 'multiplyscale', val)
+    ui.StretchHistoDSpinBox.valueChanged[float].connect(
+        lambda val: setattr(camera.baslerace, 'stretchfactor', val)
     )
-    ui.MultDSpinBox.valueChanged[float].connect(
-        lambda val: logger.debug("Multiplicative Contrast Scale: " + str(val))
+    ui.StretchHistoDSpinBox.valueChanged[float].connect(
+        lambda val: logger.debug("Histogram Stretch Factor: " + str(val))
     )
     # Doesn't work without lambda? o.ô
     ui.FpsDSpinBox.valueChanged[float].connect(lambda val: recordingcam.changeFps(val))

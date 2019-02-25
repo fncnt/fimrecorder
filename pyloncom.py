@@ -134,14 +134,12 @@ class QCamWorker(QObject):
                     image = converter.Convert(grabresult)
                     img = image.GetArray()
                     # img = numpy.rot90(img, 1)
+                    if self.bgcount < self.maxinbg:
+                        #self.background = (bgcount/100) * self.background + (1 - bgcount/100) * img
+                        self.background = cv2.accumulateWeighted(img.astype(numpy.float), self.background, alpha=1-self.bgcount/self.maxinbg)
+                        self.bgcount += 1
                     if self.subtractbg:
-                        if self.bgcount < self.maxinbg:
-                            #self.background = (bgcount/100) * self.background + (1 - bgcount/100) * img
-                            self.background = cv2.accumulateWeighted(img.astype(numpy.float), self.background, alpha=1-self.bgcount/self.maxinbg)
-                            self.bgcount += 1
                         img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
-                    else:
-                        self.resetbackground(self.maxinbg)
                         
                     if self.threshold > 0 and self.cutoff:
                         _, img = cv2.threshold(img, self.threshold, 255, cv2.THRESH_TOZERO)

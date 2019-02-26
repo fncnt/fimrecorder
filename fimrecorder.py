@@ -287,7 +287,6 @@ def open_extern(fname="settings.json"):
         subprocess.Popen(["open", fname])
     else:
         subprocess.Popen(["xdg-open", fname])
-    # subprocess.run blocks, subprocess.Popen doesn't
 
 
 def connectSignals():
@@ -304,6 +303,14 @@ def connectSignals():
         def reloadSettings():
             fimsettings.loadSettings()
             pullSettings()
+            # Apparantly gedit rewrites text files when saving them,
+            # causing QFileSystemWatcher stopping to monitor them
+            # This re-adds the file after reloading the modified settings.
+            # This definitively does not happen on win32,
+            # not sure about darwin and other unixoids, though.
+            # Season to taste.
+            if sys.platform not in ["win32", "darwin"]:
+                settingswatchdog.addPath("settings.json")
 
         settingswatchdog.fileChanged[str].connect(reloadSettings)
 

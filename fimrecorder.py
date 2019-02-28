@@ -34,6 +34,7 @@ fimsettings = settingshandler.SettingsHandler()
 settingswatchdog = QFileSystemWatcher()
 EXPOSURETIME = 'ExposureTime'
 ACQUISITIONFRAMERATE = 'AcquisitionFrameRate'
+RESULTINGFRAMERATE = 'ResultingFrameRate'
 
 with open(os.path.join(fimsettings.settings['Configuration Directory'],
                        fimsettings.settings['Logging Configuration'])) as f:
@@ -400,6 +401,17 @@ def connectSignals():
     app.aboutToQuit.connect(pushSettings)
 
 
+def adjustCamParameterLimits():
+    ui.ExpTimeSpinBox.setMinimum(getattr(camera.baslerace._cam, EXPOSURETIME).GetMin())
+    ui.ExpTimeSpinBox.setMaximum(getattr(camera.baslerace._cam, EXPOSURETIME).GetMax())
+    ui.FpsDSpinBox.setMinimum(1)
+    ui.FpsDSpinBox.setMaximum(getattr(camera.baslerace._cam, RESULTINGFRAMERATE).Value)
+    ui.GainDSpinBox.setMinimum(camera.baslerace._cam.Gain.GetMin())
+    ui.GainDSpinBox.setMaximum(camera.baslerace._cam.Gain.GetMax())
+    ui.BlacklvlDSpinBox.setMinimum(camera.baslerace._cam.BlackLevel.GetMin())
+    ui.BlacklvlDSpinBox.setMaximum(camera.baslerace._cam.BlackLevel.GetMax())
+
+
 def disableUiElements():
     # ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
@@ -416,9 +428,10 @@ def disableUiElements():
         ui.GainDSpinBox.setDisabled(True)
         ui.GammaDSpinBox.setDisabled(True)
         ui.ExpAutoChkBx.setDisabled(True)
-        global EXPOSURETIME, ACQUISITIONFRAMERATE
+        global EXPOSURETIME, ACQUISITIONFRAMERATE, RESULTINGFRAMERATE
         EXPOSURETIME += 'Abs'
         ACQUISITIONFRAMERATE += 'Abs'
+        RESULTINGFRAMERATE += 'Abs'
 
 
 def renderPreview():
@@ -456,6 +469,8 @@ def main():
 
     # Handles interaction between UI and cam stuff
     connectSignals()
+    # Set max/min values of spinboxes to the corresponding max/min Value in-camera
+    adjustCamParameterLimits()
     # Start grabbing if cam is available
     # handle missing devices and try to reload.
     bootstrapCam()

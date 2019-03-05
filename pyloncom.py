@@ -104,8 +104,8 @@ class QCamWorker(QObject):
         except genicam.GenericException as e:
             # Error handling.
             logger.exception(str(e))
-            logger.debug("No device found. Make sure to use a USB3 port.")
-            self.device_status.emit("No device found. Make sure to use a USB3 port.")
+            logger.debug("No device found. Make sure to use a USB3 port with power supply.")
+            self.device_status.emit("No device found. Make sure to use a USB3 port with power supply.")
             self.device_name.emit("no device")
             os.environ['PYLON_CAMEMU'] = '1'
             self.emulated = True

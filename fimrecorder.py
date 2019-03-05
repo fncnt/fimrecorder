@@ -372,12 +372,13 @@ def connectSignals():
     ui.GammaDSpinBox.valueChanged[float].connect(
         lambda val: camera.baslerace.setCamAttr('Gamma', val)
     )
-    ui.GainDSpinBox.valueChanged[float].connect(
-        lambda val: camera.baslerace.setCamAttr('Gain', val)
-    )
-    ui.BlacklvlDSpinBox.valueChanged[float].connect(
-        lambda val: camera.baslerace.setCamAttr('BlackLevel', val)
-    )
+    if not camera.baslerace.emulated:
+        ui.GainDSpinBox.valueChanged[float].connect(
+            lambda val: camera.baslerace.setCamAttr('Gain', val)
+        )
+        ui.BlacklvlDSpinBox.valueChanged[float].connect(
+            lambda val: camera.baslerace.setCamAttr('BlackLevel', val)
+        )
     ui.CutoffSpinBox.valueChanged[int].connect(
         lambda val: setattr(camera.baslerace, 'threshold', val)
     )
@@ -403,10 +404,12 @@ def adjustCamParameterLimits():
     ui.ExpTimeSpinBox.setMaximum(getattr(camera.baslerace._cam, EXPOSURETIME).GetMax())
     ui.FpsDSpinBox.setMinimum(1)
     ui.FpsDSpinBox.setMaximum(getattr(camera.baslerace._cam, RESULTINGFRAMERATE).Value)
-    ui.GainDSpinBox.setMinimum(camera.baslerace._cam.Gain.GetMin())
-    ui.GainDSpinBox.setMaximum(camera.baslerace._cam.Gain.GetMax())
-    ui.BlacklvlDSpinBox.setMinimum(camera.baslerace._cam.BlackLevel.GetMin())
-    ui.BlacklvlDSpinBox.setMaximum(camera.baslerace._cam.BlackLevel.GetMax())
+
+    if not camera.baslerace.emulated:
+        ui.GainDSpinBox.setMinimum(camera.baslerace._cam.Gain.GetMin())
+        ui.GainDSpinBox.setMaximum(camera.baslerace._cam.Gain.GetMax())
+        ui.BlacklvlDSpinBox.setMinimum(camera.baslerace._cam.BlackLevel.GetMin())
+        ui.BlacklvlDSpinBox.setMaximum(camera.baslerace._cam.BlackLevel.GetMax())
 
 
 def disableUiElements():

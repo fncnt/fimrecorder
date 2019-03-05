@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logger
 import sys
 import os
 import subprocess
@@ -11,7 +12,7 @@ from fimui import ui_fimwindow
 import pyloncom
 import pylonproc
 import settingshandler
-import logging.config
+import logging
 
 # TODO: make this a class Fim()
 # TODO: and create an object in main for readability
@@ -36,9 +37,6 @@ EXPOSURETIME = 'ExposureTime'
 ACQUISITIONFRAMERATE = 'AcquisitionFrameRate'
 RESULTINGFRAMERATE = 'ResultingFrameRate'
 
-with open(os.path.join(fimsettings.settings['Configuration Directory'],
-                       fimsettings.settings['Logging Configuration'])) as f:
-    logging.config.dictConfig(json.load(f))
 logger = logging.getLogger(__name__)
 
 

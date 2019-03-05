@@ -162,7 +162,8 @@ class Canvas(app.Canvas):
 
     def __init__(self):
         app.Canvas.__init__(self)
-        #self.currentframe = numpy.zeros((framedimx, framedimy, 3)).astype(numpy.uint8)
+        # resolution doesn't matter here
+        self.currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         # bottom left, top left, bottom right, top right
@@ -172,7 +173,8 @@ class Canvas(app.Canvas):
         # (where DPI can't be determined automatically
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         # How Can I stretch textures and why is that necessary?
-        #self.image['texture'] = self.currentframe
+        self.image['texture'] = self.currentframe
+        self.image['mousecoord'] = (0, 0)
         self._timer = app.Timer('auto', connect=self.on_timer, start=True)
         width, height = self.physical_size
         gloo.set_viewport(0, 0, height, height)

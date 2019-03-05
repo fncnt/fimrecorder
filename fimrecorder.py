@@ -5,7 +5,6 @@ import sys
 import os
 import subprocess
 import math
-import json
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QVBoxLayout
 from PyQt5.QtCore import QThread, QTime, pyqtSlot, QFileSystemWatcher
 from fimui import ui_fimwindow

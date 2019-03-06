@@ -14,7 +14,7 @@
     },
     "logfile": {
       "class": "logging.handlers.RotatingFileHandler",
-      "level": "DEBUG",
+      "level": "INFO",
       "formatter": "simple",
       "filename": "debug.log",
       "mode": "a",
@@ -39,10 +39,14 @@
     "settingshandler": {
       "handlers": [],
       "level": "DEBUG"
+    },
+    "logger": {
+      "handlers": [],
+      "level": "DEBUG"
     }
   },
   "root": {
     "handlers": ["console", "logfile"],
-    "level": "DEBUG"
+    "level": "NOTSET"
   }
 }

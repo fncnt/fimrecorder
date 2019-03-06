@@ -97,6 +97,7 @@ class QCamRecorder(QCamProcessor):
         self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, self.resolution, False)
         self.iscancelled = False
         super().startProcessing(img_received)
+        logger.info("Recording to " + os.path.join(subpath, fimfile) + ".")
 
     def processImg(self, img=numpy.ndarray):
         try:
@@ -113,14 +114,15 @@ class QCamRecorder(QCamProcessor):
 
     def cancelProcessing(self):
         self.iscancelled = True
+        logger.info("Cancelling recording.")
         super().cancelProcessing()
         self.finishProcessing()
 
     def finishProcessing(self):
         #self.out.close()
         self.out.release()
-        self.status.emit("Released file.")
-        logger.debug("Released file.")
+        self.status.emit("Released video file.")
+        logger.info("Released video file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
 
@@ -162,7 +164,8 @@ class Canvas(app.Canvas):
 
     def __init__(self):
         app.Canvas.__init__(self)
-        #self.currentframe = numpy.zeros((framedimx, framedimy, 3)).astype(numpy.uint8)
+        # resolution doesn't matter here
+        self.currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         # bottom left, top left, bottom right, top right
@@ -172,7 +175,8 @@ class Canvas(app.Canvas):
         # (where DPI can't be determined automatically
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         # How Can I stretch textures and why is that necessary?
-        #self.image['texture'] = self.currentframe
+        self.image['texture'] = self.currentframe
+        self.image['mousecoord'] = (0, 0)
         self._timer = app.Timer('auto', connect=self.on_timer, start=True)
         width, height = self.physical_size
         gloo.set_viewport(0, 0, height, height)
@@ -238,6 +242,7 @@ class QCamGLPreview(QCamProcessor):
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         super().startProcessing(img_received)
         app.use_app(backend_name="PyQt5", call_reuse=True)
+        logger.info("Started GLPreview.")
 
 
 class QCamSnapshot(QCamProcessor):
@@ -260,6 +265,7 @@ class QCamSnapshot(QCamProcessor):
                     raise
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
+        logger.info("Saved snapshot to " + fpath + ".")
 
 
 class QCamExtract(QCamProcessor):
@@ -316,6 +322,7 @@ class QCamExtract(QCamProcessor):
 
     # when cancel signal is received
     def cancelProcessing(self):
+        logger.info("Cancelling frame extraction.")
         self.iscancelled = True
 
     # clean up processing, i.e. save file etc.
@@ -324,6 +331,6 @@ class QCamExtract(QCamProcessor):
         self.img_processed.emit()
         msg = "Extracted " + str(self.framecount // self.framesmodulo) + " of " + \
               str(self.maxframes) + " frames to " + self.framespath
-        logger.debug(msg)
+        logger.info(msg)
         self.status.emit(msg)
         self.framecount = 0

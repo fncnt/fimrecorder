@@ -53,7 +53,7 @@ class SettingsHandler:
             self.createDir(self.settings['Configuration Directory'])
         except Exception as e:
             logger.exception(str(e))
-            logger.debug("Creating new settings.json file")
+            logger.info("Creating new settings.json file")
             self.saveSettings()
 
     def createDir(self, path):
@@ -80,12 +80,13 @@ class SettingsHandler:
                 else:
                     dumpling = dict(Settings=self.settings, Parameters=self.parameters)
                 json.dump(dumpling, file, sort_keys=True, indent=4)
+                logger.info("Saved file:\n " + os.path.join(fpath, fname))
             except Exception as e:
                 logger.exception(str(e))
             finally:
                 file.close()
         else:
-            logger.debug("No file selected for parameter saving.")
+            logger.info("No file selected for parameter saving.")
         return 0
 
     # call on startup of application
@@ -106,13 +107,14 @@ class SettingsHandler:
                     self.parameters = {**self.parameters, **dumpling['Parameters']}
                 except Exception as e:
                     logger.exception("There is no key ", str(e), ".")
+                logger.info("Loaded file:\n " + os.path.join(fpath, fname))
 
             except Exception as e:
                 print(str(e))
             finally:
                 file.close()
         else:
-            logger.debug("No file selected for parameter loading.")
+            logger.info("No file selected for parameter loading.")
         return 0
 
     def __str__(self):

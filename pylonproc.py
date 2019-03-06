@@ -119,8 +119,8 @@ class QCamRecorder(QCamProcessor):
     def finishProcessing(self):
         #self.out.close()
         self.out.release()
-        self.status.emit("Released file.")
-        logger.debug("Released file.")
+        self.status.emit("Released video file.")
+        logger.info("Released video file.")
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
 
@@ -326,6 +326,6 @@ class QCamExtract(QCamProcessor):
         self.img_processed.emit()
         msg = "Extracted " + str(self.framecount // self.framesmodulo) + " of " + \
               str(self.maxframes) + " frames to " + self.framespath
-        logger.debug(msg)
+        logger.info(msg)
         self.status.emit(msg)
         self.framecount = 0

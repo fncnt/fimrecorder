@@ -13,3 +13,5 @@ except FileNotFoundError as e:
 with open(os.path.join(configdir, configfile)) as f:
     logging.config.dictConfig(json.load(f))
 logger = logging.getLogger(__name__)
+
+logger.info("Loaded logging configuration from " + os.path.join(configdir, configfile) + ".")

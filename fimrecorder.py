@@ -441,7 +441,7 @@ def renderPreview():
 
 
 def main():
-    logger.debug("Starting new session.")
+    logger.info("Starting new session.")
 
     ui.setupUi(window)
     # set up OpenGL preview

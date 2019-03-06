@@ -7,6 +7,7 @@ import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
 logger = logging.getLogger(__name__)
+print(logger.level)
 
 
 class QCamWorker(QObject):
@@ -76,12 +77,12 @@ class QCamWorker(QObject):
                 self._cam = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice())
                 self._cam.Open()
             # Print the model name of the camera.
-            logger.debug("Using device " + self._cam.GetDeviceInfo().GetModelName())
+            logger.info("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self.device_status.emit("Using device " + self._cam.GetDeviceInfo().GetModelName())
             self.device_name.emit(self._cam.GetDeviceInfo().GetModelName())
 
             self.device_status.emit("Loading device configuration")
-            logger.debug("Loading device configuration")
+            logger.info("Loading device configuration: \n" + os.path.join(self.fpath, self._cam.GetDeviceInfo().GetModelName() + '.pfs'))
             # pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
             try:
                 pylon.FeaturePersistence.Load(os.path.join(self.fpath,
@@ -104,7 +105,7 @@ class QCamWorker(QObject):
         except genicam.GenericException as e:
             # Error handling.
             logger.exception(str(e))
-            logger.debug("No device found. Make sure to use a USB3 port with power supply.")
+            logger.info("No device found. Make sure to use a USB3 port with power supply.")
             self.device_status.emit("No device found. Make sure to use a USB3 port with power supply.")
             self.device_name.emit("no device")
             os.environ['PYLON_CAMEMU'] = '1'
@@ -150,12 +151,12 @@ class QCamWorker(QObject):
                     self.frame_grabbed.emit(img)
                 else:
                     logger.error("Error: " + grabresult.ErrorCode + grabresult.ErrorDescription)
-                    logger.debug("Can't grab frames from camera.")
+                    logger.info("Can't grab frames from camera.")
                     self.device_status.emit("Can't grab frames from camera.")
                 grabresult.Release()
             except BaseException as e:
                 logger.exception(str(e))
-                logger.debug("The device has been disconnected.")
+                logger.info("The device has been disconnected.")
                 self.device_status.emit("The device has been disconnected.")
 
         self.device_status.emit("Stopped frame-grabbing.")

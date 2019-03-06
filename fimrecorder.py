@@ -79,10 +79,12 @@ def updateExpTimeSpinbox():
 
 def toggleExposureAuto(on: bool):
     if on:
+        logger.info("Enabling continouus auto-exposure")
         camera.baslerace.setCamAttr('ExposureAuto', 'Continuous')
         camera.is_grabbing.connect(updateExpTimeSpinbox)
         ui.ExpTimeSpinBox.valueChanged[int].disconnect()
     else:
+        logger.info("Disabling continouus auto-exposure")
         camera.baslerace.setCamAttr('ExposureAuto', 'Off')
         # copied from connectSignals()
         # better remove duplicate code
@@ -179,6 +181,7 @@ def extractFrames(toggled: bool):
 
 # TODO: use iterator?
 def pullSettings():
+    logger.info("Applying settings and parameters.")
     ui.ExpTimeSpinBox.setValue(fimsettings.parameters['Exposure Time'])
     # if ui.FpsEnableChkBx.isChecked():
     camera.baslerace.setCamAttr('AcquisitionFrameRateEnable', 1)
@@ -278,6 +281,7 @@ def open_extern(fname="settings.json"):
     # pushSettings() to edit an up-to-date file
     # not quite perfect
     pushSettings()
+    logger.info("Opening settings.json in external editor.")
     if sys.platform == "win32":
         os.startfile(fname)
         # command = ["cmd", "/c", fname, "&& exit"]
@@ -311,6 +315,7 @@ def connectSignals():
                 settingswatchdog.addPath("settings.json")
 
         settingswatchdog.fileChanged[str].connect(reloadSettings)
+        logger.info("Watching settings.json for changes.")
 
     # Handle QActions
     ui.actionSnapshot.triggered.connect(saveSnapshot)
@@ -400,6 +405,7 @@ def connectSignals():
 
 
 def adjustCamParameterLimits():
+    logger.info("Setting hardware parameter limits in UI.")
     ui.ExpTimeSpinBox.setMinimum(getattr(camera.baslerace._cam, EXPOSURETIME).GetMin())
     ui.ExpTimeSpinBox.setMaximum(getattr(camera.baslerace._cam, EXPOSURETIME).GetMax())
     ui.FpsDSpinBox.setMinimum(1)
@@ -413,6 +419,7 @@ def adjustCamParameterLimits():
 
 
 def disableUiElements():
+    logger.info("Disabling unnecessary UI elements.")
     # ui.ExpAutoChkBx.setDisabled(True)
     ui.actionRefresh.setDisabled(True)
     ui.actionRefresh.setVisible(False)
@@ -435,6 +442,7 @@ def disableUiElements():
 
 
 def renderPreview():
+    logger.info("Starting GLPreview.")
     previewcam.moveToThread(pcthread)
     pcthread.start()
     pcthread.setPriority(QThread.HighPriority)

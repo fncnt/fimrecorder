@@ -7,7 +7,6 @@ import logging
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, QThread
 
 logger = logging.getLogger(__name__)
-print(logger.level)
 
 
 class QCamWorker(QObject):
@@ -68,6 +67,7 @@ class QCamWorker(QObject):
         self.bgcount = 0
         self.maxinbg = maxinbg
         self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+        logger.info("Reset background for subtraction.")
 
     @pyqtSlot()
     def connectToCam(self):
@@ -93,7 +93,7 @@ class QCamWorker(QObject):
                                                            self._cam.GetDeviceInfo().GetModelName() + '.pfs'),
                                               self._cam.GetNodeMap())
                 logger.error("Couldn't find NodeMap file for " + self._cam.GetDeviceInfo().GetModelName())
-                logger.error("Saving default device configuration as " + self._cam.GetDeviceInfo().GetModelName() + '.pfs' )
+                logger.warning("Saving default device configuration as " + self._cam.GetDeviceInfo().GetModelName() + '.pfs' )
             # Attempt to ensure realtime grabbing
             # Max == 15 for non-admin users
             # self._cam.GrabLoopThreadPriorityOverride = True
@@ -105,11 +105,12 @@ class QCamWorker(QObject):
         except genicam.GenericException as e:
             # Error handling.
             logger.exception(str(e))
-            logger.info("No device found. Make sure to use a USB3 port with power supply.")
+            logger.warning("No device found. Make sure to use a USB3 port with power supply.")
             self.device_status.emit("No device found. Make sure to use a USB3 port with power supply.")
             self.device_name.emit("no device")
             os.environ['PYLON_CAMEMU'] = '1'
             self.emulated = True
+            logger.warning("Falling back to camera emulation.")
             self.connectToCam()
 
     @pyqtSlot()
@@ -139,6 +140,9 @@ class QCamWorker(QObject):
                         #self.background = (bgcount/100) * self.background + (1 - bgcount/100) * img
                         self.background = cv2.accumulateWeighted(img.astype(numpy.float), self.background, alpha=1-self.bgcount/self.maxinbg)
                         self.bgcount += 1
+                    elif self.bgcount == self.maxinbg:
+                        logger.info("Accumulated " + str(self.bgcount) + " frames as background.")
+                        self.bgcount += 1
                     if self.subtractbg:
                         img = cv2.subtract(img.astype(numpy.uint8), self.background.astype(numpy.uint8))
                         
@@ -151,12 +155,12 @@ class QCamWorker(QObject):
                     self.frame_grabbed.emit(img)
                 else:
                     logger.error("Error: " + grabresult.ErrorCode + grabresult.ErrorDescription)
-                    logger.info("Can't grab frames from camera.")
+                    logger.error("Can't grab frames from camera.")
                     self.device_status.emit("Can't grab frames from camera.")
                 grabresult.Release()
             except BaseException as e:
                 logger.exception(str(e))
-                logger.info("The device has been disconnected.")
+                logger.warning("The device has been disconnected.")
                 self.device_status.emit("The device has been disconnected.")
 
         self.device_status.emit("Stopped frame-grabbing.")
@@ -201,6 +205,8 @@ class QCamera(QObject):
         self.camThread.start()
         self.camThread.setPriority(QThread.TimeCriticalPriority)
         self.device_name.emit(self.baslerace._cam.GetDeviceInfo().GetModelName())
+        logger.info("Started frame-grabbing.")
 
     def stopGrabbing(self):
         self.baslerace.stop()
+        logger.info("Stopped frame-grabbing.")

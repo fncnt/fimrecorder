@@ -97,6 +97,7 @@ class QCamRecorder(QCamProcessor):
         self.out = cv2.VideoWriter(os.path.join(subpath, fimfile), self.fourcc, self.fps, self.resolution, False)
         self.iscancelled = False
         super().startProcessing(img_received)
+        logger.info("Recording to " + os.path.join(subpath, fimfile) + ".")
 
     def processImg(self, img=numpy.ndarray):
         try:
@@ -113,6 +114,7 @@ class QCamRecorder(QCamProcessor):
 
     def cancelProcessing(self):
         self.iscancelled = True
+        logger.info("Cancelling recording.")
         super().cancelProcessing()
         self.finishProcessing()
 
@@ -240,6 +242,7 @@ class QCamGLPreview(QCamProcessor):
     def startProcessing(self, img_received=pyqtSignal(numpy.ndarray)):
         super().startProcessing(img_received)
         app.use_app(backend_name="PyQt5", call_reuse=True)
+        logger.info("Started GLPreview.")
 
 
 class QCamSnapshot(QCamProcessor):
@@ -262,6 +265,7 @@ class QCamSnapshot(QCamProcessor):
                     raise
         self.cancelProcessing()  # we just want to save one frame, so when we receive one, we immediately stop.
         self.finishProcessing()
+        logger.info("Saved snapshot to " + fpath + ".")
 
 
 class QCamExtract(QCamProcessor):
@@ -318,6 +322,7 @@ class QCamExtract(QCamProcessor):
 
     # when cancel signal is received
     def cancelProcessing(self):
+        logger.info("Cancelling frame extraction.")
         self.iscancelled = True
 
     # clean up processing, i.e. save file etc.

@@ -40,7 +40,7 @@ class QCamWorker(QObject):
     def __init__(self):
         super().__init__()
         self.connectToCam()
-        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+        self.background = numpy.zeros((self._cam.Height.Value, self._cam.Width.Value)).astype(numpy.float)
         # self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.uint8)
 
     #check for compatible type in function
@@ -66,7 +66,7 @@ class QCamWorker(QObject):
     def resetbackground(self, maxinbg=100):
         self.bgcount = 0
         self.maxinbg = maxinbg
-        self.background = numpy.zeros((self._cam.Width.Value, self._cam.Width.Value)).astype(numpy.float)
+        self.background = numpy.zeros((self._cam.Height.Value, self._cam.Width.Value)).astype(numpy.float)
         logger.info("Reset background for subtraction.")
 
     @pyqtSlot()

@@ -281,7 +281,6 @@ def open_extern(fname="settings.json"):
     # pushSettings() to edit an up-to-date file
     # not quite perfect
     pushSettings()
-    logger.info("Opening settings.json in external editor.")
     if sys.platform == "win32":
         os.startfile(fname)
         # command = ["cmd", "/c", fname, "&& exit"]
@@ -325,6 +324,7 @@ def connectSignals():
     ui.actionLoad_Parameters.triggered.connect(openParamFile)
     ui.actionSave_Parameters.triggered.connect(writeParamFile)
     ui.actionSettings.triggered.connect(lambda: open_extern())
+    ui.actionSettings.triggered.connect(lambda: logger.info("Opening settings.json in external editor."))
     # Handle pyloncom & pylonproc signals
     recordingcam.timelimit_reached.connect(ui.actionRecord.toggle)
     recordingcam.fimjson_path[str].connect(lambda val: pushSettings(os.path.dirname(val),

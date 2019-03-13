@@ -188,11 +188,11 @@ class Canvas(app.Canvas):
 
         if width < height * self.aspectratio:
             gloo.set_viewport(0,
-                              abs((height - width / self.aspectratio) / 2),
+                              (height - width / self.aspectratio) / 2,
                               width,
                               width / self.aspectratio)
         else:
-            gloo.set_viewport(abs((width - height * self.aspectratio) / 2),
+            gloo.set_viewport((width - height * self.aspectratio) / 2,
                               0,
                               height * self.aspectratio,
                               height)
@@ -216,11 +216,16 @@ class Canvas(app.Canvas):
     def on_mouse_move(self, event):
         x, y = event.pos
         width, height = self.physical_size
-        offset = abs(width - height) / 2
-        if width < height:
-            self.image['mousecoord'] = (x/width, (y-offset)/width)
+        if width < height * self.aspectratio:
+            logger.debug("A")
+            #offset = (height - width / self.aspectratio) / 2
+            #self.image['mousecoord'] = (x/width, (y-offset)/(width / self.aspectratio))
+            self.image['mousecoord'] = (x/width, (y - height/2) * self.aspectratio / width + 0.5)
         else:
-            self.image['mousecoord'] = ((x-offset)/height, y/height)
+            logger.debug("B")
+            #offset = (width - height * self.aspectratio) / 2
+            #self.image['mousecoord'] = ((x-offset)/height, y/height)
+            self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y/height)
 
     def on_mouse_wheel(self, event):
         _, delta = event.delta

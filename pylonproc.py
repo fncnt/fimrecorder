@@ -212,7 +212,7 @@ class Canvas(app.Canvas):
     def on_mouse_move(self, event):
         x, y = event.pos
         width, height = self.physical_size
-        offset = abs(self.physical_size[0] - self.physical_size[1]) / 2
+        offset = abs(width - height) / 2
         if width < height:
             self.image['mousecoord'] = (x/width, (y-offset)/width)
         else:

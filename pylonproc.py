@@ -166,6 +166,7 @@ class Canvas(app.Canvas):
         app.Canvas.__init__(self)
         # resolution doesn't matter here (kind of)
         self.currentframe = numpy.zeros((1200, 1200)).astype(numpy.uint8)
+        self.aspectratio = 1
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         # bottom left, top left, bottom right, top right
@@ -184,20 +185,16 @@ class Canvas(app.Canvas):
 
     def on_resize(self, event):
         width, height = event.physical_size
-        frameheight, framewidth = self.currentframe.shape
-        aspectratio = framewidth / frameheight
-        
-        if width < height * aspectratio:
-            logger.debug("A")
+
+        if width < height * self.aspectratio:
             gloo.set_viewport(0,
-                              abs((height - width / aspectratio) / 2),
+                              abs((height - width / self.aspectratio) / 2),
                               width,
-                              width / aspectratio)
+                              width / self.aspectratio)
         else:
-            logger.debug("B")
-            gloo.set_viewport(abs((width - height * aspectratio) / 2),
+            gloo.set_viewport(abs((width - height * self.aspectratio) / 2),
                               0,
-                              height * aspectratio,
+                              height * self.aspectratio,
                               height)
 
 
@@ -214,6 +211,7 @@ class Canvas(app.Canvas):
 
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe
+        self.aspectratio = self.currentframe.shape[1] / self.currentframe.shape[0]
 
     def on_mouse_move(self, event):
         x, y = event.pos

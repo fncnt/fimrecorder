@@ -164,8 +164,8 @@ class Canvas(app.Canvas):
 
     def __init__(self):
         app.Canvas.__init__(self)
-        # resolution doesn't matter here
-        self.currentframe = numpy.zeros((1200, 1200, 3)).astype(numpy.uint8)
+        # resolution doesn't matter here (kind of)
+        self.currentframe = numpy.zeros((1200, 1200)).astype(numpy.uint8)
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         # bottom left, top left, bottom right, top right
@@ -179,21 +179,27 @@ class Canvas(app.Canvas):
         self.image['mousecoord'] = (0, 0)
         self._timer = app.Timer('auto', connect=self.on_timer, start=True)
         width, height = self.physical_size
-        gloo.set_viewport(0, 0, height, height)
+        gloo.set_viewport(0, 0, width, height)
         gloo.set_clear_color('black')
 
     def on_resize(self, event):
         width, height = event.physical_size
-        if width < height:
+        frameheight, framewidth = self.currentframe.shape
+        aspectratio = framewidth / frameheight
+        
+        if width < height * aspectratio:
+            logger.debug("A")
             gloo.set_viewport(0,
-                              abs((height - width) / 2),
+                              abs((height - width / aspectratio) / 2),
                               width,
-                              width)
+                              width / aspectratio)
         else:
-            gloo.set_viewport(abs((width - height) / 2),
+            logger.debug("B")
+            gloo.set_viewport(abs((width - height * aspectratio) / 2),
                               0,
-                              height,
+                              height * aspectratio,
                               height)
+
 
     def on_draw(self, event):
         gloo.clear('black')

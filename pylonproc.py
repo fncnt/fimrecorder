@@ -132,10 +132,13 @@ class Canvas(app.Canvas):
                 attribute vec2 position;
                 attribute vec2 texcoord;
                 varying vec2 v_texcoord;
+                attribute vec2 lenscoord;
+                varying vec2 v_lenscoord;
                 void main()
                 {
                     gl_Position = vec4(position, 0.0, 1.0);
                     v_texcoord = texcoord;
+                    v_lenscoord = lenscoord;
                 }
             """
     fragment = """
@@ -143,13 +146,14 @@ class Canvas(app.Canvas):
                 uniform vec2 mousecoord;
                 uniform float mousezoom;
                 varying vec2 v_texcoord;
+                varying vec2 v_lenscoord;
                 void main()
                 {
                     gl_FragColor = texture2D(texture, v_texcoord);
                     
                     if (mousezoom > 1.0)
                     {
-                        float mouse_dist = distance(v_texcoord, mousecoord);
+                        float mouse_dist = distance(v_lenscoord, mousecoord);
                         //Draw the outline of the glass
                         if (mouse_dist < 0.203)
                             gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
@@ -169,12 +173,15 @@ class Canvas(app.Canvas):
         self.aspectratio = 1
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
+        #self.image['position'] = [(-1, -self.aspectratio), (-1, +self.aspectratio), (+1, -self.aspectratio), (+1, +self.aspectratio)]
         # bottom left, top left, bottom right, top right
         # This works on Windows. But why are the textures smaller?
         #self.image['texcoord'] = [(0, 1/3), (0, 0), (1/3, 1/3), (1/3, 0)]
         # This works on linux:
         # (where DPI can't be determined automatically
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
+        self.image['lenscoord'] = [(0, 1), (0, 0), (self.aspectratio, 1), (self.aspectratio, 0)]
+        #self.image['lenscoord'] = [(0, 1/self.aspectratio), (0, 0), (1, 1/self.aspectratio), (1, 0)]
         # How Can I stretch textures and why is that necessary?
         self.image['texture'] = self.currentframe
         self.image['mousecoord'] = (0, 0)
@@ -212,6 +219,8 @@ class Canvas(app.Canvas):
     def updateFrame(self, newframe=numpy.ndarray):
         self.currentframe = newframe
         self.aspectratio = self.currentframe.shape[1] / self.currentframe.shape[0]
+        #self.image['lenscoord'] = [(0, 1), (0, 0), (self.aspectratio, 1), (self.aspectratio, 0)]
+
 
     def on_mouse_move(self, event):
         x, y = event.pos
@@ -220,12 +229,12 @@ class Canvas(app.Canvas):
             logger.debug("A")
             #offset = (height - width / self.aspectratio) / 2
             #self.image['mousecoord'] = (x/width, (y-offset)/(width / self.aspectratio))
-            self.image['mousecoord'] = (x/width, (y - height/2) * self.aspectratio / width + 0.5)
+            self.image['mousecoord'] = (x * self.aspectratio / width, (y - height/2) * self.aspectratio / width + 0.5)
         else:
             logger.debug("B")
             #offset = (width - height * self.aspectratio) / 2
             #self.image['mousecoord'] = ((x-offset)/height, y/height)
-            self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y/height)
+            self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y / height)
 
     def on_mouse_wheel(self, event):
         _, delta = event.delta

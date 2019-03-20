@@ -5,6 +5,15 @@ a simple recording application for FIM related
 measurements. 
 Currently only Basler USB3 vision cameras are supported.
 
+## Documentation
+
+You can find more detailed information in [`doc/fimdox.md`](https://github.com/fncnt/fimrecorder/blob/master/doc/fimdoc.md).
+
+To create a `.pdf` file, simply run:
+```
+pandoc doc/fimdoc.md -t latex -o fimdoc.pdf --number-sections
+```
+
 ## Usage
 There are two different options to use this application.
 Both of them require nearly the same setup:

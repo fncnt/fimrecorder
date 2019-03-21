@@ -11,7 +11,7 @@ You can find more detailed information in [`doc/fimdox.md`](https://github.com/f
 
 To create a `.pdf` file, simply run:
 ```
-pandoc doc/fimdoc.md -t latex -o fimdoc.pdf --number-sections
+pandoc doc/fimdoc.md -t latex -o fimdoc.pdf --number-sections --toc
 ```
 
 ## Usage

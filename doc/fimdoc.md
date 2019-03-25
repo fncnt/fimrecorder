@@ -4,15 +4,8 @@
 This software is at the level of a prototype. It works reliably but has only been tested in a small scope (see [Supported Devices]).
 The features of this application have been designed to work well in conjunction with FIMTrack[^fimtrack] [^fimtracksourcecode].
 
-[^fim]: [`https://www.uni-muenster.de/PRIA/en/FIM/index.html`](https://www.uni-muenster.de/PRIA/en/FIM/index.html)
-[^fimtrack]: [`https://www.uni-muenster.de/PRIA/en/FIM/download.shtml`](https://www.uni-muenster.de/PRIA/en/FIM/download.shtml)
-[^fimtracksourcecode]: [`https://github.com/i-git/FIMTrack`](https://github.com/i-git/FIMTrack)
-[^fimrecorder]: [`https://github.com/fncnt/fimrecorder`](https://github.com/fncnt/fimrecorder)
-
 # Installation
 See `README.md`[^readme].
-
-[^readme]: [`https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites`](https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites)
 
 # Supported Devices
 Currently, only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` actually has been tested.
@@ -98,9 +91,6 @@ The following options can be modified:
 
 *FIMrecorder* will fall back to hard-coded defaults and create a new configuration file if you happen to delete it.
 
-[^fourcc]: [`https://fourcc.org/codecs.php`](https://fourcc.org/codecs.php)
-[^opencvavi]: [`https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html`](https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html)
-
 ## `.pfs` Files {#pfsfiles}
 
 In addition to `settings.json` there are `.pfs` files in your `Configuration Directory` for every camera model you've used in *FIMrecorder*. Those text files are being generated when you use a device for the first time with *FIMrecorder* and include all the parameters of the specific model.
@@ -114,15 +104,73 @@ It is recommended to not change any other parameters in these files unless you'v
 ## Pre-Recording
 
 ### Checking Setup
-1. Adjusting field of view.
-2. Adjust aperture.
-3. Adjust focus. Use the magnifying feature by scrolling on the preview for more control.
+1. Prepare your FIM setup (agarose gel, barriers, everything that you don't want to be tracked).
+2. Turn on the LEDs of your FIM setup.
+3. Make sure your camera is connected to a USB3 port with power supply.
+   - If your camera was disconnected on starting *FIMrecorder*, simply connect your camera and restart the application.
+4. Start *FIMrecorder*.
+5. If necessary, adjust focus, aperture and field of view manually on your camera.
+   - Use the lens feature (@lens) to make focussing easier.
+   - If background subtraction is already enabled, disabling it might make this step easier.
+6. Depending on the surrounding environment, it might be beneficial to dim or turn off lights.
+   - This is often not necessary but improves image acquisition a lot.
 
 ### Measurement Annotations
+It is recommended to fill in every field in the "Measurement" tab (@measurement).
+However, only setting the `Recording Duration` is mandatory. A timestamp will be set automatically.
+This data will be stored in a `.json` file alongside the recorded footage (see [Locating Recorded Data]).
 
 ### Applying Camera parameters
 
+The following settings are applied in hardware before each single frame is acquired: 
+
+`Exposure Time`:
+ ~  This value determines how long the sensore is exposed to light for every frame.
+ ~  Enabling `Auto Exposure` might help to determine a good range but it is not recommended for the actual measurement.
+ ~  The LEDs of your FIM setup have a characteristic flickering frequency which reduces the quality of your image signal. To mitigate this effect, it is necessary to find an exposure time which is long enough to capture at least *one flicker*.
+ ~  E.g. on my tested setup values of `20000` or `30000` worked quite well. This might differ for your setup.
+ ~  `default: 20000`
+
+`Frame Rate`:
+ ~  The frame rate determines how many frames are captured in 1 second.
+ ~  For FIM purposes the default value should be sufficient in most cases.
+ ~  Note that this setting also interacts with the LEDs' characteristic flickering frequency. Also, $\frac{1}{\mathrm{\texttt{Frame Rate}}}$ should be greater than or equal to `Exposure Time`.
+ ~  `default: 20.0`
+
+`Gamma Correction`:
+ ~  Roughly speaking, this setting adjusts the brightness of the image signal.
+ ~  `new pixel value`$ = \left ( \frac{\mathrm{\texttt{old pixel value}}}{255} \right )^\gamma \cdot 255 $ where pixel values range between 0 and 255.
+ ~  `default: 1.0`
+ 
+`Gain`:
+ ~  Roughly speaking, this setting adjusts the apparent brightness of the image signal or how strong the sensors reaction to light is.
+ ~  `default: 0.0`
+ 
+`Black Level`:
+ ~  This setting determines the lowes possible value of a pixel, e.g. a black level of `20` applies an offset of `20` to each pixel value.
+ ~  `default: 0`
+
 ### Real-Time Signal Modifications
+
+The following settings are applied in-software after each frame is acquired.
+The order of operation corresponds to the order in the UI from top to bottom.
+
+`Subtract Background`:
+ ~  This will accumulate a certain number of frames which are being used to build a static background image which will be subtracted from every acquired frame.
+ ~  Since the background image is static, **it is necessary to recalculate the background image when changing camera parameters (See [Applying Camera parameters])**.
+ ~  Disabling this setting does not delete the current background image. This way you can compare the effect by toggling the checkbox.
+ ~  The time it takes to acquire the background image depends on the `Frame Rate`.
+ ~  As a rule of thumb, place every object you want to be tracked on your FIM setup *after* calculating the background image.
+ ~  `default: 100`
+ 
+`Cutoff Threshold`:
+ ~  This sets every pixel value below the specified threshold to 0 (i.e. black).
+ ~  `default: 0`
+ 
+`Stretch Histogram`:
+ ~  This setting basically multiplies pixel values by themselves with a certain *stretching* factor.
+ ~  `new pixel value`$ = \frac{\mathrm{\texttt{stretching factor}}}{255} \cdot (\mathrm{\texttt{old pixel value}})^2 $ where pixel values range between 0 and 255.
+ ~  `default: 0.0`
 
 ## Recording
 
@@ -136,15 +184,13 @@ It is recommended to not change any other parameters in these files unless you'v
 Feel free to open an issue on [github](https://github.com/fncnt/fimrecorder/issues/new)[^newissue] if you have any trouble.
 Please make sure to include a recent [debug log](#logging).
 
-[^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new`](https://github.com/fncnt/fimrecorder/issues/new)
-
 ## Known Limitations
 
 Besides the limited set of supported devices, there are a few more limitations to this date:
 
 - **Only an aspect ratio of 1:1 is displayed correctly in the preview.** This does not affect recording.
 - Changing resolution requires editing `.pfs` files
-- Only `Mono8` image formats are supported
+- Only `Mono8` pixel formats are supported
 - Only the default codec and container format are supported
 
 ## Logging
@@ -160,4 +206,12 @@ In most cases, you shouldn't be required to do so.
 
 [See `logging.config`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)[^loggingconfig] for further information.
 
+[^fim]: [`https://www.uni-muenster.de/PRIA/en/FIM/index.html`](https://www.uni-muenster.de/PRIA/en/FIM/index.html)
+[^fimtrack]: [`https://www.uni-muenster.de/PRIA/en/FIM/download.shtml`](https://www.uni-muenster.de/PRIA/en/FIM/download.shtml)
+[^fimtracksourcecode]: [`https://github.com/i-git/FIMTrack`](https://github.com/i-git/FIMTrack)
+[^fimrecorder]: [`https://github.com/fncnt/fimrecorder`](https://github.com/fncnt/fimrecorder)
+[^readme]: [`https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites`](https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites)
+[^fourcc]: [`https://fourcc.org/codecs.php`](https://fourcc.org/codecs.php)
+[^opencvavi]: [`https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html`](https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html)
+[^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new`](https://github.com/fncnt/fimrecorder/issues/new)
 [^loggingconfig]: [`https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)

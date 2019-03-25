@@ -1,7 +1,7 @@
 # FIMrecorder {-}
 
-FIMrecorder[^fimrecorder] is a special-purpose video-recording application for FIM[^fim] experiments.
-This software is at the level of a prototype. It works reliably but has only been tested in a small scope ([Supported Devices]).
+*FIMrecorder*[^fimrecorder] is a special-purpose video-recording application for FIM[^fim] experiments.
+This software is at the level of a prototype. It works reliably but has only been tested in a small scope (see [Supported Devices]).
 The features of this application have been designed to work well in conjunction with FIMTrack[^fimtrack] [^fimtracksourcecode].
 
 [^fim]: [`https://www.uni-muenster.de/PRIA/en/FIM/index.html`](https://www.uni-muenster.de/PRIA/en/FIM/index.html)
@@ -18,14 +18,17 @@ See `README.md`[^readme].
 Currently, only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` actually has been tested.
 
 # Overview
+
+Figure 1 provides an overview concering the UI of *FIMrecorder*.
+
 ![The main UI components of *FIMrecorder*](res/overview_lens.png)
 
 (@load) Loads parameters ((@measurement) & (@camera)) from a previously saved `.json` file.
 (@save) Saves parameters ((@measurement) & (@camera)) to a new `.json` file.
 (@record) Starts recording for the in (@measurement) specified duration.
 (@snapshot) Saves a snapshot to [`Snapshot Directory`](#settingsjson)
-(@extract) Extracts frames as single images from a specified video file. (Required for FIMTrack)
-(@settings) settings.
+(@extract) Extracts frames as single images from a specified video file (Required for FIMTrack).
+(@settings) Starts your favourite text editor to edit the settings file.
 (@measurement) This tab houses information relevant to your experiment such as measurement duration, species or genotype.
 (@camera) Parameters in this tab modify the image signal your camera is acquiring.
 (@modelname) model name of the camera you're using.
@@ -65,6 +68,10 @@ The following options can be modified:
 `Logging Configuration`:
  ~  The location of your logging configuration. There shouldn't be any need to modify this. See [#loggingconf] for more details.
  ~  `default: "loggingconf.json"`
+ 
+`Recording Directory`:
+ ~  Path of the directory where recorded video and auxiliary files should be stored.
+ ~  `default: "FIMrecordings"`
 
 `Single Image Format`:
  ~  The format snapshots and extracted frames are saved in.
@@ -86,6 +93,8 @@ The following options can be modified:
  ~  The container format of your recorded video footage.
  ~  Only the default value has been tested. `opencv` has some limitations[^opencvavi].
  ~  `default: ".avi"`
+ 
+**Note:** The default values for directories specify subdirectories of the application relative to itself. It is possible to specify absolute paths, though (e.g. `"C:/Users/FIM User/Desktop/FIMrecordings"`). Additionally, relative paths are not restricted to subdirectories; `"../FIMrecordings"`  would correspond to a directory above the application.
 
 *FIMrecorder* will fall back to hard-coded defaults and create a new configuration file if you happen to delete it.
 

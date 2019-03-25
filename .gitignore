@@ -1,4 +1,6 @@
-*.png
+./*.png
+snapshots/*.png
+!doc/res7*.png
 *.jpg
 *.bmp
 *.tif

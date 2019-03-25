@@ -23,9 +23,7 @@ Both of them require nearly the same setup:
 
 ### Prerequisites
 
-First, install [`python`](https://www.python.org/)
-(due to the pypylon dependency, only versions 
-up to Python 3.6 are currently supported).
+At first, install [`python`](https://www.python.org/)
 
 Install the following packages using `pip`:
 - `pypylon`
@@ -33,7 +31,7 @@ Install the following packages using `pip`:
 - `opencv-python`
 - `vispy`
 
-Install the [Basler Pylon 5 Runtime](https://www.baslerweb.com/de/vertrieb-support/downloads/downloads-software/pylon-5-0-12-runtime/).
+You may need to install `pypylon` [manually](https://github.com/basler/pypylon/blob/master/README.md#binary-installation) if you're using `python` versions above `3.6`.
 
 ### Running from Source
 

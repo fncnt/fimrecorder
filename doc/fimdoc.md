@@ -139,7 +139,7 @@ The following settings are applied in hardware before each single frame is acqui
 
 `Gamma Correction`:
  ~  Roughly speaking, this setting adjusts the brightness of the image signal.
- ~  `new pixel value`$ = \left ( \frac{\mathrm{\texttt{old pixel value}}}{255} \right )^\gamma \cdot 255 $ where pixel values range between 0 and 255.
+ ~  `new pixel value`[^overflow] $= \left ( \frac{\mathrm{\texttt{old pixel value}}}{255} \right )^\gamma \cdot 255$ where pixel values range between 0 and 255.
  ~  `default: 1.0`
  
 `Gain`:
@@ -169,8 +169,10 @@ The order of operation corresponds to the order in the UI from top to bottom.
  
 `Stretch Histogram`:
  ~  This setting basically multiplies pixel values by themselves with a certain *stretching* factor.
- ~  `new pixel value`$ = \frac{\mathrm{\texttt{stretching factor}}}{255} \cdot (\mathrm{\texttt{old pixel value}})^2 $ where pixel values range between 0 and 255.
+ ~  `new pixel value`[^overflow] $= \frac{\mathrm{\texttt{stretching factor}}}{255} \cdot (\mathrm{\texttt{old pixel value}})^2$ where pixel values range between 0 and 255.
  ~  `default: 0.0`
+ 
+[^overflow]: Resulting values above 255 will be clipped to 255.
 
 ## Recording
 

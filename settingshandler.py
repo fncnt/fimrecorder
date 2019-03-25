@@ -15,7 +15,7 @@ class SettingsHandler:
     def __init__(self):
         # hard-coded so we still can restore default parameters if somebody deleted the file
         self.parameters = {'Recording Duration': "00:05:00.0",
-                           'Frame Rate': 41.58177,
+                           'Frame Rate': 20.0,
                            'Exposure Time': 20000,
                            'Gamma Correction': 1.00000,
                            'Gain': 0.00000,

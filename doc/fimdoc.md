@@ -1,32 +1,49 @@
 # FIMrecorder {-}
 
 # Resources
-[FIM](https://www.uni-muenster.de/PRIA/en/FIM/index.html)
-[FIMTrack](https://www.uni-muenster.de/PRIA/en/FIM/download.shtml)
-[FIMTrack source code](https://github.com/i-git/FIMTrack)
-[FIMrecorder source code](https://github.com/fncnt/fimrecorder)
+[^fim]: [`https://www.uni-muenster.de/PRIA/en/FIM/index.html`](https://www.uni-muenster.de/PRIA/en/FIM/index.html)
+[^fimtrack]: [`https://www.uni-muenster.de/PRIA/en/FIM/download.shtml`](https://www.uni-muenster.de/PRIA/en/FIM/download.shtml)
+[^fimtracksourcecode]: [`https://github.com/i-git/FIMTrack`](https://github.com/i-git/FIMTrack)
+[^fimrecorder]: [`https://github.com/fncnt/fimrecorder`](https://github.com/fncnt/fimrecorder)
 
 # Installation
-See [`README.md`](https://github.com/fncnt/fimrecorder/blob/master/README.md) in the repository. 
+See `README.md`[^readme].
+
+[^readme]: [`https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites`](https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites)
 
 # Usage
 Basic workflow
 
 ## Supported Devices
+Currently, only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` actually has been tested.
 
 ## Overview
 ![The main UI components of *FIMrecorder*](res/overview_lens.png)
 
-## Configuration
-To adjust settings not visible in the UI, click the button labelled *Settings*. This will launch your favourite text editor allowing you to edit the main configuration.
+(@load) Loads parameters ((@measurement) & (@camera)) from a previously saved `.json` file.
+(@save) Saves parameters ((@measurement) & (@camera)) to a new `.json` file.
+(@record) Starts recording for the in (@measurement) specified duration.
+(@snapshot) Saves a snapshot to [`Snapshot Directory`](#settingsjson)
+(@extract) Extracts frames as single images from a specified video file. (Required for FIMTrack)
+(@settings) settings.
+(@measurement) This tab houses information relevant to your experiment such as measurement duration, species or genotype.
+(@camera) Parameters in this tab modify the image signal your camera is acquiring.
+(@preview) Live preview of the acquired image signal.
+(@lens) Zooms by scrolling with your mouse or trackpad.
+(@progress) When recording or extracting, the progress is displayed here.
+(@status) Some relevant status messages appear in this area.
 
-### `settings.json`
+## Configuration
+To adjust settings not visible in the UI, click the button labelled *Settings* (@settings). This will launch your favourite text editor allowing you to edit the main configuration.
+
+### `settings.json` {#settingsjson}
 `settings.json` is the primary configuration file and can be edited using any text editor. It contains data (`"Parameters"`) relevant to  your measurement (see [Measurement Annotations](#measurement-annotations) for a detailed description).
 More importantly, it contains a `"Settings"` section controlling the behaviour of the application.
 The following options can be modified:
 
 `Background Frames to average`:
  ~  Number of Frames that should be used to construct an averaged static background image for background subtraction.
+ ~  This setting *is* available from the UI.
  ~  `default: 100`
 
 `Configuration Directory`:
@@ -38,6 +55,7 @@ The following options can be modified:
  ~  `default: "FIM_NodeMap.pfs"`
 
 `Extract every n-th Frame`:
+ ~  This setting *is* available from the UI.
  ~  `default: 1`
 
 `Logging Configuration`:
@@ -89,9 +107,13 @@ It is recommended to not change other parameters other than those in these files
 #### Extracting Frames from Video Files
 
 # Troubleshooting
-Feel free to open an issue on [github](https://github.com/fncnt/fimrecorder/issues/new).
+Feel free to open an issue on [github](https://github.com/fncnt/fimrecorder/issues/new)[^newissue].
+
+[^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new`](https://github.com/fncnt/fimrecorder/issues/new)
 
 ## Logging
 
 ### `loggingconf.json`
-[See `logging.config`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)
+[See `logging.config`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)[^loggingconfig].
+
+[^loggingconfig]: [`https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)

@@ -5,7 +5,7 @@
 This program is
 a simple recording application for FIM related
 measurements. 
-Currently only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` has been tested.
+Currently, only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` has been tested.
 
 
 ## Documentation

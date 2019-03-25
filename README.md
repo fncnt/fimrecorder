@@ -1,9 +1,12 @@
 # FIMRecorder
 
+**THIS IS A PROTOTYPE! It does what it should. However, The code is far from pretty and I learned a lot while writing it.**
+
 This program is
 a simple recording application for FIM related
 measurements. 
-Currently only Basler USB3 vision cameras are supported.
+Currently only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` has been tested.
+
 
 ## Documentation
 

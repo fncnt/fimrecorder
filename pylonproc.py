@@ -170,19 +170,14 @@ class Canvas(app.Canvas):
         app.Canvas.__init__(self)
         # resolution doesn't matter here (kind of)
         self.currentframe = numpy.zeros((1200, 1200)).astype(numpy.uint8)
-        self.aspectratio = 1
+        self.aspectratio = 0.5
         self.image = gloo.Program(self.vertex, self.fragment, 4)
-        self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
-        #self.image['position'] = [(-1, -self.aspectratio), (-1, +self.aspectratio), (+1, -self.aspectratio), (+1, +self.aspectratio)]
+        #self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
+        self.image['position'] = [(-1, -self.aspectratio), (-1, +self.aspectratio), (+1, -self.aspectratio), (+1, +self.aspectratio)]
         # bottom left, top left, bottom right, top right
-        # This works on Windows. But why are the textures smaller?
-        #self.image['texcoord'] = [(0, 1/3), (0, 0), (1/3, 1/3), (1/3, 0)]
-        # This works on linux:
-        # (where DPI can't be determined automatically
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
         self.image['lenscoord'] = [(0, 1), (0, 0), (self.aspectratio, 1), (self.aspectratio, 0)]
         #self.image['lenscoord'] = [(0, 1/self.aspectratio), (0, 0), (1, 1/self.aspectratio), (1, 0)]
-        # How Can I stretch textures and why is that necessary?
         self.image['texture'] = self.currentframe
         self.image['mousecoord'] = (0, 0)
         self._timer = app.Timer('auto', connect=self.on_timer, start=True)
@@ -225,16 +220,22 @@ class Canvas(app.Canvas):
     def on_mouse_move(self, event):
         x, y = event.pos
         width, height = self.physical_size
-        if width < height * self.aspectratio:
+        if self.aspectratio >= 1:
             logger.debug("A")
-            #offset = (height - width / self.aspectratio) / 2
+            offset = (height - width) / 2
             #self.image['mousecoord'] = (x/width, (y-offset)/(width / self.aspectratio))
-            self.image['mousecoord'] = (x * self.aspectratio / width, (y - height/2) * self.aspectratio / width + 0.5)
+            #self.image['mousecoord'] = (x * self.aspectratio / width, (y - height/2) * self.aspectratio / width + 0.5)
+            self.image['mousecoord'] = (x * self.aspectratio / width, (y - offset) / width)
+
         else:
             logger.debug("B")
             #offset = (width - height * self.aspectratio) / 2
             #self.image['mousecoord'] = ((x-offset)/height, y/height)
-            self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y / height)
+            #self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y / height)
+            offset = (width - height) / 2
+            #self.image['mousecoord'] = ((x + offset) / height, y / self.aspectratio / height)
+            self.image['mousecoord'] = (x * self.aspectratio / width, (y + offset) / width)
+
 
     def on_mouse_wheel(self, event):
         _, delta = event.delta

@@ -16,7 +16,7 @@ Currently, only Basler USB3 vision cameras recording in `Mono8` format are suppo
 
 Figure 1 provides an overview concering the UI of *FIMrecorder*.
 
-![The main UI components of *FIMrecorder*](res/overview_lens.png)
+![The main UI components of *FIMrecorder*](res/overview1_annotated.png)
 
 (@load) Loads parameters ((@measurement) & (@camera)) from a previously saved `.json` file.
 (@save) Saves parameters ((@measurement) & (@camera)) to a new `.json` file.

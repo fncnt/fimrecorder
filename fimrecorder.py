@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logger
+from logger import VERSIONCODE
 import sys
 import os
 import subprocess
@@ -471,6 +472,7 @@ def main():
     # Disable UI elements that don't work yet
     disableUiElements()
     window.showMaximized()
+    window.setWindowTitle("FIMrecorder (" + VERSIONCODE + ")")
     # window.showNormal()
     recordingcam.moveToThread(recthread)
     extractcam.moveToThread(ecthread)

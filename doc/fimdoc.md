@@ -10,20 +10,20 @@ See `README.md`[^readme].
 
 # Supported Devices
 
-Currently, only Basler USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um` actually has been tested.
+Currently, only Basler[^basler] USB3 vision cameras recording in `Mono8` format are supported and only the model `acA1920-40um`[^baslerace] actually has been tested.
 
 # Overview
 
-Figure 1 provides an overview concering the UI of *FIMrecorder*.
+Figure 1 provides an overview concerning the UI of *FIMrecorder*.
 
-![The main UI components of *FIMrecorder*](res/overview1_annotated.png)
+![The main UI components of *FIMrecorder*.](res/overview1_annotated.png)
 
-(@load) Loads parameters ((@measurement) & (@camera)) from a previously saved `.json` file.
-(@save) Saves parameters ((@measurement) & (@camera)) to a new `.json` file.
+(@load) Loads parameters from a previously saved `.json` file into (@measurement) & (@camera).
+(@save) Saves parameters from (@measurement) & (@camera) to a new `.json` file.
 (@record) Starts recording for the in (@measurement) specified duration.
 (@snapshot) Saves a snapshot to [`Snapshot Directory`](#settingsjson)
 (@extract) Extracts frames as single images from a specified video file (Required for FIMTrack).
-(@settings) Starts your favourite text editor to edit the settings file.
+(@settings) Starts your favourite text editor to edit the configuration file.
 (@measurement) This tab houses information relevant to your experiment such as measurement duration, species or genotype.
 (@camera) Parameters in this tab modify the image signal your camera is acquiring.
 (@modelname) model name of the camera you're using.
@@ -49,11 +49,11 @@ The following options can be modified:
 
 `Configuration Directory`:
  ~  Path of the directory where additional configurations files should be stored.
- ~  `settings.json` is **not** stored here.
+ ~  `settings.json` is **not** stored in this folder.
  ~  `default: "config"`
  
 `Default Camera Parameters`:
- ~  This is the default `.pfs` file. See [#pfsfiles] for further information
+ ~  This is the default `.pfs` file. See [`.pfs` Files] for further information
  ~  `default: "FIM_NodeMap.pfs"`
 
 `Extract every n-th Frame`:
@@ -63,7 +63,7 @@ The following options can be modified:
  ~  `default: 1`
 
 `Logging Configuration`:
- ~  The location of your logging configuration. There shouldn't be any need to modify this. See [#loggingconf] for more details.
+ ~  The location of your logging configuration. There shouldn't be any need to modify this. See [`loggingconf.json`] for more details.
  ~  `default: "loggingconf.json"`
  
 `Recording Directory`:
@@ -95,7 +95,7 @@ The following options can be modified:
 
 *FIMrecorder* will fall back to hard-coded defaults and create a new configuration file if you happen to delete it.
 
-## `.pfs` Files {#pfsfiles}
+## `.pfs` Files
 
 In addition to `settings.json` there are `.pfs` files in your `Configuration Directory` for every camera model you've used in *FIMrecorder*. Those text files are being generated when you use a device for the first time with *FIMrecorder* and include all the parameters of the specific model.
 
@@ -122,8 +122,10 @@ Therefore, quite a bit attention to details is required here.
 5. If necessary, adjust focus, aperture and field of view manually on your camera.
    - Use the lens feature (@lens) to make focussing easier.
    - If background subtraction is already enabled, disabling it might make this step easier.
-6. Depending on the surrounding environment, it might be beneficial to dim or turn off lights.
+6. Depending on the surrounding environment and the power of your LEDs, it might be beneficial to dim or turn off lights.
    - This is often not necessary but improves image acquisition a lot.
+   - If you use different kinds of LEDs, e.g. blue LEDs and IR LEDs, be aware that their output power might differ significantly.
+     IR LEDS may need more aggressively set camera parameters. Another effect to consider is the wavelength-dependent sensitivity of your camera[^spectralresponse].
 
 ### Measurement Annotations
 
@@ -211,14 +213,14 @@ The video files are suited better for archiving purposes.
 
 # Troubleshooting
 
-Feel free to open an issue on [github](https://github.com/fncnt/fimrecorder/issues/new)[^newissue] if you have any trouble.
+Feel free to open a new issue on [Github](https://github.com/fncnt/fimrecorder/issues/new)[^newissue] if you have any trouble.
 Please make sure to include a recent [debug log](#logging).
 
 ## Known Limitations
 
 Besides the limited set of supported devices, there are a few more limitations to this date:
 
-- **Only an aspect ratio of 1:1 is displayed correctly in the preview.** This does not affect recording.
+- **Only an aspect ratio of 1:1 is displayed correctly in the preview.** This does not affect recording. A fix for that is currently being worked on.
 - Changing resolution requires editing `.pfs` files
 - Only `Mono8` pixel formats are supported
 - Only the default codec and container format are supported
@@ -230,7 +232,7 @@ Please make sure to copy your debug logs as soon as you encounter a problem. Oth
 
 Older debug logs may still be helpful and are suffixed by ascending digits (e.g. `debug.log.1`).
 
-### `loggingconf.json` {#loggingconf}
+### `loggingconf.json`
 
 To change the logging behaviour, `loggingconf.json` in your `Configuration Directory` can be edited.
 In most cases, you shouldn't be required to do so.
@@ -242,6 +244,9 @@ In most cases, you shouldn't be required to do so.
 [^fimtracksourcecode]: [`https://github.com/i-git/FIMTrack`](https://github.com/i-git/FIMTrack)
 [^fimrecorder]: [`https://github.com/fncnt/fimrecorder`](https://github.com/fncnt/fimrecorder)
 [^readme]: [`https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites`](https://github.com/fncnt/fimrecorder/blob/master/README.md#prerequisites)
+[^basler]: [`https://www.baslerweb.com/en/`](https://www.baslerweb.com/en/)
+[^baslerace]: [`https://www.baslerweb.com/en/products/cameras/area-scan-cameras/ace/aca1920-40um/`](https://www.baslerweb.com/en/products/cameras/area-scan-cameras/ace/aca1920-40um/)
+[^spectralresponse]: [`https://docs.baslerweb.com/en/aca1920-40um.htm#MiniTOCBookMark4`](https://docs.baslerweb.com/en/aca1920-40um.htm#MiniTOCBookMark4)
 [^fourcc]: [`https://fourcc.org/codecs.php`](https://fourcc.org/codecs.php)
 [^opencvavi]: [`https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html`](https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html)
 [^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new`](https://github.com/fncnt/fimrecorder/issues/new)

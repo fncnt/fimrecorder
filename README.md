@@ -58,3 +58,10 @@ The folder in the subdirectory `dist/` can be copied
 to other computers (maybe not even having Pylon 5 
 or Python 3.6 installed) and contains a portable version
 of this application.
+
+## License
+
+This application is licensed under the [MIT license](https://github.com/fncnt/fimrecorder/blob/master/LICENSE).
+The `.svg` icon files in [`fimui/fa-svgs`](https://github.com/fncnt/fimrecorder/tree/master/fimui/fa-svgs) were made by [Font Awesome](https://fontawesome.com/) and are [`CC BY 4.0`](https://creativecommons.org/licenses/by/4.0/) licensed.
+
+

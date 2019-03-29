@@ -2,7 +2,7 @@ import logging.config
 import os
 import json
 
-VERSIONCODE = "v0.3.1"
+VERSIONCODE = "v0.3.2"
 
 try:
     with open('settings.json') as tempf:

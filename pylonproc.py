@@ -153,7 +153,7 @@ class Canvas(app.Canvas):
                     
                     if (mousezoom > 1.0)
                     {
-                        float mouse_dist = distance(v_lenscoord, mousecoord);
+                        float mouse_dist = distance(v_texcoord, mousecoord);
                         //Draw the outline of the glass
                         if (mouse_dist < 0.203)
                             gl_FragColor = vec4(0.1, 0.1, 0.1, 1.0);
@@ -170,7 +170,7 @@ class Canvas(app.Canvas):
         app.Canvas.__init__(self)
         # resolution doesn't matter here (kind of)
         self.currentframe = numpy.zeros((1200, 1200)).astype(numpy.uint8)
-        self.aspectratio = 2
+        self.aspectratio = 4/3
         self.image = gloo.Program(self.vertex, self.fragment, 4)
         #self.image['position'] = [(-1, -1), (-1, +1), (+1, -1), (+1, +1)]
         if self.aspectratio >= 1:
@@ -180,8 +180,9 @@ class Canvas(app.Canvas):
 
         # bottom left, top left, bottom right, top right
         self.image['texcoord'] = [(0, 1), (0, 0), (1, 1), (1, 0)]
-        self.image['lenscoord'] = [(0, 1), (0, 0), (self.aspectratio, 1), (self.aspectratio, 0)]
-        #self.image['lenscoord'] = [(0, 1/self.aspectratio), (0, 0), (1, 1/self.aspectratio), (1, 0)]
+        #if self.aspectratio >= 1:
+            #self.image['texcoord'] = [(0, 1), (0, 0), (self.aspectratio, 1), (self.aspectratio, 0)]
+            #self.image['texcoord'] = [(0, 1/self.aspectratio), (0, 0), (1, 1/self.aspectratio), (1, 0)]
         self.image['texture'] = self.currentframe
         self.image['mousecoord'] = (0, 0)
         self._timer = app.Timer('auto', connect=self.on_timer, start=True)
@@ -192,7 +193,7 @@ class Canvas(app.Canvas):
     def on_resize(self, event):
         width, height = event.physical_size
 
-        if width < height * self.aspectratio:
+        if width <= height * self.aspectratio:
             gloo.set_viewport(0,
                               (height - width / self.aspectratio) / 2,
                               width,
@@ -225,24 +226,30 @@ class Canvas(app.Canvas):
         x, y = event.pos
         width, height = self.physical_size
         if self.aspectratio >= 1:
-            logger.debug("A")
             offset = (height - width) / 2
             #self.image['mousecoord'] = (x/width, (y-offset)/(width / self.aspectratio))
             #self.image['mousecoord'] = (x * self.aspectratio / width, (y - height/2) * self.aspectratio / width + 0.5)
             if width <= height * self.aspectratio:
-                self.image['mousecoord'] = (x * self.aspectratio / width, (y - offset) / width)
+                logger.debug("A")
+                offset = (height - width / self.aspectratio) / 2
+                self.image['mousecoord'] = (x / width, (y - offset) / width + 1/self.aspectratio/2)
             else:
-                self.image['mousecoord'] = ((x + offset/2/self.aspectratio) / height, y / self.aspectratio / height)
+                logger.debug("B")
+                offset = (width - height * self.aspectratio) / 2
+                self.image['mousecoord'] = ((x - offset) / self.aspectratio / height, y / height / self.aspectratio + 1/self.aspectratio/2)
 
         else:
-            logger.debug("B")
-            #offset = (width - height * self.aspectratio) / 2
-            #self.image['mousecoord'] = ((x-offset)/height, y/height)
-            #self.image['mousecoord'] = ((x - width/2) / (height * self.aspectratio) + 0.5, y / height)
-            offset = (height - width) / 2
-            #self.image['mousecoord'] = ((x + offset) / height, y / self.aspectratio / height)
-            #self.image['mousecoord'] = (x * self.aspectratio / height, (y - offset) / height)
-            self.image['mousecoord'] = ((x + offset) / width, y / height)
+            if width <= height * self.aspectratio:
+                logger.debug("A")
+                offset = (height - width / self.aspectratio) / 2
+                self.image['mousecoord'] = (x / width, (y - offset) / width * self.aspectratio)
+            else:
+                logger.debug("B")
+                offset = (width - height * self.aspectratio) / 2
+                self.image['mousecoord'] = ((x - offset) / self.aspectratio / height, y / height)
+
+
+        logger.debug(str(self.image['mousecoord']))
 
 
     def on_mouse_wheel(self, event):

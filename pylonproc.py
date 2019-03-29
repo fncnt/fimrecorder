@@ -121,8 +121,9 @@ class QCamRecorder(QCamProcessor):
     def finishProcessing(self):
         #self.out.close()
         self.out.release()
-        self.status.emit("Released video file.")
-        logger.info("Released video file.")
+        msg = "Released video file in " + os.path.dirname(os.path.abspath(self.fimjson))
+        self.status.emit(msg)
+        logger.info(msg)
         self.fimjson_path.emit(self.fimjson)
         super().finishProcessing()
 

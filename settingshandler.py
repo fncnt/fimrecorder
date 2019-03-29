@@ -80,7 +80,7 @@ class SettingsHandler:
                 else:
                     dumpling = dict(Settings=self.settings, Parameters=self.parameters)
                 json.dump(dumpling, file, sort_keys=True, indent=4)
-                logger.info("Saved file:\n " + os.path.join(fpath, fname))
+                logger.info("Saved file: " + os.path.join(fpath, fname))
             except Exception as e:
                 logger.exception(str(e))
             finally:
@@ -107,7 +107,7 @@ class SettingsHandler:
                     self.parameters = {**self.parameters, **dumpling['Parameters']}
                 except Exception as e:
                     logger.exception("There is no key ", str(e), ".")
-                logger.info("Loaded file:\n " + os.path.join(fpath, fname))
+                logger.info("Loaded file: " + os.path.join(fpath, fname))
 
             except Exception as e:
                 print(str(e))

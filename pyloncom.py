@@ -82,7 +82,7 @@ class QCamWorker(QObject):
             self.device_name.emit(self._cam.GetDeviceInfo().GetModelName())
 
             self.device_status.emit("Loading device configuration")
-            logger.info("Loading device configuration: \n" + os.path.join(self.fpath, self._cam.GetDeviceInfo().GetModelName() + '.pfs'))
+            logger.info("Loading device configuration: " + os.path.join(self.fpath, self._cam.GetDeviceInfo().GetModelName() + '.pfs'))
             # pylon.FeaturePersistence.Load(os.path.join(self.fpath, self.fname), self._cam.GetNodeMap(), True)
             try:
                 pylon.FeaturePersistence.Load(os.path.join(self.fpath,

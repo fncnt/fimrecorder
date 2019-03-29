@@ -249,5 +249,5 @@ In most cases, you shouldn't be required to do so.
 [^spectralresponse]: [`https://docs.baslerweb.com/en/aca1920-40um.htm#MiniTOCBookMark4`](https://docs.baslerweb.com/en/aca1920-40um.htm#MiniTOCBookMark4)
 [^fourcc]: [`https://fourcc.org/codecs.php`](https://fourcc.org/codecs.php)
 [^opencvavi]: [`https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html`](https://docs.opencv.org/4.0.1/d7/d9e/tutorial_video_write.html)
-[^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new`](https://github.com/fncnt/fimrecorder/issues/new)
+[^newissue]: [`https://github.com/fncnt/fimrecorder/issues/new/choose`](https://github.com/fncnt/fimrecorder/issues/new/choose)
 [^loggingconfig]: [`https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration`](https://docs.python.org/3.6/howto/logging-cookbook.html#an-example-dictionary-based-configuration)
